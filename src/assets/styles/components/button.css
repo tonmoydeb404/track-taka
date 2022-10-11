@@ -1,0 +1,19 @@
+.btn {
+  @apply px-4 py-2 rounded-sm inline-flex items-center gap-1 duration-300;
+}
+
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 text-white;
+}
+
+.btn-success {
+  @apply bg-green-500 hover:bg-green-600 text-white;
+}
+
+.btn-warning {
+  @apply bg-yellow-400 hover:bg-yellow-500 text-black;
+}

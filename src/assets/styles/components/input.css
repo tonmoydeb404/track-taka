@@ -1,0 +1,23 @@
+.input {
+  @apply rounded-sm;
+}
+
+.input_group {
+  @apply flex flex-col gap-1;
+}
+
+.input_group label {
+  @apply text-sm sm:text-base;
+}
+
+.input_error {
+  @apply text-xs text-red-500 hidden;
+}
+
+.input[data-invalid="true"] {
+  @apply border-red-500;
+}
+
+.input[data-invalid="true"] ~ .input_error {
+  @apply block;
+}

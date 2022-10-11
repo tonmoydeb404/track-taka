@@ -1,0 +1,31 @@
+{
+  "categories": ["Food", "Health", "Insurance", "Daily", "Travel", "Others"],
+  "links": [
+    { "id": "#1", "title": "Analytics", "icon": "pie-chart", "link": "/" },
+    {
+      "id": "#2",
+      "title": "Transections",
+      "icon": "cash",
+      "link": "/transections"
+    },
+    {
+      "id": "#3",
+      "title": "Incomes",
+      "icon": "graph-up-arrow",
+      "link": "/incomes"
+    },
+    {
+      "id": "#4",
+      "title": "Expenses",
+      "icon": "graph-down-arrow",
+      "link": "/expenses"
+    },
+    {
+      "id": "#5",
+      "title": "New transections",
+      "icon": "plus-square",
+      "link": "/new-transection"
+    },
+    { "id": "#6", "title": "Settings", "icon": "gear", "link": "/settings" }
+  ]
+}
