@@ -6,15 +6,15 @@
 /* transection header search */
 
 .transection_head_search {
-  @apply flex;
+  @apply relative;
 }
 
 .transection_head_search > input {
-  @apply px-2 py-2 rounded-l border border-gray-200 border-r-0 outline-none focus:outline-none ring-0 focus:ring-0 flex-1 w-full;
+  @apply w-full pl-10 dark:bg-slate-700;
 }
 
-.transection_head_search > button {
-  @apply px-3 py-1 bg-slate-800 hover:bg-slate-700 duration-300 text-white rounded-r;
+.transection_head_search > .icon {
+  @apply pointer-events-none absolute left-3 top-2/4 -translate-y-2/4 text-gray-500;
 }
 
 /* transections header actions */
@@ -22,21 +22,13 @@
   @apply flex items-center gap-1 md:gap-2;
 }
 
-.transection_head_actions > .action {
-  @apply duration-300 rounded text-white font-medium px-2.5 md:px-4 py-2 inline-flex items-center gap-1;
-}
-
-.transection_head_actions > .action > span {
-  @apply hidden md:block;
-}
-
 /* transection header row */
 .transection_head_row {
-  @apply bg-slate-200;
+  @apply bg-slate-200 dark:bg-slate-700;
 }
 
 .transection_head_row > th {
-  @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 text-[15px] sm:text-base;
+  @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 dark:border-r-gray-500 text-[15px] sm:text-base last:border-r-0;
 }
 
 .transection_head_row > th input[type="checkbox"] {
@@ -52,10 +44,10 @@
 /* transection body row */
 
 .transection_body_row {
-  @apply bg-white border-t border-t-gray-200;
+  @apply bg-white border-t border-t-gray-200 dark:bg-slate-800 dark:border-t-gray-700;
 }
 .transection_body_row > td {
-  @apply px-2.5 py-1.5 p-3 border-r text-sm sm:text-base border-r-gray-200 whitespace-nowrap;
+  @apply px-2.5 py-1.5 p-3 border-r text-sm sm:text-base border-r-gray-200 dark:border-r-gray-700 whitespace-nowrap;
 }
 
 .transection_body_row > td:first-child {
@@ -70,9 +62,6 @@
 }
 .transection_body_row.expense > td input[type="checkbox"] {
   @apply text-red-500;
-}
-.transection_body_row > td button {
-  @apply px-2 py-1 rounded duration-300;
 }
 
 .transection_type {
