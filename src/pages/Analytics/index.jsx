@@ -10,16 +10,18 @@ import {
   XAxis,
 } from "recharts";
 import StatCard from "../../common/components/StatCard";
-import DB from "../../demo-db.json";
+import { useTransectionContext } from "../../common/contexts/transectionContext";
 import { chartData, pieData } from "../../utilities/chartData";
 
 const Analytics = () => {
+  const { state } = useTransectionContext();
+
   const graphData = useMemo(
     () => ({
-      chart: chartData(DB.transections),
-      pie: pieData(DB.transections),
+      chart: chartData(state),
+      pie: pieData(state),
     }),
-    [DB.transections]
+    [state]
   );
 
   console.log(graphData);

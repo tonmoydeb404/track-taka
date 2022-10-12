@@ -1,11 +1,13 @@
 import React, { useMemo } from "react";
 import TransectionTable from "../../common/components/TransectionTable";
-import DB from "../../demo-db.json";
+import { useTransectionContext } from "../../common/contexts/transectionContext";
 
 const Incomes = () => {
+  const { state } = useTransectionContext();
+
   const incomesData = useMemo(
-    () => DB.transections.filter((item) => item.type == "income"),
-    [DB.transections]
+    () => state.filter((item) => item.type == "income"),
+    [state]
   );
 
   return (

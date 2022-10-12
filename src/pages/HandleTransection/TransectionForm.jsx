@@ -6,8 +6,9 @@ const TransectionForm = ({ mode = "Create" }) => {
   return (
     <Formik
       initialValues={{ title: "", amount: 0, type: "", category: "", date: "" }}
+      onSubmit={(values) => console.log(values)}
     >
-      {({ errors }) => (
+      {({ errors, handleChange, setFieldValue }) => (
         <Form className="w-full lg:w-[500px] flex flex-col gap-4">
           <div className="input_group">
             <label htmlFor="title">Transection Title</label>

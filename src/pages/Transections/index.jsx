@@ -1,8 +1,10 @@
 import React from "react";
 import TransectionTable from "../../common/components/TransectionTable";
-import DB from "../../demo-db.json";
+import { useTransectionContext } from "../../common/contexts/transectionContext";
 
 const Transections = () => {
+  const { state } = useTransectionContext();
+
   return (
     <>
       {/* page header */}
@@ -19,7 +21,7 @@ const Transections = () => {
         </div>
       </div>
 
-      <TransectionTable className="mt-10" data={DB.transections} />
+      <TransectionTable className="mt-10" data={state} />
     </>
   );
 };

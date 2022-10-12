@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTransectionContext } from "../../contexts/transectionContext";
 import TransectionFilter from "./TransectionFilter";
 import TransectionHeader from "./TransectionHeader";
 import TransectionTH from "./TransectionTH";
@@ -13,6 +14,9 @@ const TransectionTable = ({ className = "", data = [] }) => {
   const [viewFilter, setViewFilter] = useState(false);
   const [sortByFilter, setSortByFilter] = useState("Default");
   const [cateFilter, setCateFilter] = useState([]);
+
+  // transection context
+  const { handleDelete: deleteTransection } = useTransectionContext();
 
   // handle data filtering
   useEffect(() => {
@@ -76,11 +80,7 @@ const TransectionTable = ({ className = "", data = [] }) => {
 
   // handle delete transection
   const handleDelete = (id = [], clear = () => {}) => {
-    const filteredData = [...tableData].filter((item) => {
-      return !id.includes(item.id);
-    });
-
-    setTableData([...filteredData]);
+    deleteTransection(id);
     clear();
   };
 
