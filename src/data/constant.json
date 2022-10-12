@@ -22,9 +22,9 @@
     },
     {
       "id": "#5",
-      "title": "New transections",
+      "title": "New transection",
       "icon": "plus-square",
-      "link": "/new-transection"
+      "link": "/transections/create"
     },
     { "id": "#6", "title": "Settings", "icon": "gear", "link": "/settings" }
   ]

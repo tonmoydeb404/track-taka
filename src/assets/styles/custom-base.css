@@ -1,4 +1,4 @@
 /* body style */
 body {
-  @apply bg-slate-50 text-slate-900 text-base;
+  @apply bg-slate-50 text-slate-900 text-base dark:bg-slate-900 dark:text-slate-50;
 }

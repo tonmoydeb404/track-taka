@@ -1,5 +1,5 @@
 .input {
-  @apply rounded-sm;
+  @apply rounded-sm dark:bg-slate-700;
 }
 
 .input_group {

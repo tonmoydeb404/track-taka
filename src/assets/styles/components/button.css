@@ -2,6 +2,10 @@
   @apply px-4 py-2 rounded-sm inline-flex items-center gap-1 duration-300;
 }
 
+.btn-sm {
+  @apply px-2 py-1;
+}
+
 .btn-primary {
   @apply bg-blue-600 hover:bg-blue-700 text-white;
 }

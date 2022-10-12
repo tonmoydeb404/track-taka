@@ -7,18 +7,20 @@
   @apply px-5 pt-10 md:px-10 lg:py-10;
 }
 
-body.sidebar-collapsed {
+/* layout */
+
+body:not([data-sidebar="true"]) {
   --sidebar-width: 0px;
 }
-body:not(.sidebar-collapsed) {
+body[data-sidebar="true"] {
   --sidebar-width: 250px;
 }
 
 @screen lg {
-  body.sidebar-collapsed {
+  body:not([data-sidebar="true"]) {
     --sidebar-width: 58px;
   }
-  body:not(.sidebar-collapsed) {
+  body[data-sidebar="true"] {
     --sidebar-width: 250px;
   }
   .main {
@@ -27,22 +29,22 @@ body:not(.sidebar-collapsed) {
 }
 
 /* sidebar collaped */
-body.sidebar-collapsed .sidebar {
+body:not([data-sidebar="true"]) .sidebar {
   @apply w-0 lg:w-auto;
 }
-body.sidebar-collapsed .sidebar .sidebar_container {
+body:not([data-sidebar="true"]) .sidebar .sidebar_container {
   @apply px-0 lg:px-2;
 }
-body.sidebar-collapsed .sidebar .sidebar_item,
-body.sidebar-collapsed .sidebar .sidebar_links_item {
+body:not([data-sidebar="true"]) .sidebar .sidebar_item,
+body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {
   @apply justify-start rounded;
 }
-body.sidebar-collapsed .sidebar .sidebar_item {
+body:not([data-sidebar="true"]) .sidebar .sidebar_item {
   @apply p-1;
 }
-body.sidebar-collapsed .sidebar .title {
+body:not([data-sidebar="true"]) .sidebar .title {
   @apply hidden;
 }
-body.sidebar-collapsed .sidebar .icon {
+body:not([data-sidebar="true"]) .sidebar .icon {
   @apply text-lg;
 }
