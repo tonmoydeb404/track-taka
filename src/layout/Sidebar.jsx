@@ -4,7 +4,7 @@ import { useGlobalContext } from "../common/contexts/globalContext";
 import CONSTANT from "../data/constant.json";
 
 const Sidebar = () => {
-  const { darkTheme, toggleSidebar, toggleTheme } = useGlobalContext();
+  const { theme, toggleSidebar, toggleTheme } = useGlobalContext();
 
   return (
     <div className="sidebar">
@@ -45,7 +45,7 @@ const Sidebar = () => {
         >
           <i
             className={`icon bi ${
-              darkTheme ? "bi-sun-fill" : "bi-moon-fill"
+              theme == "dark" ? "bi-sun-fill" : "bi-moon-fill"
             } px-2 py-1 bg-blue-600 text-white rounded inline-block`}
           ></i>
 

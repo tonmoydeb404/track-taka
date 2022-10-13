@@ -1,29 +1,38 @@
 // initial values
-export const globalValues = {
-  darkTheme: false,
+const initalValues = {
+  theme: "light",
   sidebar: false,
 };
 
 // global reducer Types
 const actions = {
   TOGGLE_THEME: "TOGGLE_THEME",
+  SET_THEME: "SET_THEME",
   TOGGLE_SIDEBAR: "TOGGLE_SIDEBAR",
 };
 
 // global reducer
-export const globalReducer = (state = initalValues, { type, payload }) => {
+const reducer = (state = initalValues, { type, payload }) => {
   switch (type) {
     case actions.TOGGLE_SIDEBAR: {
       const sidebar = !state.sidebar;
       return { ...state, sidebar };
     }
     case actions.TOGGLE_THEME: {
-      const darkTheme = !state.darkTheme;
-      return { ...state, darkTheme };
+      const theme = state.theme == "dark" ? "light" : "dark";
+      return { ...state, theme };
+    }
+    case actions.SET_THEME: {
+      const theme = payload.theme;
+      return { ...state, theme };
     }
     default:
       return state;
   }
 };
 
-export const { TOGGLE_THEME, TOGGLE_SIDEBAR } = actions;
+export {
+  reducer as globalReducer,
+  actions as globalActions,
+  initalValues as globalValues,
+};

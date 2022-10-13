@@ -28,5 +28,6 @@
     },
     { "id": "#6", "title": "Settings", "icon": "gear", "link": "/settings" }
   ],
-  "localStorageKey": "TRACK_TAKA_LOCALSTORAGE"
+  "localStorageTransectionsKey": "TRACK_TAKA_TRANSECTIONS",
+  "localStorageThemeKey": "TRACK_TAKA_THEME"
 }

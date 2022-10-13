@@ -5,7 +5,7 @@ import {
   useMemo,
   useReducer,
 } from "react";
-import { localStorageKey } from "../../data/constant.json";
+import { localStorageTransectionsKey } from "../../data/constant.json";
 import {
   transectionReducer,
   transectionTypes,
@@ -22,7 +22,7 @@ export const TransectionContextProvier = ({ children }) => {
 
   // get data from localstorage
   useEffect(() => {
-    const localstate = localStorage.getItem(localStorageKey);
+    const localstate = localStorage.getItem(localStorageTransectionsKey);
     if (localstate != null) {
       dispatch({
         type: transectionTypes.INSERT,
@@ -33,12 +33,10 @@ export const TransectionContextProvier = ({ children }) => {
 
   // save data to localstorage
   useEffect(() => {
-    if (state && state.length) {
-      try {
-        localStorage.setItem(localStorageKey, JSON.stringify(state));
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      localStorage.setItem(localStorageTransectionsKey, JSON.stringify(state));
+    } catch (error) {
+      console.log(error);
     }
   }, [state]);
 

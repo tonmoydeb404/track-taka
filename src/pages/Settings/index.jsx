@@ -21,7 +21,7 @@ const Settings = () => {
             <img
               src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
               alt=""
-              class="w-12 h-12 rounded"
+              className="w-12 h-12 rounded"
             />
 
             <h2>Tonmoy Deb</h2>
