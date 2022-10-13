@@ -2,6 +2,10 @@
 const initalValues = {
   theme: "light",
   sidebar: false,
+  monthFilter: {
+    enable: true,
+    value: new Date().getTime(),
+  },
 };
 
 // global reducer Types
@@ -9,6 +13,8 @@ const actions = {
   TOGGLE_THEME: "TOGGLE_THEME",
   SET_THEME: "SET_THEME",
   TOGGLE_SIDEBAR: "TOGGLE_SIDEBAR",
+  SET_MONTH_FILTER: "SET_MONTH_FILTER",
+  TOGGLE_MONTH_FILTER: "TOGGLE_MONTH_FILTER",
 };
 
 // global reducer
@@ -25,6 +31,16 @@ const reducer = (state = initalValues, { type, payload }) => {
     case actions.SET_THEME: {
       const theme = payload.theme;
       return { ...state, theme };
+    }
+    case actions.SET_MONTH_FILTER: {
+      const prevState = { ...state };
+      prevState.monthFilter.value = payload.month;
+      return { ...prevState };
+    }
+    case actions.TOGGLE_MONTH_FILTER: {
+      const prevState = { ...state };
+      prevState.monthFilter.enable = !prevState.monthFilter.enable;
+      return { ...prevState };
     }
     default:
       return state;

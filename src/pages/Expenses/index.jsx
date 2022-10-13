@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
+import MonthFilter from "../../common/components/MonthFilter";
 import TransectionTable from "../../common/components/TransectionTable";
 import { useTransectionContext } from "../../common/contexts/transectionContext";
 
 const Expenses = () => {
-  const { state } = useTransectionContext();
+  const { filteredState: state } = useTransectionContext();
 
   const expensesData = useMemo(
     () => state.filter((item) => item.type == "expense"),
@@ -18,11 +19,7 @@ const Expenses = () => {
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
-          <select name="dateFilter" id="dateFilter" className="select">
-            <option value="THIS_MONTH">This month</option>
-            <option value="LAST_MONTH">Last month</option>
-            <option value="ALL">All time</option>
-          </select>
+          <MonthFilter />
         </div>
       </div>
 

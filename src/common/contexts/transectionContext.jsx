@@ -10,6 +10,7 @@ import {
   transectionReducer,
   transectionTypes,
 } from "../reducers/transectionReducer";
+import { useGlobalContext } from "./globalContext";
 
 const transectionContext = createContext();
 
@@ -18,6 +19,7 @@ export const useTransectionContext = () => useContext(transectionContext);
 
 // provide transection context
 export const TransectionContextProvier = ({ children }) => {
+  const { monthFilter } = useGlobalContext();
   const [state, dispatch] = useReducer(transectionReducer, []);
 
   // get data from localstorage
@@ -40,10 +42,26 @@ export const TransectionContextProvier = ({ children }) => {
     }
   }, [state]);
 
+  // filter state by month
+  const filteredState = useMemo(() => {
+    return monthFilter.enable
+      ? state.filter((item) => {
+          const itemDate = new Date(item.date);
+          const selectedDate = new Date(monthFilter.value);
+
+          return (
+            itemDate.getMonth() == selectedDate.getMonth() &&
+            itemDate.getFullYear() == itemDate.getFullYear()
+          );
+        })
+      : state;
+  }, [state, monthFilter.enable, monthFilter.value]);
+
   // memorize the value
   const value = useMemo(
     () => ({
       state: state || [],
+      filteredState: filteredState,
       handleDelete: (id) =>
         dispatch({ type: transectionTypes.DELETE, payload: { id } }),
       handleCreate: (data) =>
@@ -53,7 +71,7 @@ export const TransectionContextProvier = ({ children }) => {
       handleInsert: (data) =>
         dispatch({ type: transectionTypes.INSERT, payload: { data } }),
     }),
-    [state]
+    [state, filteredState]
   );
 
   return (

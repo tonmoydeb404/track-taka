@@ -7,12 +7,15 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
+import MonthFilter from "../../common/components/MonthFilter";
 import StatCard from "../../common/components/StatCard";
 import { useTransectionContext } from "../../common/contexts/transectionContext";
 import { chartData, pieData } from "../../utilities/chartData";
 
 const Analytics = () => {
-  const { state } = useTransectionContext();
+  const { filteredState: state } = useTransectionContext();
+
+  // console.log(state);
 
   const income = state.reduce((prev, current) => {
     if (current.type == "income") {
@@ -44,11 +47,7 @@ const Analytics = () => {
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
-          <select name="dateFilter" id="dateFilter" className="select">
-            <option value="THIS_MONTH">This month</option>
-            <option value="LAST_MONTH">Last month</option>
-            <option value="ALL">All time</option>
-          </select>
+          <MonthFilter className="select" />
         </div>
       </div>
 

@@ -1,9 +1,10 @@
 import React from "react";
+import MonthFilter from "../../common/components/MonthFilter";
 import TransectionTable from "../../common/components/TransectionTable";
 import { useTransectionContext } from "../../common/contexts/transectionContext";
 
 const Transections = () => {
-  const { state } = useTransectionContext();
+  const { filteredState: state } = useTransectionContext();
 
   return (
     <>
@@ -13,11 +14,7 @@ const Transections = () => {
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
-          <select name="dateFilter" id="dateFilter" className="select">
-            <option value="THIS_MONTH">This month</option>
-            <option value="LAST_MONTH">Last month</option>
-            <option value="ALL">All time</option>
-          </select>
+          <MonthFilter />
         </div>
       </div>
 

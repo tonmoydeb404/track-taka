@@ -50,6 +50,10 @@ export const GlobalContextProvider = ({ children }) => {
       ...state,
       toggleSidebar: () => dispatch({ type: globalActions.TOGGLE_SIDEBAR }),
       toggleTheme: () => dispatch({ type: globalActions.TOGGLE_THEME }),
+      setMonthFilter: (month) =>
+        dispatch({ type: globalActions.SET_MONTH_FILTER, payload: { month } }),
+      toggleMonthFilter: () =>
+        dispatch({ type: globalActions.TOGGLE_MONTH_FILTER }),
     }),
     [state]
   );
