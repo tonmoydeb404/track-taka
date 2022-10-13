@@ -19,11 +19,16 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={(values) => {
+        handleSubmit(values);
+        navigate("/transections");
+      }}
       validationSchema={transectionSchema}
       enableReinitialize={true}
+      validateOnChange={false}
+      validateOnBlur={false}
     >
-      {({ errors, values, resetForm }) => {
+      {({ errors, values, resetForm, submitForm }) => {
         return (
           <Form className="w-full lg:w-[500px] flex flex-col gap-4">
             <div className="input_group">

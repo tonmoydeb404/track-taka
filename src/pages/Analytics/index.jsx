@@ -3,8 +3,6 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -16,6 +14,20 @@ import { chartData, pieData } from "../../utilities/chartData";
 const Analytics = () => {
   const { state } = useTransectionContext();
 
+  const income = state.reduce((prev, current) => {
+    if (current.type == "income") {
+      return prev + current.amount;
+    }
+    return prev;
+  }, 0);
+
+  const expense = state.reduce((prev, current) => {
+    if (current.type == "expense") {
+      return prev + current.amount;
+    }
+    return prev;
+  }, 0);
+
   const graphData = useMemo(
     () => ({
       chart: chartData(state),
@@ -23,8 +35,6 @@ const Analytics = () => {
     }),
     [state]
   );
-
-  console.log(graphData);
 
   return (
     <>
@@ -44,27 +54,32 @@ const Analytics = () => {
 
       {/* <!-- analytics cards start --> */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
-        <StatCard type="savings" title="savings" amount="$9999" icon="wallet" />
+        <StatCard
+          type="savings"
+          title="savings"
+          amount={income - expense}
+          icon="wallet"
+        />
 
         <StatCard
           type="income"
           title="income"
-          amount="$9999"
+          amount={income}
           icon="graph-up-arrow"
         />
 
         <StatCard
           type="expense"
           title="expense"
-          amount="$9999"
+          amount={expense}
           icon="graph-down-arrow"
         />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5 mt-10">
         {/* <!-- analytics graph chart start --> */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 p-4 min-h-[200px] dark:bg-slate-800 dark:border-slate-700 ">
-          <ResponsiveContainer height={300}>
+        <div className="lg:col-span-3 bg-white border border-gray-200 p-4 min-h-[400px] dark:bg-slate-800 dark:border-slate-700 ">
+          <ResponsiveContainer height={400}>
             <AreaChart data={graphData.chart} className="w-full">
               <Tooltip />
               <Area
@@ -82,23 +97,6 @@ const Analytics = () => {
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey={"date"} />
             </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* <!-- analytics pie chart start --> */}
-        <div className="col-span-1 bg-white border border-gray-200 p-4 min-h-[200px] dark:bg-slate-800 dark:border-slate-700 ">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={graphData.pie}
-                dataKey="amount"
-                cx="50%"
-                cy="50%"
-                fill="#8884d8"
-                nameKey={"name"}
-              />
-              <Tooltip />
-            </PieChart>
           </ResponsiveContainer>
         </div>
       </div>

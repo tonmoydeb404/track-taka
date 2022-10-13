@@ -27,5 +27,6 @@
       "link": "/transections/create"
     },
     { "id": "#6", "title": "Settings", "icon": "gear", "link": "/settings" }
-  ]
+  ],
+  "localStorageKey": "TRACK_TAKA_LOCALSTORAGE"
 }

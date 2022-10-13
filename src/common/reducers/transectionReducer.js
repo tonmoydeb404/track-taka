@@ -1,25 +1,5 @@
 import uuid from "react-uuid";
 
-// initial state
-const initialState = [
-  {
-    id: "demo1",
-    title: "demo income transection",
-    category: "others",
-    amount: 500,
-    type: "income",
-    date: "2022-10-11",
-  },
-  {
-    id: "demo2",
-    title: "demo expense transection",
-    category: "others",
-    amount: 500,
-    type: "expense",
-    date: "2022-10-12",
-  },
-];
-
 // reducer types
 const types = {
   CREATE: "CREATE",
@@ -29,7 +9,7 @@ const types = {
 };
 
 // reducer
-const reducer = (state = initialState, { type, payload }) => {
+const reducer = (state, { type, payload }) => {
   switch (type) {
     case types.CREATE: {
       if (payload) {
@@ -40,7 +20,7 @@ const reducer = (state = initialState, { type, payload }) => {
 
         // sort data
         prevState = prevState.sort((a, b) => {
-          return new Date(a.date) - new Date(b.date);
+          return new Date(b.date) - new Date(a.date);
         });
 
         return [...prevState];
@@ -61,7 +41,7 @@ const reducer = (state = initialState, { type, payload }) => {
 
           // sort data
           prevState = prevState.sort((a, b) => {
-            return new Date(a.date) - new Date(b.date);
+            return new Date(b.date) - new Date(a.date);
           });
 
           return [...prevState];
@@ -98,7 +78,10 @@ const reducer = (state = initialState, { type, payload }) => {
             data.hasOwnProperty(prop)
           );
 
-          return hasRequiredProps;
+          // check duplicate id
+          const hasIndex = prevState.find((prevData) => prevData.id == data.id);
+
+          return hasRequiredProps && hasIndex == undefined;
         });
 
         // concat state
@@ -106,7 +89,7 @@ const reducer = (state = initialState, { type, payload }) => {
 
         // sort state
         newState = newState.sort((a, b) => {
-          return new Date(a.date) - new Date(b.date);
+          return new Date(b.date) - new Date(a.date);
         });
 
         return [...newState];
@@ -120,8 +103,4 @@ const reducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export {
-  reducer as transectionReducer,
-  types as transectionTypes,
-  initialState as transectionInitState,
-};
+export { reducer as transectionReducer, types as transectionTypes };
