@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 // initial state
 const initialState = [
   {
-    id: "#demo1",
+    id: "demo1",
     title: "demo income transection",
     category: "others",
     amount: 500,
@@ -11,7 +11,7 @@ const initialState = [
     date: "2022-10-11",
   },
   {
-    id: "#demo2",
+    id: "demo2",
     title: "demo expense transection",
     category: "others",
     amount: 500,
@@ -33,7 +33,7 @@ const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case types.CREATE: {
       if (payload) {
-        const prevState = [...state];
+        let prevState = [...state];
 
         // push new data
         prevState.push({ id: uuid(), ...payload });
@@ -50,7 +50,7 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case types.EDIT: {
       if (payload && payload.id) {
-        const prevState = [...state];
+        let prevState = [...state];
 
         // find index of data
         const dataIndex = prevState.findIndex((data) => data.id == payload.id);
@@ -102,7 +102,7 @@ const reducer = (state = initialState, { type, payload }) => {
         });
 
         // concat state
-        const newState = [...prevState, ...filteredData];
+        let newState = [...prevState, ...filteredData];
 
         // sort state
         newState = newState.sort((a, b) => {

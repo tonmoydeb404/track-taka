@@ -1,5 +1,5 @@
 {
-  "categories": ["Food", "Health", "Insurance", "Daily", "Travel", "Others"],
+  "categories": ["food", "health", "insurance", "daily", "travel", "others"],
   "links": [
     { "id": "#1", "title": "Analytics", "icon": "pie-chart", "link": "/" },
     {

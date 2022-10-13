@@ -25,7 +25,7 @@ const App = () => {
               element={<HandleTransection mode="create" />}
             ></Route>
             <Route
-              path="/transections/edit"
+              path="/transections/edit/:id"
               element={<HandleTransection mode="edit" />}
             ></Route>
             <Route path="/expenses" element={<Expenses />}></Route>
