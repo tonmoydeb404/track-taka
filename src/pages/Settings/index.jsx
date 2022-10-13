@@ -1,8 +1,14 @@
 import React from "react";
 import { useAuthContext } from "../../common/contexts/authContext";
+import { useTransectionContext } from "../../common/contexts/transectionContext";
+import {
+  downloadTransections,
+  uploadTransections,
+} from "../../common/services/transectionServices";
 
 const Settings = () => {
   const { handleSignIn, user, handleLogOut } = useAuthContext();
+  const { state, handleInsert } = useTransectionContext();
 
   return (
     <>
@@ -33,7 +39,7 @@ const Settings = () => {
 
               <div className="flex flex-col gap-1.5">
                 <div className="settings_item ">
-                  <h2>Automatic sync data in</h2>
+                  <h2>Automatic backup data in</h2>
 
                   <select className="ml-auto text-sm py-1 pl-2 select">
                     <option value="03 Days">03 Days</option>
@@ -42,15 +48,36 @@ const Settings = () => {
                   </select>
                 </div>
                 <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
-                  last synced 3 days ago
+                  last backup 3 days ago
                 </p>
               </div>
 
               <div className="settings_item">
-                <h2>Sync Data Now</h2>
+                <h2>Backup Data Now</h2>
 
-                <button className="btn btn-success ml-auto">
-                  <i className="bi bi-arrow-repeat"></i>
+                <button
+                  className="btn btn-success ml-auto"
+                  onClick={() =>
+                    uploadTransections({ uid: user?.uid, data: state })
+                  }
+                >
+                  <i className="bi bi-cloud-upload"></i>
+                </button>
+              </div>
+
+              <div className="settings_item">
+                <h2>Download Data</h2>
+
+                <button
+                  className="btn btn-warning ml-auto"
+                  onClick={() =>
+                    downloadTransections({
+                      uid: user?.uid,
+                      updateState: handleInsert,
+                    })
+                  }
+                >
+                  <i className="bi bi-cloud-download"></i>
                 </button>
               </div>
             </>

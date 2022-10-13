@@ -15,7 +15,7 @@ import { chartData, pieData } from "../../utilities/chartData";
 const Analytics = () => {
   const { filteredState: state } = useTransectionContext();
 
-  // console.log(state);
+  // console.log(objToArray(arrayToObj(state, "id")));
 
   const income = state.reduce((prev, current) => {
     if (current.type == "income") {
