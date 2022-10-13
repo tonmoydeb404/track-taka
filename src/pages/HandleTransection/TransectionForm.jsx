@@ -61,7 +61,9 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 className="form-select input"
                 data-invalid={!!errors.type}
               >
-                <option disabled>select transection type</option>
+                <option disabled value={""}>
+                  select transection type
+                </option>
                 <option value="income">Income</option>
                 <option value="expense">Expense</option>
               </Field>
@@ -77,7 +79,9 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 className="form-select input"
                 data-invalid={!!errors.category}
               >
-                <option disabled>select transection category</option>
+                <option disabled value={""}>
+                  select transection category
+                </option>
                 {DB.categories &&
                   DB.categories.length &&
                   DB.categories.map((item) => (

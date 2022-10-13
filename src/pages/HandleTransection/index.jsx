@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useTransectionContext } from "../../common/contexts/transectionContext";
 import TransectionForm from "./TransectionForm";
@@ -40,8 +41,10 @@ const HandleTransection = ({ mode }) => {
   const handleSubmit = (values) => {
     if (mode == "create") {
       handleCreate(values);
+      toast.success("new transection created successfully");
     } else if (mode == "edit") {
       handleEdit(values);
+      toast.success("transection edited successfully");
     }
   };
 

@@ -1,5 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "../assets/styles/style.css";
 import { GlobalContextProvider } from "../common/contexts/globalContext";
@@ -16,6 +17,7 @@ const App = () => {
   return (
     <GlobalContextProvider>
       <TransectionContextProvier>
+        <Toaster position="bottom-right" />
         <Layout>
           <Routes>
             <Route path="/" element={<Analytics />}></Route>
