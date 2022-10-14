@@ -19,11 +19,11 @@ const AutoBackup = () => {
     enableSchedule: autoBackup?.enable,
     scheduleAction: async () => {
       await uploadTransections({ uid: user.uid, data: state });
-      console.log("data backup", new Date().toLocaleString());
+      // console.log("data backup", new Date().toLocaleString());
     },
   });
 
-  console.log({ next: new Date(lastTime + intervalDuration).toLocaleString() });
+  // console.log({ next: new Date(lastTime + intervalDuration).toLocaleString() });
 
   // update last time
   useEffect(() => {

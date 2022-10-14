@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Area,
   AreaChart,
@@ -47,7 +48,12 @@ const Analytics = () => {
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
-          <MonthFilter className="select" />
+          <MonthFilter className="w-auto" />
+
+          <Link to={"/transections/create"} className="btn btn-success ">
+            <i className="bi bi-plus"></i>
+            Add New
+          </Link>
         </div>
       </div>
 

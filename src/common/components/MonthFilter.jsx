@@ -8,7 +8,7 @@ const MonthFilter = ({}) => {
 
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <button
-      className="btn dark:bg-slate-800 gap-2 group"
+      className="btn bg-white border-gray-200 border dark:border-gray-700  dark:bg-slate-800 gap-2 group"
       onClick={onClick}
       ref={ref}
     >
@@ -19,7 +19,7 @@ const MonthFilter = ({}) => {
 
   const DatePickerContainer = ({ className, children }) => {
     return (
-      <div className="flex flex-col p-3 bg-white dark:bg-slate-800 gap-3 rounded min-w-[200px]">
+      <div className="flex flex-col p-3 bg-white border-gray-200 dark:border-gray-700  border dark:bg-slate-800 gap-3 rounded min-w-[200px]">
         <div className="flex items-center justify-between w-full">
           <span className="font-medium ">enable monthly filter</span>
 
