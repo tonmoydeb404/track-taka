@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const useSchedule = ({
   scheduleName = null,
   scheduleDuration = null,
-  scheduleAction = () => {},
+  scheduleAction = async () => {},
   enableSchedule = false,
 }) => {
   const [lastTime, setLastTime] = useState(Date.now());
@@ -47,9 +47,9 @@ const useSchedule = ({
     const next = lastTime + intervalDuration;
 
     // timeout
-    const timeout = setTimeout(() => {
+    const timeout = setTimeout(async () => {
       setLastTime(Date.now());
-      scheduleAction();
+      await scheduleAction();
     }, next - current);
 
     // time out on off

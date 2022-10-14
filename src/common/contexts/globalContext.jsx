@@ -6,7 +6,10 @@ import {
   useMemo,
   useReducer,
 } from "react";
-import { localStorageThemeKey } from "../../data/constant.json";
+import {
+  localStorageAutoBackupKey,
+  localStorageThemeKey,
+} from "../../data/constant.json";
 import {
   globalActions,
   globalReducer,
@@ -23,13 +26,25 @@ export const useGlobalContext = () => useContext(globalContext);
 export const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, globalValues);
 
-  // get theme from localstorage
+  // get DATA from localstorage
   useLayoutEffect(() => {
+    // theme
     const localTheme = localStorage.getItem(localStorageThemeKey);
     if (localTheme != null) {
       dispatch({
         type: globalActions.SET_THEME,
         payload: { theme: localTheme },
+      });
+    }
+
+    // auto backup duration
+    const localAutoBackupDuration = localStorage.getItem(
+      localStorageAutoBackupKey
+    );
+    if (localAutoBackupDuration != null) {
+      dispatch({
+        type: globalActions.SET_AUTO_BACKUP_DURATION,
+        payload: { duration: JSON.parse(localAutoBackupDuration) },
       });
     }
   }, []);
@@ -40,6 +55,11 @@ export const GlobalContextProvider = ({ children }) => {
     localStorage.setItem(localStorageThemeKey, state.theme);
   }, [state.theme]);
 
+  // handle auto backup duration
+  useEffect(() => {
+    localStorage.setItem(localStorageAutoBackupKey, state.autoBackup.duration);
+  }, [state.autoBackup.duration]);
+
   // handle sidebar
   useEffect(() => {
     document.body.dataset.sidebar = state.sidebar;
@@ -49,11 +69,29 @@ export const GlobalContextProvider = ({ children }) => {
     () => ({
       ...state,
       toggleSidebar: () => dispatch({ type: globalActions.TOGGLE_SIDEBAR }),
+
       toggleTheme: () => dispatch({ type: globalActions.TOGGLE_THEME }),
+
       setMonthFilter: (month) =>
         dispatch({ type: globalActions.SET_MONTH_FILTER, payload: { month } }),
       toggleMonthFilter: () =>
         dispatch({ type: globalActions.TOGGLE_MONTH_FILTER }),
+
+      setAutoBackup: (autoBackup) =>
+        dispatch({
+          type: globalActions.SET_AUTO_BACKUP,
+          payload: { autoBackup },
+        }),
+      setAutoBackupDuration: (duration) =>
+        dispatch({
+          type: globalActions.SET_AUTO_BACKUP_DURATION,
+          payload: { duration },
+        }),
+      setAutoBackupLastTime: (lastTime) =>
+        dispatch({
+          type: globalActions.SET_AUTO_BACKUP_LASTIME,
+          payload: { lastTime },
+        }),
     }),
     [state]
   );

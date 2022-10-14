@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../../common/contexts/authContext";
+import { useGlobalContext } from "../../common/contexts/globalContext";
 import { useTransectionContext } from "../../common/contexts/transectionContext";
 import {
   downloadTransections,
@@ -9,6 +10,7 @@ import {
 const Settings = () => {
   const { handleSignIn, user, handleLogOut } = useAuthContext();
   const { state, handleInsert } = useTransectionContext();
+  const { autoBackup, setAutoBackupDuration } = useGlobalContext();
 
   return (
     <>
@@ -41,15 +43,24 @@ const Settings = () => {
                 <div className="settings_item ">
                   <h2>Automatic backup data in</h2>
 
-                  <select className="ml-auto text-sm py-1 pl-2 select">
-                    <option value="03 Days">03 Days</option>
-                    <option value="07 Days">07 Days</option>
-                    <option value="15 Days">15 Days</option>
+                  <select
+                    className="ml-auto text-sm py-1 pl-2 select"
+                    value={autoBackup.duration || 1}
+                    onChange={(e) => {
+                      setAutoBackupDuration(parseFloat(e.target.value));
+                    }}
+                  >
+                    <option value={1}>01 Days</option>
+                    <option value={2}>02 Days</option>
+                    <option value={3}>03 Days</option>
                   </select>
                 </div>
-                <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
-                  last backup 3 days ago
-                </p>
+                {autoBackup.lastTime && (
+                  <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
+                    last backup at{" "}
+                    {new Date(autoBackup.lastTime).toLocaleTimeString()}
+                  </p>
+                )}
               </div>
 
               <div className="settings_item">
