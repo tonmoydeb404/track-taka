@@ -28,7 +28,7 @@
 }
 
 .transection_head_row > th {
-  @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 dark:border-r-gray-500 text-[15px] sm:text-base last:border-r-0;
+  @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 dark:border-r-gray-500 text-base last:border-r-0;
 }
 
 .transection_head_row > th input[type="checkbox"] {
@@ -47,7 +47,7 @@
   @apply bg-white border-t border-t-gray-200 dark:bg-slate-800 dark:border-t-gray-700;
 }
 .transection_body_row > td {
-  @apply px-2.5 py-1.5 p-3 border-r text-sm sm:text-base border-r-gray-200 dark:border-r-gray-700 whitespace-nowrap;
+  @apply px-2.5 py-1.5 p-3 border-r sm:text-base border-r-gray-200 dark:border-r-gray-700 whitespace-nowrap;
 }
 
 .transection_body_row > td:first-child {
