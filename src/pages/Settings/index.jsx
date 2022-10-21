@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import ConfirmCard from "../../common/components/ConfirmCard";
+import Modal from "../../common/components/Modal";
 import { useAuth } from "../../common/contexts/AuthContext";
 import { useGlobal } from "../../common/contexts/GlobalContext";
 import { useTransection } from "../../common/contexts/TransectionContext";
@@ -9,8 +12,49 @@ import {
 
 const Settings = () => {
   const { handleSignIn, user, handleLogOut } = useAuth();
-  const { transections, insertTransection } = useTransection();
+  const { transections, insertTransection, clearTransection } =
+    useTransection();
   const { autoBackup, setAutoBackupDuration } = useGlobal();
+
+  // logout modal
+  const [logoutModal, setLogoutModal] = useState(false);
+  const handleLogoutModal = async (makeBackup) => {
+    // make modal invisible
+    setLogoutModal(false);
+    // check for making backup
+    if (makeBackup) {
+      await uploadTransections({ uid: user?.uid, data: transections });
+    }
+    // logout from app
+    await handleLogOut();
+    clearTransection();
+    // toast
+    toast.success("log out successfully");
+  };
+
+  // signin modal
+  const [signinModal, setSigninModal] = useState(false);
+  const handleSigninModal = async (downloadData) => {
+    setSigninModal(false);
+    if (downloadData) {
+      await downloadTransections({
+        uid: user?.uid,
+        updateState: insertTransection,
+      });
+    } else {
+      toast.error("transections not downloaded");
+    }
+  };
+
+  // handle user log in
+  const handleLogIn = async () => {
+    try {
+      await handleSignIn();
+      setSigninModal(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -33,7 +77,7 @@ const Settings = () => {
 
                 <button
                   className="btn btn-danger ml-auto"
-                  onClick={handleLogOut}
+                  onClick={() => setLogoutModal(true)}
                 >
                   <i className="bi bi-box-arrow-right"></i>
                 </button>
@@ -99,7 +143,7 @@ const Settings = () => {
 
                 <button
                   className="btn btn-primary ml-auto"
-                  onClick={handleSignIn}
+                  onClick={handleLogIn}
                 >
                   <i className="bi bi-google"></i>
                 </button>
@@ -108,6 +152,21 @@ const Settings = () => {
           )}
         </div>
       </div>
+
+      <Modal showModal={logoutModal}>
+        <ConfirmCard
+          title={"Backup Alert"}
+          text="make backup before you logout. **it will erase all previous backup from server"
+          callBack={handleLogoutModal}
+        />
+      </Modal>
+      <Modal showModal={signinModal}>
+        <ConfirmCard
+          title={"Download Data"}
+          text="make sure your transections are uptodate. download your previous backup from server"
+          callBack={handleSigninModal}
+        />
+      </Modal>
     </>
   );
 };
