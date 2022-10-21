@@ -4,7 +4,7 @@ import { useGlobal } from "../common/contexts/GlobalContext";
 import { siteLinks } from "../data/siteData";
 
 const Sidebar = () => {
-  const { theme, toggleSidebar, toggleTheme } = useGlobal();
+  const { theme, toggleSidebar, setSidebar, toggleTheme } = useGlobal();
 
   return (
     <div className="sidebar">
@@ -23,11 +23,11 @@ const Sidebar = () => {
           {siteLinks &&
             siteLinks.length &&
             siteLinks.map((item) => (
-              <li key={item.id}>
+              <li key={item.id} onClick={() => setSidebar(false)} className="">
                 <NavLink
                   to={item.link}
                   className={({ isActive }) =>
-                    `sidebar_links_item ${isActive ? "active" : ""}`
+                    `sidebar_links_item  ${isActive ? "active" : ""}`
                   }
                   end
                 >

@@ -3,6 +3,7 @@ import {
   SET_AUTOBACKUP_DURATION,
   SET_AUTOBACKUP_LAST_TIME,
   SET_MONTH_FILTER,
+  SET_SIDEBAR,
   SET_THEME,
   TOGGLE_MONTH_FILTER,
   TOGGLE_SIDEBAR,
@@ -30,6 +31,10 @@ export const reducers = (state = initialState, { type, payload }) => {
     // sidebar reducers
     case TOGGLE_SIDEBAR: {
       const sidebar = !state.sidebar;
+      return { ...state, sidebar };
+    }
+    case SET_SIDEBAR: {
+      const sidebar = payload.sidebar;
       return { ...state, sidebar };
     }
     // theme reducers

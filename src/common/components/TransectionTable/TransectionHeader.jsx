@@ -17,6 +17,7 @@ const TransectionHeader = ({
           placeholder="search.."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className="form-input"
         />
 
         <i className="bi bi-search icon"></i>

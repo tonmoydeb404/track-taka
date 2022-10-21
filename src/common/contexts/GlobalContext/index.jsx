@@ -13,6 +13,7 @@ import {
   SET_AUTOBACKUP_DURATION,
   SET_AUTOBACKUP_LAST_TIME,
   SET_MONTH_FILTER,
+  SET_SIDEBAR,
   SET_THEME,
   TOGGLE_MONTH_FILTER,
   TOGGLE_SIDEBAR,
@@ -32,6 +33,8 @@ export const GlobalProvider = ({ children }) => {
 
   // context sidebar actions
   const toggleSidebar = () => dispatch({ type: TOGGLE_SIDEBAR });
+  const setSidebar = (sidebar) =>
+    dispatch({ type: SET_SIDEBAR, payload: { sidebar } });
   // context theme actions
   const toggleTheme = () => dispatch({ type: TOGGLE_THEME });
   const setTheme = (theme) => dispatch({ type: SET_THEME, payload: { theme } });
@@ -90,6 +93,7 @@ export const GlobalProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       ...state,
+      setSidebar,
       toggleSidebar,
       toggleTheme,
       setTheme,

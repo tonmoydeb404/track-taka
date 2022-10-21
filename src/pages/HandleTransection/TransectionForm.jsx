@@ -125,14 +125,6 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
 
             <div className="flex items-center justify-end gap-2 mt-5">
               <button
-                className={`btn ${
-                  mode == "create" ? "btn-success" : "btn-warning"
-                }`}
-                type="submit"
-              >
-                {mode}
-              </button>
-              <button
                 type="button"
                 className="btn btn-danger"
                 onClick={() => {
@@ -141,6 +133,15 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 }}
               >
                 Cancel
+              </button>
+
+              <button
+                className={`btn ${
+                  mode == "create" ? "btn-success" : "btn-warning"
+                }`}
+                type="submit"
+              >
+                {mode}
               </button>
             </div>
           </Form>

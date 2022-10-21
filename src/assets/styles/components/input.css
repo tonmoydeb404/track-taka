@@ -26,6 +26,10 @@
 .custom-select__control {
   @apply rounded-sm py-1 dark:bg-slate-700 border-gray-600 !important;
 }
+
+.custom-select__input-container {
+  @apply dark:text-white !important;
+}
 .input_group[data-invalid="true"] .custom-select__control {
   @apply border-red-500 !important;
 }
