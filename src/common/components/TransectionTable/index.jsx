@@ -102,6 +102,7 @@ const TransectionTable = ({ className = "", data = [] }) => {
           handleDelete(selectedRows, () => handleAllSelect(false))
         }
         handleFilter={() => setViewFilter(true)}
+        tableData={tableData}
       />
 
       <div className="overflow-x-auto mt-8">
