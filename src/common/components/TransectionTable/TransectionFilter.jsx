@@ -1,5 +1,5 @@
 import React from "react";
-import { defaultCategories } from "../../../data/siteData";
+import { useTransection } from "../../contexts/TransectionContext";
 
 const TransectionFilter = ({
   viewFilter = false,
@@ -9,6 +9,8 @@ const TransectionFilter = ({
   sortByFilter = "",
   setSortByFilter = () => {},
 }) => {
+  const { categories } = useTransection();
+
   return (
     <div
       className={`fixed top-0 right-0 h-full sm:w-auto ${
@@ -47,9 +49,9 @@ const TransectionFilter = ({
         <div className="mt-5 flex flex-col gap-3">
           <label className="text-base font-medium">Categories</label>
           <div className="flex flex-col gap-2">
-            {defaultCategories &&
-              defaultCategories.length &&
-              defaultCategories.map((item) => (
+            {categories &&
+              categories.length &&
+              categories.map((item) => (
                 <label
                   htmlFor={item}
                   key={item}

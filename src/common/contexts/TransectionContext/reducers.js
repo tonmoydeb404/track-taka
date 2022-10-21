@@ -1,7 +1,10 @@
+import { defaultCategories } from "../../../data/siteData";
 import {
   CLEAR_TRANSECTION,
+  CREATE_CATEGORY,
   CREATE_TRANSECTION,
   DELETE_TRANSECTION,
+  INSERT_CATEGORIES,
   INSERT_TRANSECTION,
   UPDATE_TRANSECTION,
 } from "./types";
@@ -25,6 +28,7 @@ export const initialState = {
     //     date: ""
     // }
   ],
+  categories: [...defaultCategories],
 };
 
 // reducers
@@ -56,6 +60,10 @@ export const reducers = (state = initialState, { type, payload }) => {
       // update state with sorted data
       prevState.data = sortedPrevStateData;
 
+      // check for new category
+      if (!prevState.categories.includes(newTransection.category))
+        prevState.categories.push(newTransection.category);
+
       return { ...prevState };
     }
 
@@ -82,6 +90,10 @@ export const reducers = (state = initialState, { type, payload }) => {
       // update state with sorted data
       prevState.data = sortedPrevStateData;
 
+      // update category
+      if (!prevState.categories.includes(updatedTransection.category))
+        prevState.categories.push(updatedTransection.category);
+
       return { ...prevState };
     }
 
@@ -102,7 +114,7 @@ export const reducers = (state = initialState, { type, payload }) => {
     }
 
     case CLEAR_TRANSECTION: {
-      return { incomes: 0, expenses: 0, data: [] };
+      return { ...initialState };
     }
 
     case INSERT_TRANSECTION: {
@@ -121,6 +133,11 @@ export const reducers = (state = initialState, { type, payload }) => {
         );
         // check data is valid or not
         if (!hasRequiredProps || isDuplicate) return false;
+
+        // check for new category
+        if (!prevState.categories.includes(data.category))
+          prevState.categories.push(data.category);
+
         return true;
       });
       // store data
@@ -128,6 +145,31 @@ export const reducers = (state = initialState, { type, payload }) => {
       // update sorted data to the state
       prevState.data = [...sortTransections(transectionData)];
 
+      return { ...prevState };
+    }
+
+    case CREATE_CATEGORY: {
+      // new category
+      const newCate = payload.category?.toLowerCase();
+      // checking for category already exist or not
+      if (!newCate && prevState.categories.includes(newCate))
+        return { ...prevState };
+      // push new cate to state
+      prevState.categories.push(newCate);
+      return { ...prevState };
+    }
+
+    case INSERT_CATEGORIES: {
+      // new categories
+      let newCates = payload.categories;
+      // checking for category already exist or not
+      if (!newCates && !newCates.length) return { ...prevState };
+      // check for unique categories
+      newCates = [...newCates].filter(
+        (item) => !prevState.categories.includes(item)
+      );
+      // push new cate to state
+      prevState.categories = [...prevState.categories, ...newCates];
       return { ...prevState };
     }
 

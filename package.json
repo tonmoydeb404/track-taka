@@ -19,6 +19,7 @@
     "react-helmet": "^6.1.0",
     "react-hot-toast": "^2.4.0",
     "react-router-dom": "^6.4.2",
+    "react-select": "^5.5.4",
     "react-uuid": "^1.0.3",
     "recharts": "^2.1.14",
     "yup": "^0.32.11"

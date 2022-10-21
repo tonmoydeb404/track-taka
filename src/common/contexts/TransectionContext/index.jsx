@@ -5,6 +5,7 @@ import {
   CLEAR_TRANSECTION,
   CREATE_TRANSECTION,
   DELETE_TRANSECTION,
+  INSERT_CATEGORIES,
   INSERT_TRANSECTION,
   UPDATE_TRANSECTION,
 } from "./types";
@@ -42,6 +43,11 @@ export const TransectionProvider = ({ children }) => {
       payload: { newData },
     });
   const clearTransection = () => dispatch({ type: CLEAR_TRANSECTION });
+  // category actions
+  const createCategory = (category) =>
+    dispatch({ type: CREATE_TRANSECTION, payload: { category } });
+  const insertCategories = (categories = []) =>
+    dispatch({ type: INSERT_CATEGORIES, payload: { categories } });
 
   // get transections data from localstorage
   useEffect(() => {
@@ -79,12 +85,15 @@ export const TransectionProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       transections: state.data,
+      categories: state.categories,
       filteredTransections,
       createTransection,
       deleteTransection,
       updateTransection,
       insertTransection,
       clearTransection,
+      createCategory,
+      insertCategories,
     }),
     [state, filteredTransections]
   );

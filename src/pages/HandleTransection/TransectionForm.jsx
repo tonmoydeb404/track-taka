@@ -1,14 +1,15 @@
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import Createable from "react-select/creatable";
 import * as Yup from "yup";
-import { defaultCategories } from "../../data/siteData";
+import { useTransection } from "../../common/contexts/TransectionContext";
 
 const transectionSchema = Yup.object({
   title: Yup.string().max(30).required(),
   amount: Yup.number().required().min(1),
   type: Yup.string().oneOf(["expense", "income"]).required(),
-  category: Yup.string().oneOf(defaultCategories).required(),
+  category: Yup.string().min(2).max(10).required(),
   date: Yup.date().required(),
 });
 
@@ -16,22 +17,35 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
   // router navigate
   const navigate = useNavigate();
 
+  // transection context
+  const { categories } = useTransection();
+
+  // custom select options
+  const customOptions = useMemo(
+    () =>
+      categories && categories.length
+        ? categories.map((item) => ({ label: item, value: item }))
+        : [],
+    [categories]
+  );
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
         handleSubmit(values);
         navigate("/transections");
+        // console.log(values);
       }}
       validationSchema={transectionSchema}
       enableReinitialize={true}
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({ errors, values, resetForm, submitForm }) => {
+      {({ errors, values, resetForm, submitForm, setFieldValue }) => {
         return (
           <Form className="w-full lg:w-[500px] flex flex-col gap-4">
-            <div className="input_group">
+            <div className="input_group" data-invalid={!!errors.title}>
               <label htmlFor="title">Transection Title</label>
               <Field
                 type="text"
@@ -39,11 +53,11 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 id="title"
                 value={values.title}
                 className="form-input input"
-                data-invalid={!!errors.title}
               />
               <p className="input_error">{errors.title}</p>
             </div>
-            <div className="input_group">
+
+            <div className="input_group" data-invalid={!!errors.amount}>
               <label htmlFor="amount">Transection Amount</label>
               <Field
                 type="number"
@@ -51,11 +65,11 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 id="amount"
                 value={values.amount}
                 className="form-input input"
-                data-invalid={!!errors.amount}
               />
               <p className="input_error">{errors.amount}</p>
             </div>
-            <div className="input_group">
+
+            <div className="input_group" data-invalid={!!errors.type}>
               <label htmlFor="type">Transection Type</label>
 
               <Field
@@ -64,7 +78,6 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 id="type"
                 value={values.type}
                 className="form-select input"
-                data-invalid={!!errors.type}
               >
                 <option disabled value={""}>
                   select transection type
@@ -74,30 +87,31 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
               </Field>
               <p className="input_error">{errors.type}</p>
             </div>
-            <div className="input_group">
+
+            <div className="input_group" data-invalid={!!errors.category}>
               <label htmlFor="category">Transection Category</label>
-              <Field
-                as="select"
+              <Createable
                 name="category"
-                id="category"
-                value={values.category}
-                className="form-select input"
-                data-invalid={!!errors.category}
-              >
-                <option disabled value={""}>
-                  select transection category
-                </option>
-                {defaultCategories &&
-                  defaultCategories.length &&
-                  defaultCategories.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-              </Field>
+                value={
+                  values.category
+                    ? {
+                        label: values.category,
+                        value: values.category,
+                      }
+                    : ""
+                }
+                placeholder="select or create category"
+                options={customOptions}
+                className
+                onChange={(cate) =>
+                  setFieldValue("category", cate.value.toLowerCase())
+                }
+                classNamePrefix="custom-select"
+              ></Createable>
               <p className="input_error">{errors.category}</p>
             </div>
-            <div className="input_group">
+
+            <div className="input_group" data-invalid={!!errors.date}>
               <label htmlFor="date">Transection Date</label>
               <Field
                 type="date"
@@ -105,7 +119,6 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 id="date"
                 className="form-input input"
                 value={values.date}
-                data-invalid={!!errors.date}
               />
               <p className="input_error">{errors.date}</p>
             </div>
