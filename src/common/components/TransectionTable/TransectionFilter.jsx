@@ -8,12 +8,14 @@ const TransectionFilter = ({
   handleCateSelect = () => {},
   sortByFilter = "",
   setSortByFilter = () => {},
+  typeFilter = "ALL",
+  setTypeFilter = () => {},
 }) => {
   const { categories } = useTransection();
 
   return (
     <div
-      className={`fixed top-0 right-0 h-full sm:w-auto ${
+      className={`fixed z-[9999] top-0 right-0 h-full sm:w-auto ${
         viewFilter ? "w-full" : "w-0"
       }`}
     >
@@ -34,6 +36,19 @@ const TransectionFilter = ({
         </div>
 
         <div className="mt-10 flex flex-col gap-2">
+          <label className="text-base font-medium">Transection Type:</label>
+          <select
+            className="select"
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <option value="ALL">All</option>
+            <option value="INCOME">Income</option>
+            <option value="EXPENSE">Expense</option>
+          </select>
+        </div>
+
+        <div className="mt-5 flex flex-col gap-2">
           <label className="text-base font-medium">Sort By:</label>
           <select
             className="select"

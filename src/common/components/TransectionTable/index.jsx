@@ -13,6 +13,7 @@ const TransectionTable = ({ className = "", data = [] }) => {
   // filter states
   const [viewFilter, setViewFilter] = useState(false);
   const [sortByFilter, setSortByFilter] = useState("Default");
+  const [typeFilter, setTypeFilter] = useState("ALL");
   const [cateFilter, setCateFilter] = useState([]);
 
   // transection context
@@ -43,9 +44,16 @@ const TransectionTable = ({ className = "", data = [] }) => {
       filteredData = filteredData.sort((a, b) => b.amount - a.amount);
     }
 
+    // type filter
+    if (typeFilter == "INCOME") {
+      filteredData = filteredData.filter((item) => item.type == "income");
+    } else if (typeFilter == "EXPENSE") {
+      filteredData = filteredData.filter((item) => item.type == "expense");
+    }
+
     // update table data
     setTableData([...filteredData]);
-  }, [query, data, sortByFilter, cateFilter]);
+  }, [query, data, sortByFilter, cateFilter, typeFilter]);
 
   //   handle individual select
   const handleSelect = (id, source = [], update = () => {}) => {
@@ -140,6 +148,8 @@ const TransectionTable = ({ className = "", data = [] }) => {
         handleCateSelect={handleCateSelect}
         sortByFilter={sortByFilter}
         setSortByFilter={setSortByFilter}
+        typeFilter={typeFilter}
+        setTypeFilter={setTypeFilter}
       />
     </div>
   );
