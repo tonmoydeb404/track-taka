@@ -1,10 +1,10 @@
 import React, { forwardRef } from "react";
 import ReactDatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useGlobalContext } from "../contexts/globalContext";
+import { useGlobal } from "../contexts/GlobalContext";
 
 const MonthFilter = ({}) => {
-  const { monthFilter, setMonthFilter, toggleMonthFilter } = useGlobalContext();
+  const { monthFilter, setMonthFilter, toggleMonthFilter } = useGlobal();
 
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <button

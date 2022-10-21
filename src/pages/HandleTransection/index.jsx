@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useTransectionContext } from "../../common/contexts/transectionContext";
+import uuid from "react-uuid";
+import { useTransection } from "../../common/contexts/TransectionContext";
 import TransectionForm from "./TransectionForm";
 
 const HandleTransection = ({ mode }) => {
-  const { state, handleCreate, handleEdit } = useTransectionContext();
+  const { transections, createTransection, updateTransection } =
+    useTransection();
   const { id } = useParams();
 
   const [defState, setDefState] = useState({
+    id: uuid(),
     title: "",
     amount: 0,
     type: "",
@@ -19,7 +22,7 @@ const HandleTransection = ({ mode }) => {
   // handle default data
   useEffect(() => {
     if (mode == "edit" && id) {
-      const targetedState = state.find((item) => item.id == id);
+      const targetedState = transections.find((item) => item.id == id);
 
       if (targetedState !== undefined) {
         setDefState({ ...targetedState });
@@ -35,15 +38,15 @@ const HandleTransection = ({ mode }) => {
         date: "",
       });
     };
-  }, [mode, id, state]);
+  }, [mode, id, transections]);
 
   // handle submit
   const handleSubmit = (values) => {
     if (mode == "create") {
-      handleCreate(values);
+      createTransection(values);
       toast.success("new transection created successfully");
     } else if (mode == "edit") {
-      handleEdit(values);
+      updateTransection(values);
       toast.success("transection edited successfully");
     }
   };

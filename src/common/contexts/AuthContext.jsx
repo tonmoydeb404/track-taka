@@ -12,13 +12,14 @@ import app from "../../firebase";
 // firebase auth
 const auth = getAuth(app);
 
-const authContext = createContext();
+// auth context
+const AuthContext = createContext();
 
 // use auth context
-export const useAuthContext = () => useContext(authContext);
+export const useAuth = () => useContext(AuthContext);
 
 // use auth context provider
-export const AuthContextProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   //   console.log(user);
@@ -62,5 +63,5 @@ export const AuthContextProvider = ({ children }) => {
     [user]
   );
 
-  return <authContext.Provider value={value}>{children}</authContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

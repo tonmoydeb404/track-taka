@@ -10,34 +10,35 @@ import {
 } from "recharts";
 import MonthFilter from "../../common/components/MonthFilter";
 import StatCard from "../../common/components/StatCard";
-import { useTransectionContext } from "../../common/contexts/transectionContext";
+import { useTransection } from "../../common/contexts/TransectionContext";
 import { chartData, pieData } from "../../utilities/chartData";
 
 const Analytics = () => {
-  const { filteredState: state } = useTransectionContext();
+  const { filteredTransections: transectionList } = useTransection();
 
-  // console.log(objToArray(arrayToObj(state, "id")));
-
-  const income = state.reduce((prev, current) => {
+  // total incomes
+  const incomes = transectionList.reduce((prev, current) => {
     if (current.type == "income") {
       return prev + current.amount;
     }
     return prev;
   }, 0);
 
-  const expense = state.reduce((prev, current) => {
+  // total expenses
+  const expenses = transectionList.reduce((prev, current) => {
     if (current.type == "expense") {
       return prev + current.amount;
     }
     return prev;
   }, 0);
 
+  // generate graph data for analytics
   const graphData = useMemo(
     () => ({
-      chart: chartData(state),
-      pie: pieData(state),
+      chart: chartData(transectionList),
+      pie: pieData(transectionList),
     }),
-    [state]
+    [transectionList]
   );
 
   return (
@@ -62,21 +63,21 @@ const Analytics = () => {
         <StatCard
           type="savings"
           title="savings"
-          amount={income - expense}
+          amount={incomes - expenses}
           icon="wallet"
         />
 
         <StatCard
           type="income"
           title="income"
-          amount={income}
+          amount={incomes}
           icon="graph-up-arrow"
         />
 
         <StatCard
           type="expense"
           title="expense"
-          amount={expense}
+          amount={expenses}
           icon="graph-down-arrow"
         />
       </div>

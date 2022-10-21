@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useTransectionContext } from "../../contexts/transectionContext";
+import { useTransection } from "../../contexts/TransectionContext";
 import TransectionFilter from "./TransectionFilter";
 import TransectionHeader from "./TransectionHeader";
 import TransectionTH from "./TransectionTH";
@@ -16,7 +16,7 @@ const TransectionTable = ({ className = "", data = [] }) => {
   const [cateFilter, setCateFilter] = useState([]);
 
   // transection context
-  const { handleDelete: deleteTransection } = useTransectionContext();
+  const { deleteTransection } = useTransection();
 
   // handle data filtering
   useEffect(() => {

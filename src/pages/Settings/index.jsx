@@ -1,16 +1,16 @@
 import React from "react";
-import { useAuthContext } from "../../common/contexts/authContext";
-import { useGlobalContext } from "../../common/contexts/globalContext";
-import { useTransectionContext } from "../../common/contexts/transectionContext";
+import { useAuth } from "../../common/contexts/AuthContext";
+import { useGlobal } from "../../common/contexts/GlobalContext";
+import { useTransection } from "../../common/contexts/TransectionContext";
 import {
   downloadTransections,
   uploadTransections,
 } from "../../common/services/transectionServices";
 
 const Settings = () => {
-  const { handleSignIn, user, handleLogOut } = useAuthContext();
-  const { state, handleInsert } = useTransectionContext();
-  const { autoBackup, setAutoBackupDuration } = useGlobalContext();
+  const { handleSignIn, user, handleLogOut } = useAuth();
+  const { transections, insertTransection } = useTransection();
+  const { autoBackup, setAutoBackupDuration } = useGlobal();
 
   return (
     <>
@@ -69,7 +69,7 @@ const Settings = () => {
                 <button
                   className="btn btn-success ml-auto"
                   onClick={() =>
-                    uploadTransections({ uid: user?.uid, data: state })
+                    uploadTransections({ uid: user?.uid, data: transections })
                   }
                 >
                   <i className="bi bi-cloud-upload"></i>
@@ -84,7 +84,7 @@ const Settings = () => {
                   onClick={() =>
                     downloadTransections({
                       uid: user?.uid,
-                      updateState: handleInsert,
+                      updateState: insertTransection,
                     })
                   }
                 >

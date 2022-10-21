@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../common/contexts/globalContext";
+import { useGlobal } from "../common/contexts/GlobalContext";
 
 const Navbar = () => {
-  const { theme, toggleSidebar, toggleTheme } = useGlobalContext();
+  const { theme, toggleSidebar, toggleTheme } = useGlobal();
 
   return (
     <div className="bg-white flex items-center gap-4 px-5 py-2 md:px-10 sticky top-0 left-0 w-full lg:hidden border-b border-b-gray-200 dark:border-b-gray-700 dark:bg-slate-800 z-[1000]">

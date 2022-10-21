@@ -4,22 +4,20 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "../assets/styles/style.css";
 import AutoBackup from "../common/components/AutoBackup";
-import { AuthContextProvider } from "../common/contexts/authContext";
-import { GlobalContextProvider } from "../common/contexts/globalContext";
-import { TransectionContextProvier } from "../common/contexts/transectionContext";
+import { AuthProvider } from "../common/contexts/AuthContext";
+import { GlobalProvider } from "../common/contexts/GlobalContext";
+import { TransectionProvider } from "../common/contexts/TransectionContext";
 import Layout from "../layout";
 import Analytics from "./Analytics";
-import Expenses from "./Expenses";
 import HandleTransection from "./HandleTransection";
-import Incomes from "./Incomes";
 import Settings from "./Settings";
 import Transections from "./Transections";
 
 const App = () => {
   return (
-    <AuthContextProvider>
-      <GlobalContextProvider>
-        <TransectionContextProvier>
+    <AuthProvider>
+      <GlobalProvider>
+        <TransectionProvider>
           <Toaster position="bottom-right" />
           <Layout>
             <Routes>
@@ -33,15 +31,13 @@ const App = () => {
                 path="/transections/edit/:id"
                 element={<HandleTransection mode="edit" />}
               ></Route>
-              <Route path="/expenses" element={<Expenses />}></Route>
-              <Route path="/incomes" element={<Incomes />}></Route>
               <Route path="/settings" element={<Settings />}></Route>
             </Routes>
           </Layout>
           <AutoBackup />
-        </TransectionContextProvier>
-      </GlobalContextProvider>
-    </AuthContextProvider>
+        </TransectionProvider>
+      </GlobalProvider>
+    </AuthProvider>
   );
 };
 

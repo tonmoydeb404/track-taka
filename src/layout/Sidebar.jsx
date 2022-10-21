@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useGlobalContext } from "../common/contexts/globalContext";
-import CONSTANT from "../data/constant.json";
+import { useGlobal } from "../common/contexts/GlobalContext";
+import { siteLinks } from "../data/siteData";
 
 const Sidebar = () => {
-  const { theme, toggleSidebar, toggleTheme } = useGlobalContext();
+  const { theme, toggleSidebar, toggleTheme } = useGlobal();
 
   return (
     <div className="sidebar">
@@ -20,9 +20,9 @@ const Sidebar = () => {
 
         {/* sidebar links */}
         <ul className="sidebar_links mt-10">
-          {CONSTANT.links &&
-            CONSTANT.links.length &&
-            CONSTANT.links.map((item) => (
+          {siteLinks &&
+            siteLinks.length &&
+            siteLinks.map((item) => (
               <li key={item.id}>
                 <NavLink
                   to={item.link}

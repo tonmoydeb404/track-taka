@@ -2,13 +2,13 @@ import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import DB from "../../data/constant.json";
+import { defaultCategories } from "../../data/siteData";
 
 const transectionSchema = Yup.object({
   title: Yup.string().max(30).required(),
   amount: Yup.number().required().min(1),
   type: Yup.string().oneOf(["expense", "income"]).required(),
-  category: Yup.string().oneOf(DB.categories).required(),
+  category: Yup.string().oneOf(defaultCategories).required(),
   date: Yup.date().required(),
 });
 
@@ -87,9 +87,9 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
                 <option disabled value={""}>
                   select transection category
                 </option>
-                {DB.categories &&
-                  DB.categories.length &&
-                  DB.categories.map((item) => (
+                {defaultCategories &&
+                  defaultCategories.length &&
+                  defaultCategories.map((item) => (
                     <option key={item} value={item}>
                       {item}
                     </option>

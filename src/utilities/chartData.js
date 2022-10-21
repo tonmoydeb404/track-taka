@@ -22,7 +22,9 @@ export const chartData = (data = []) => {
     );
   });
 
-  return cData;
+  return cData.sort((a, b) => {
+    return new Date(a.date) - new Date(b.date);
+  });
 };
 
 export const pieData = (data = []) => {

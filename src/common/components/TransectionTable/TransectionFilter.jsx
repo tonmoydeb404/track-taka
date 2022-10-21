@@ -1,5 +1,5 @@
 import React from "react";
-import DB from "../../../data/constant.json";
+import { defaultCategories } from "../../../data/siteData";
 
 const TransectionFilter = ({
   viewFilter = false,
@@ -47,9 +47,9 @@ const TransectionFilter = ({
         <div className="mt-5 flex flex-col gap-3">
           <label className="text-base font-medium">Categories</label>
           <div className="flex flex-col gap-2">
-            {DB.categories &&
-              DB.categories.length &&
-              DB.categories.map((item) => (
+            {defaultCategories &&
+              defaultCategories.length &&
+              defaultCategories.map((item) => (
                 <label
                   htmlFor={item}
                   key={item}

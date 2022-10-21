@@ -2,19 +2,21 @@ import React from "react";
 import MonthFilter from "../../common/components/MonthFilter";
 import StatCard from "../../common/components/StatCard";
 import TransectionTable from "../../common/components/TransectionTable";
-import { useTransectionContext } from "../../common/contexts/transectionContext";
+import { useTransection } from "../../common/contexts/TransectionContext";
 
 const Transections = () => {
-  const { filteredState: state } = useTransectionContext();
+  const { filteredTransections: transectionList } = useTransection();
 
-  const income = state.reduce((prev, current) => {
+  // total incomes
+  const incomes = transectionList.reduce((prev, current) => {
     if (current.type == "income") {
       return prev + current.amount;
     }
     return prev;
   }, 0);
 
-  const expense = state.reduce((prev, current) => {
+  // total expenses
+  const expenses = transectionList.reduce((prev, current) => {
     if (current.type == "expense") {
       return prev + current.amount;
     }
@@ -37,19 +39,19 @@ const Transections = () => {
         <StatCard
           type="income"
           title="income"
-          amount={income}
+          amount={incomes}
           icon="graph-up-arrow"
         />
 
         <StatCard
           type="expense"
           title="expense"
-          amount={expense}
+          amount={expenses}
           icon="graph-down-arrow"
         />
       </div>
 
-      <TransectionTable className="mt-10" data={state} />
+      <TransectionTable className="mt-10" data={transectionList} />
     </>
   );
 };
