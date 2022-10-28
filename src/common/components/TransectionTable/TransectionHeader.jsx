@@ -50,7 +50,7 @@ const TransectionHeader = ({
           </button>
 
           <ul
-            className={`dropdown_list  flex-col absolute bg-slate-700 text-right min-w-[200px] right-0 z-[999] p-2 mt-2 rounded border dark:border-gray-600 ${
+            className={`dropdown_list  flex-col absolute bg-white border-gray-300 dark:bg-slate-700 text-right min-w-[200px] right-0 z-[999] p-2 mt-2 rounded border dark:border-gray-600 ${
               dropdown ? "flex" : "hidden"
             }`}
           >
