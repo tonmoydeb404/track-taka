@@ -48,11 +48,12 @@ export const reducers = (state = initialState, { type, payload }) => {
         date: payload.date,
       };
       // check that transection id unique or not
-      const isUniqueId = prevState.data?.some(
-        (item) => item.id != newTransection.id
+      const isDuplicateId = prevState.data?.some(
+        (item) => item.id == newTransection.id
       );
+
       // if transection id is not unique
-      if (!isUniqueId) return { ...prevState };
+      if (isDuplicateId) return { ...prevState };
       // push data to the state
       prevState.data.push(newTransection);
       // sort transections

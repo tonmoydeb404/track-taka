@@ -14,7 +14,7 @@ const Settings = () => {
   const { handleSignIn, user, handleLogOut } = useAuth();
   const { transections, insertTransection, clearTransection } =
     useTransection();
-  const { autoBackup, setAutoBackupDuration } = useGlobal();
+  const { autoBackup, setAutoBackupDuration, isOnline } = useGlobal();
 
   // logout modal
   const [logoutModal, setLogoutModal] = useState(false);
@@ -83,70 +83,89 @@ const Settings = () => {
                 </button>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <div className="settings_item ">
-                  <h2>Automatic backup data in</h2>
+              {isOnline ? (
+                <>
+                  <div className="flex flex-col gap-1.5">
+                    <div className="settings_item ">
+                      <h2>Automatic backup data in</h2>
 
-                  <select
-                    className="ml-auto text-sm py-1 pl-2 select"
-                    value={autoBackup.duration || 1}
-                    onChange={(e) => {
-                      setAutoBackupDuration(parseFloat(e.target.value));
-                    }}
-                  >
-                    <option value={1}>01 Days</option>
-                    <option value={2}>02 Days</option>
-                    <option value={3}>03 Days</option>
-                  </select>
-                </div>
-                {autoBackup.lastTime && (
-                  <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
-                    last backup at{" "}
-                    {new Date(autoBackup.lastTime).toLocaleTimeString()}
-                  </p>
-                )}
-              </div>
+                      <select
+                        className="ml-auto text-sm py-1 pl-2 select"
+                        value={autoBackup.duration || 1}
+                        onChange={(e) => {
+                          setAutoBackupDuration(parseFloat(e.target.value));
+                        }}
+                      >
+                        <option value={1}>01 Days</option>
+                        <option value={2}>02 Days</option>
+                        <option value={3}>03 Days</option>
+                      </select>
+                    </div>
+                    {autoBackup.lastTime && (
+                      <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
+                        last backup at{" "}
+                        {new Date(autoBackup.lastTime).toLocaleTimeString()}
+                      </p>
+                    )}
+                  </div>
 
-              <div className="settings_item">
-                <h2>Backup Data Now</h2>
+                  <div className="settings_item">
+                    <h2>Backup Data Now</h2>
 
-                <button
-                  className="btn btn-success ml-auto"
-                  onClick={() =>
-                    uploadTransections({ uid: user?.uid, data: transections })
-                  }
-                >
-                  <i className="bi bi-cloud-upload"></i>
-                </button>
-              </div>
+                    <button
+                      className="btn btn-success ml-auto"
+                      onClick={() =>
+                        uploadTransections({
+                          uid: user?.uid,
+                          data: transections,
+                        })
+                      }
+                    >
+                      <i className="bi bi-cloud-upload"></i>
+                    </button>
+                  </div>
 
-              <div className="settings_item">
-                <h2>Download Data</h2>
+                  <div className="settings_item">
+                    <h2>Download Data</h2>
 
-                <button
-                  className="btn btn-warning ml-auto"
-                  onClick={() =>
-                    downloadTransections({
-                      uid: user?.uid,
-                      updateState: insertTransection,
-                    })
-                  }
-                >
-                  <i className="bi bi-cloud-download"></i>
-                </button>
-              </div>
+                    <button
+                      className="btn btn-warning ml-auto"
+                      onClick={() =>
+                        downloadTransections({
+                          uid: user?.uid,
+                          updateState: insertTransection,
+                        })
+                      }
+                    >
+                      <i className="bi bi-cloud-download"></i>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p>make sure your internet connection is stable</p>
+                </>
+              )}
             </>
           ) : (
             <>
               <div className="settings_item">
-                <h2>Login with google</h2>
+                {isOnline ? (
+                  <>
+                    <h2>Login with google</h2>
 
-                <button
-                  className="btn btn-primary ml-auto"
-                  onClick={handleLogIn}
-                >
-                  <i className="bi bi-google"></i>
-                </button>
+                    <button
+                      className="btn btn-primary ml-auto"
+                      onClick={handleLogIn}
+                    >
+                      <i className="bi bi-google"></i>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <h2>make sure your internet connection is stable</h2>
+                  </>
+                )}
               </div>
             </>
           )}

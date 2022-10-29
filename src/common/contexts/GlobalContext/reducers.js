@@ -3,6 +3,7 @@ import {
   SET_AUTOBACKUP_DURATION,
   SET_AUTOBACKUP_LAST_TIME,
   SET_MONTH_FILTER,
+  SET_ONLINE,
   SET_SIDEBAR,
   SET_THEME,
   TOGGLE_MONTH_FILTER,
@@ -23,11 +24,17 @@ export const initialState = {
     enable: true,
     value: new Date().getTime(),
   },
+  isOnline: true,
 };
 
 // global context reducer
 export const reducers = (state = initialState, { type, payload }) => {
   switch (type) {
+    // online reducers
+    case SET_ONLINE: {
+      const isOnline = payload.isOnline;
+      return { ...state, isOnline };
+    }
     // sidebar reducers
     case TOGGLE_SIDEBAR: {
       const sidebar = !state.sidebar;

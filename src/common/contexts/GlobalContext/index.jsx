@@ -13,6 +13,7 @@ import {
   SET_AUTOBACKUP_DURATION,
   SET_AUTOBACKUP_LAST_TIME,
   SET_MONTH_FILTER,
+  SET_ONLINE,
   SET_SIDEBAR,
   SET_THEME,
   TOGGLE_MONTH_FILTER,
@@ -31,6 +32,9 @@ export const GlobalProvider = ({ children }) => {
   // state
   const [state, dispatch] = useReducer(reducers, initialState);
 
+  // context online
+  const setOnline = (isOnline) =>
+    dispatch({ type: SET_ONLINE, payload: { isOnline } });
   // context sidebar actions
   const toggleSidebar = () => dispatch({ type: TOGGLE_SIDEBAR });
   const setSidebar = (sidebar) =>
@@ -58,6 +62,16 @@ export const GlobalProvider = ({ children }) => {
       type: SET_AUTOBACKUP_LAST_TIME,
       payload: { lastTime },
     });
+
+  // handle online
+  useEffect(() => {
+    if ("onLine" in navigator) {
+      setOnline(navigator.onLine);
+    }
+
+    window.addEventListener("offline", () => setOnline(false));
+    window.addEventListener("online", () => setOnline(true));
+  }, []);
 
   // get DATA from localstorage
   useLayoutEffect(() => {
@@ -93,6 +107,7 @@ export const GlobalProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       ...state,
+      setOnline,
       setSidebar,
       toggleSidebar,
       toggleTheme,

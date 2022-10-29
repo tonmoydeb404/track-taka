@@ -8,5 +8,5 @@ i'm adding new features frequently as per as my requirements
 
 - [x] Authentication
 - [x] Auto Backup
-- [ ] PWA
+- [x] PWA
 - [ ] IndexDB Database

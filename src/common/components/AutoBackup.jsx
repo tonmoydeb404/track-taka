@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useGlobal } from "../contexts/GlobalContext";
 import { useTransection } from "../contexts/TransectionContext";
@@ -7,7 +7,8 @@ import { uploadTransections } from "../services/transectionServices";
 
 const AutoBackup = () => {
   const { user } = useAuth();
-  const { autoBackup, setAutoBackup, setAutoBackupLastTime } = useGlobal();
+  const { autoBackup, setAutoBackup, setAutoBackupLastTime, isOnline } =
+    useGlobal();
   const { transections } = useTransection();
 
   const { lastTime, intervalDuration } = useSchedule({
@@ -27,14 +28,14 @@ const AutoBackup = () => {
 
   // update autobackup
   useEffect(() => {
-    if (user && user?.uid) {
+    if (Boolean(user && user.uid && isOnline)) {
       setAutoBackup(true);
     } else {
       setAutoBackup(false);
     }
-  }, [user]);
+  }, [user, isOnline]);
 
-  return <></>;
+  return null;
 };
 
 export default AutoBackup;
