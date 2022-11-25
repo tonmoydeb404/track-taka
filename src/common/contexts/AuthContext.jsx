@@ -22,8 +22,6 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  //   console.log(user);
-
   // handle user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -48,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   // handle log out
   const handleLogOut = async () => {
     try {
-      signOut(auth);
+      await signOut(auth);
     } catch (error) {
       console.log(error);
     }
