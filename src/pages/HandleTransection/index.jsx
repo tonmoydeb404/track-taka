@@ -41,12 +41,12 @@ const HandleTransection = ({ mode }) => {
   }, [mode, id, transections]);
 
   // handle submit
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     if (mode == "create") {
-      createTransection(values);
+      await createTransection(values);
       toast.success("new transection created successfully");
     } else if (mode == "edit") {
-      updateTransection({ ...setDefState, ...values });
+      await updateTransection({ ...setDefState, ...values });
       toast.success("transection edited successfully");
     }
   };

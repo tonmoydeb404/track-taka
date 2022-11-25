@@ -4,7 +4,7 @@ export const defaultCategories = [
   "insurance",
   "daily",
   "travel",
-  "others",
+  "travel",
 ];
 
 export const siteLinks = [
