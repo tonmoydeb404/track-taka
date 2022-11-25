@@ -9,7 +9,7 @@
   width: var(--sidebar-width);
   @apply h-full pl-4 duration-300
     flex flex-col bg-white dark:bg-slate-900 dark:text-white py-4 lg:border-r
-    border-r-gray-200 overflow-hidden;
+    border-r-gray-200 dark:border-r-gray-800 overflow-hidden;
 }
 .sidebar_item {
   @apply flex items-center gap-2 duration-300

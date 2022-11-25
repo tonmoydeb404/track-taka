@@ -1,18 +1,13 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import mkcert from "vite-plugin-mkcert";
 import { VitePWA } from "vite-plugin-pwa";
 import manifest from "./public/manifest.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   publicDir: "public",
-  server: {
-    https: true,
-  },
   plugins: [
     react(),
-    mkcert(),
     VitePWA({
       includeAssets: [
         "/icons/apple-touch-icon.png",
