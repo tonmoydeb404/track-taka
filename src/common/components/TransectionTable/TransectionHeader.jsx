@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { downloadFile } from "../../../utilities/downloadFile";
+import ImportFile from "../ImportFile";
 
 const TransectionHeader = ({
   deleteAble = false,
@@ -12,7 +13,6 @@ const TransectionHeader = ({
 }) => {
   // dropdown
   const [dropdown, setDropdown] = useState(false);
-
   return (
     <div className="transection_head">
       {/* <!-- table search --> */}
@@ -72,6 +72,15 @@ const TransectionHeader = ({
               >
                 Export Transections
               </a>
+            </li>
+            <li>
+              <label
+                htmlFor="json"
+                className="px-2 py-1.5 block dark:hover:bg-slate-600 rounded-sm w-full"
+              >
+                Import Transections
+                <ImportFile id={"json"} />
+              </label>
             </li>
           </ul>
         </div>
