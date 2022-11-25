@@ -16,8 +16,10 @@ const Settings = () => {
 
   // logout from app
   const handleSignOut = async () => {
+    if (transections && transections.length) {
+      await uploadTransections({ uid: user?.uid, data: transections });
+    }
     await handleLogOut();
-    await uploadTransections({ uid: user?.uid, data: transections });
     clearTransection();
     // toast
     toast.success("log out successfully");
@@ -26,12 +28,13 @@ const Settings = () => {
   // handle user log in
   const handleLogIn = async () => {
     try {
-      await handleSignIn();
-      // setSigninModal(true);
-      await downloadTransections({
-        uid: user?.uid,
-        updateState: insertTransection,
-      });
+      const res = await handleSignIn();
+      if (res && res.user?.uid) {
+        await downloadTransections({
+          uid: res.user?.uid,
+          updateState: insertTransection,
+        });
+      }
     } catch (error) {
       console.log(error);
     }

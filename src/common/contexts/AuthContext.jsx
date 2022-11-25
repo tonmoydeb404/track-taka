@@ -37,18 +37,22 @@ export const AuthProvider = ({ children }) => {
   const handleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const response = await signInWithPopup(auth, provider);
+      return response;
     } catch (error) {
       console.log(error);
+      return { error };
     }
   };
 
   // handle log out
   const handleLogOut = async () => {
     try {
-      await signOut(auth);
+      const response = await signOut(auth);
+      return response;
     } catch (error) {
       console.log(error);
+      return { error };
     }
   };
 
