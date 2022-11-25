@@ -46,7 +46,7 @@ const HandleTransection = ({ mode }) => {
       createTransection(values);
       toast.success("new transection created successfully");
     } else if (mode == "edit") {
-      updateTransection(values);
+      updateTransection({ ...setDefState, ...values });
       toast.success("transection edited successfully");
     }
   };

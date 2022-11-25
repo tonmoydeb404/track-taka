@@ -12,7 +12,22 @@ import {
 // sort transections
 const sortTransections = (data) => {
   return [...data].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+    const aCreated = new Date(a.createdAt || Date.now());
+    const bCreated = new Date(b.createdAt || Date.now());
+
+    const aDate = new Date(a.date).setHours(
+      aCreated.getHours(),
+      aCreated.getMinutes(),
+      aCreated.getSeconds()
+    );
+
+    const bDate = new Date(b.date).setHours(
+      bCreated.getHours(),
+      bCreated.getMinutes(),
+      bCreated.getSeconds()
+    );
+
+    return new Date(bDate) - new Date(aDate);
   });
 };
 
@@ -46,6 +61,7 @@ export const reducers = (state = initialState, { type, payload }) => {
         type: payload.type,
         category: payload.category,
         date: payload.date,
+        createdAt: new Date().toISOString(),
       };
       // check that transection id unique or not
       const isDuplicateId = prevState.data?.some(
@@ -77,6 +93,7 @@ export const reducers = (state = initialState, { type, payload }) => {
         type: payload.type,
         category: payload.category,
         date: payload.date,
+        createdAt: payload.createdAt,
       };
       // find index of transection
       const index = prevState.data.findIndex(
