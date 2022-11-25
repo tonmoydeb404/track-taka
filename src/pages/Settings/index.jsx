@@ -104,7 +104,7 @@ const Settings = () => {
                     {autoBackup.lastTime && (
                       <p className="text-xs pl-2 text-gray-600 dark:text-gray-300 ">
                         last backup at{" "}
-                        {new Date(autoBackup.lastTime).toLocaleTimeString()}
+                        {new Date(autoBackup.lastTime).toLocaleString()}
                       </p>
                     )}
                   </div>
