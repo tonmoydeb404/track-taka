@@ -26,7 +26,8 @@ export const TransectionProvider = ({ children }) => {
   // sorted transection
   const [sortedTx, setSortedTx] = useState([]);
 
-  console.log(categories);
+  // TODO: loading state add
+  // FIXME: user debounce handle
 
   // transection actions
   const txActions = {
