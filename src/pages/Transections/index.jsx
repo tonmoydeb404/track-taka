@@ -37,6 +37,13 @@ const Transections = () => {
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
         <StatCard
+          type="savings"
+          title="wallet"
+          amount={incomes - expenses}
+          icon="wallet"
+        />
+
+        <StatCard
           type="income"
           title="income"
           amount={incomes}
