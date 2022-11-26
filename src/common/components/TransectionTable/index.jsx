@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { useTransection } from "../../contexts/TransectionContext";
 import TransectionFilter from "./TransectionFilter";
 import TransectionHeader from "./TransectionHeader";
@@ -6,6 +7,10 @@ import TransectionTH from "./TransectionTH";
 import TransectionTR from "./TransectionTR";
 
 const TransectionTable = ({ className = "", data = [] }) => {
+  // app ref
+  const txRef = useRef(null);
+
+  // app states
   const [tableData, setTableData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [query, setQuery] = useState("");
@@ -18,6 +23,9 @@ const TransectionTable = ({ className = "", data = [] }) => {
 
   // transection context
   const { deleteTransection } = useTransection();
+
+  // transection loading
+  const [loading, setLoading] = useState(false);
 
   // handle data filtering
   useEffect(() => {
@@ -87,13 +95,22 @@ const TransectionTable = ({ className = "", data = [] }) => {
   };
 
   // handle delete transection
-  const handleDelete = (id = [], clear = () => {}) => {
-    deleteTransection(id);
+  const handleDelete = async (id = [], clear = () => {}) => {
+    // set loading true
+    setLoading(true);
+    const promise = deleteTransection(id);
+    await toast.promise(promise, {
+      loading: "deleting transection...",
+      error: "error: cannot delete transection",
+      success: "transection deleted successfully",
+    });
     clear();
+    // set loading false
+    setLoading(false);
   };
 
   return (
-    <div className={className}>
+    <div ref={txRef} className={className}>
       <TransectionHeader
         deleteAble={!!selectedRows.length}
         query={query}
@@ -103,6 +120,8 @@ const TransectionTable = ({ className = "", data = [] }) => {
         }
         handleFilter={() => setViewFilter(true)}
         tableData={tableData}
+        loading={loading}
+        setLoading={setLoading}
       />
 
       <div className="overflow-x-auto mt-8">
@@ -129,6 +148,8 @@ const TransectionTable = ({ className = "", data = [] }) => {
                         : () => {}
                     )
                   }
+                  loading={loading}
+                  setLoading={setLoading}
                 />
               ))
             ) : (

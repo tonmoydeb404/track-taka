@@ -32,11 +32,7 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values) => {
-        handleSubmit(values);
-        navigate("/transections");
-        // console.log(values);
-      }}
+      onSubmit={handleSubmit}
       validationSchema={transectionSchema}
       enableReinitialize={true}
       validateOnChange={false}

@@ -11,6 +11,9 @@ const TransectionTR = ({
   isSelected = false,
   handleSelect = () => {},
   handleDelete = () => {},
+
+  loading = false,
+  setLoading = () => {},
 }) => {
   return (
     <tr className={`transection_body_row ${type}`}>
@@ -24,16 +27,24 @@ const TransectionTR = ({
         <span className="transection_type">{type}</span>
       </td>
       <td className="">{date}</td>
-      <td className="flex items-center gap-1 justify-center">
+      <td
+        className={`flex items-center gap-1 justify-center ${
+          loading ? "cursor-not-allowed" : ""
+        }`}
+      >
         <Link
-          className="btn btn-primary btn-sm"
+          className={`btn btn-primary btn-sm ${
+            loading ? "pointer-events-none" : ""
+          }`}
           to={`/transections/edit/${id}`}
         >
           <i className="bi bi-pen"></i>
         </Link>
 
         <button
-          className="btn btn-danger btn-sm"
+          className={`btn btn-danger btn-sm ${
+            loading ? "pointer-events-none" : ""
+          }`}
           onClick={() => handleDelete(id)}
         >
           <i className="bi bi-trash"></i>

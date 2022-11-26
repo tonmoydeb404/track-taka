@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 import { useTransection } from "../../common/contexts/TransectionContext";
 import TransectionForm from "./TransectionForm";
 
 const HandleTransection = ({ mode }) => {
+  // router hooks
+  const navigate = useNavigate();
+  const { id } = useParams();
+  // transection context
   const { transections, createTransection, updateTransection } =
     useTransection();
-  const { id } = useParams();
-
+  // app states
   const [defState, setDefState] = useState({
     id: uuid(),
     title: "",
@@ -42,12 +45,25 @@ const HandleTransection = ({ mode }) => {
 
   // handle submit
   const handleSubmit = async (values) => {
-    if (mode == "create") {
-      await createTransection(values);
-      toast.success("new transection created successfully");
-    } else if (mode == "edit") {
-      await updateTransection({ ...setDefState, ...values });
-      toast.success("transection edited successfully");
+    try {
+      if (mode == "create") {
+        const promise = createTransection(values);
+        await toast.promise(promise, {
+          loading: "creating transection...",
+          success: "transection created successfully",
+          error: "error: transection not created",
+        });
+      } else if (mode == "edit") {
+        const promise = updateTransection({ ...setDefState, ...values });
+        await toast.promise(promise, {
+          loading: "editing transection...",
+          success: "transection edited successfully",
+          error: "error: transection not edited",
+        });
+      }
+      navigate("/transections");
+    } catch (error) {
+      console.error(error);
     }
   };
 
