@@ -1,6 +1,8 @@
 import { useGlobal } from "../GlobalContext";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { LOCAL_TRANSECTION_KEY } from "../../../data/constant";
 import { defaultCategories } from "../../../data/siteData";
 import {
   createData,
@@ -26,9 +28,6 @@ export const TransectionProvider = ({ children }) => {
   // sorted transection
   const [sortedTx, setSortedTx] = useState([]);
 
-  // TODO: loading state add
-  // FIXME: user debounce handle
-
   // transection actions
   const txActions = {
     async get() {
@@ -42,6 +41,7 @@ export const TransectionProvider = ({ children }) => {
         if (response) {
           setTransections(response);
         }
+        return response;
       } catch (error) {
         console.error(error);
       }
@@ -170,14 +170,39 @@ export const TransectionProvider = ({ children }) => {
   // initilize app
   useEffect(() => {
     (async () => {
-      // initilize database
-      await initDB({
-        dbname: DBNAME,
-        version: DBVERSION,
-        stores: ["transections"],
-      });
-      // fetch data
-      await txActions.get();
+      try {
+        // initilize database
+        await initDB({
+          dbname: DBNAME,
+          version: DBVERSION,
+          stores: ["transections"],
+        });
+        // fetch data
+        const response = await txActions.get();
+
+        // migrate with localstorage data
+        if (!response || !response.length) {
+          const localData = localStorage.getItem(LOCAL_TRANSECTION_KEY);
+          // validate localstorage data
+          if (localData != null && localData) {
+            // parse data
+            const parseLocalData = JSON.parse(localData) || [];
+            // validate parsed data
+            if (parseLocalData && parseLocalData.length) {
+              // insert this data to state
+              const promise = txActions.insert(parseLocalData);
+              await toast.promise(promise, {
+                loading: "migrating previous data...",
+                success: "data migration successfully",
+                error: "error: data migration failed",
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("something wents to wrong");
+      }
     })();
   }, []);
 
