@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { BsGraphDown, BsGraphUp, BsPlus, BsWallet } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import {
   Area,
@@ -52,7 +53,7 @@ const Analytics = () => {
           <MonthFilter className="w-auto" />
 
           <Link to={"/transections/create"} className="btn btn-success ">
-            <i className="bi bi-plus"></i>
+            <BsPlus />
             Add New
           </Link>
         </div>
@@ -64,21 +65,21 @@ const Analytics = () => {
           type="savings"
           title="wallet"
           amount={incomes - expenses}
-          icon="wallet"
+          icon={BsWallet}
         />
 
         <StatCard
           type="income"
           title="income"
           amount={incomes}
-          icon="graph-up-arrow"
+          icon={BsGraphUp}
         />
 
         <StatCard
           type="expense"
           title="expense"
           amount={expenses}
-          icon="graph-down-arrow"
+          icon={BsGraphDown}
         />
       </div>
 

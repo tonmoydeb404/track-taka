@@ -1,4 +1,5 @@
 import React from "react";
+import { BsPen, BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const TransectionTR = ({
@@ -33,21 +34,21 @@ const TransectionTR = ({
         }`}
       >
         <Link
-          className={`btn btn-primary btn-sm ${
+          className={`btn btn-icon btn-primary btn-sm ${
             loading ? "pointer-events-none" : ""
           }`}
           to={`/transections/edit/${id}`}
         >
-          <i className="bi bi-pen"></i>
+          <BsPen />
         </Link>
 
         <button
-          className={`btn btn-danger btn-sm ${
+          className={`btn btn-icon btn-danger btn-sm ${
             loading ? "pointer-events-none" : ""
           }`}
           onClick={() => handleDelete(id)}
         >
-          <i className="bi bi-trash"></i>
+          <BsTrash />
         </button>
       </td>
     </tr>

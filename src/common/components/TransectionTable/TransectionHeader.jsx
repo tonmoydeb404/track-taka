@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  BsFunnel,
+  BsSearch,
+  BsThreeDotsVertical,
+  BsTrash,
+} from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { downloadFile } from "../../../utilities/downloadFile";
 import ImportFile from "../ImportFile";
@@ -28,7 +34,7 @@ const TransectionHeader = ({
           className="form-input"
         />
 
-        <i className="bi bi-search icon"></i>
+        <BsSearch className=" icon"></BsSearch>
       </div>
 
       {/* <!-- table actions --> */}
@@ -38,31 +44,32 @@ const TransectionHeader = ({
         }`}
       >
         <button
-          className={`btn btn-warning ${loading ? "pointer-events-none" : ""}`}
+          className={`btn btn-icon btn-warning ${
+            loading ? "pointer-events-none" : ""
+          }`}
           onClick={handleFilter}
         >
-          <i className="bi bi-funnel"></i>
+          <BsFunnel />
         </button>
 
         {deleteAble && (
           <button
             disabled={loading}
-            className={`btn btn-danger font-medium ${
+            className={`btn btn-icon btn-danger font-medium ${
               loading ? "pointer-events-none" : ""
             }`}
             onClick={handleDelete}
           >
-            <i className="bi bi-trash"></i>
-            <span className="hidden md:block">Delete Selected </span>
+            <BsTrash />
           </button>
         )}
 
         <div className="dropdown relative">
           <button
-            className="btn btn-success"
+            className="btn btn-icon btn-success"
             onClick={() => setDropdown((prevState) => !prevState)}
           >
-            <i className="bi bi-three-dots-vertical"></i>
+            <BsThreeDotsVertical />
           </button>
 
           <ul

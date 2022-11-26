@@ -1,4 +1,5 @@
 import React from "react";
+import { BsGraphDown, BsGraphUp, BsWallet } from "react-icons/bs";
 import MonthFilter from "../../common/components/MonthFilter";
 import StatCard from "../../common/components/StatCard";
 import TransectionTable from "../../common/components/TransectionTable";
@@ -40,21 +41,21 @@ const Transections = () => {
           type="savings"
           title="wallet"
           amount={incomes - expenses}
-          icon="wallet"
+          icon={BsWallet}
         />
 
         <StatCard
           type="income"
           title="income"
           amount={incomes}
-          icon="graph-up-arrow"
+          icon={BsGraphUp}
         />
 
         <StatCard
           type="expense"
           title="expense"
           amount={expenses}
-          icon="graph-down-arrow"
+          icon={BsGraphDown}
         />
       </div>
 

@@ -1,3 +1,5 @@
+import { BsCash, BsGear, BsPieChart, BsPlusSquare } from "react-icons/bs";
+
 export const defaultCategories = [
   "food",
   "health",
@@ -8,18 +10,18 @@ export const defaultCategories = [
 ];
 
 export const siteLinks = [
-  { id: "#1", title: "Analytics", icon: "pie-chart", link: "/" },
+  { id: "#1", title: "Analytics", icon: BsPieChart, link: "/" },
   {
     id: "#2",
     title: "Transections",
-    icon: "cash",
+    icon: BsCash,
     link: "/transections",
   },
   {
     id: "#3",
     title: "New transection",
-    icon: "plus-square",
+    icon: BsPlusSquare,
     link: "/transections/create",
   },
-  { id: "#4", title: "Settings", icon: "gear", link: "/settings" },
+  { id: "#4", title: "Settings", icon: BsGear, link: "/settings" },
 ];

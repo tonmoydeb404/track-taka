@@ -1,5 +1,11 @@
 import React from "react";
 import toast from "react-hot-toast";
+import {
+  BsBoxArrowRight,
+  BsCloudDownload,
+  BsCloudUpload,
+  BsGoogle,
+} from "react-icons/bs";
 import { useAuth } from "../../common/contexts/AuthContext";
 import { useGlobal } from "../../common/contexts/GlobalContext";
 import { useTransection } from "../../common/contexts/TransectionContext";
@@ -78,10 +84,10 @@ const Settings = () => {
                 <h2>{user?.displayName}</h2>
 
                 <button
-                  className="btn btn-danger ml-auto"
+                  className="btn btn-icon btn-danger ml-auto"
                   onClick={handleSignOut}
                 >
-                  <i className="bi bi-box-arrow-right"></i>
+                  <BsBoxArrowRight />
                 </button>
               </div>
 
@@ -115,7 +121,7 @@ const Settings = () => {
                     <h2>Backup Data Now</h2>
 
                     <button
-                      className="btn btn-success ml-auto"
+                      className="btn btn-icon btn-success ml-auto"
                       onClick={() =>
                         uploadTransections({
                           uid: user?.uid,
@@ -123,7 +129,7 @@ const Settings = () => {
                         })
                       }
                     >
-                      <i className="bi bi-cloud-upload"></i>
+                      <BsCloudUpload />
                     </button>
                   </div>
 
@@ -131,7 +137,7 @@ const Settings = () => {
                     <h2>Download Data</h2>
 
                     <button
-                      className="btn btn-warning ml-auto"
+                      className="btn btn-icon btn-warning ml-auto"
                       onClick={() =>
                         downloadTransections({
                           uid: user?.uid,
@@ -139,7 +145,7 @@ const Settings = () => {
                         })
                       }
                     >
-                      <i className="bi bi-cloud-download"></i>
+                      <BsCloudDownload />
                     </button>
                   </div>
                 </>
@@ -157,10 +163,10 @@ const Settings = () => {
                     <h2>Login with google</h2>
 
                     <button
-                      className="btn btn-primary ml-auto"
+                      className="btn btn-icon btn-primary ml-auto"
                       onClick={handleLogIn}
                     >
-                      <i className="bi bi-google"></i>
+                      <BsGoogle />
                     </button>
                   </>
                 ) : (

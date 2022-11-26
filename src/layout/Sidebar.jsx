@@ -1,4 +1,5 @@
 import React from "react";
+import { BsMoonFill, BsSun, BsWallet } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { useGlobal } from "../common/contexts/GlobalContext";
 import { siteLinks } from "../data/siteData";
@@ -14,7 +15,9 @@ const Sidebar = () => {
           className="text-xl font-medium bg-blue-600 hover:bg-blue-700 text-white sidebar_item"
           onClick={toggleSidebar}
         >
-          <i className="icon bi bi-wallet px-2 py-0.5 bg-slate-900 rounded inline-block"></i>
+          <div className="px-2 py-2 bg-slate-900 rounded inline-block">
+            <BsWallet className="icon " />
+          </div>
           <span className="title">Track Taka</span>
         </button>
 
@@ -31,7 +34,8 @@ const Sidebar = () => {
                   }
                   end
                 >
-                  <i className={`bi bi-${item.icon} icon`}></i>
+                  <item.icon className={`icon`} />
+
                   <span className=" title">{item.title}</span>
                 </NavLink>
               </li>
@@ -43,11 +47,15 @@ const Sidebar = () => {
           className="bg-slate-900/20 dark:bg-white/5 dark:hover:bg-white/10 sidebar_item"
           onClick={toggleTheme}
         >
-          <i
-            className={`icon bi ${
-              theme == "dark" ? "bi-sun-fill" : "bi-moon-fill"
-            } px-2 py-1 bg-blue-600 text-white rounded inline-block`}
-          ></i>
+          <span
+            className={` px-2 py-2 bg-blue-600 text-white rounded inline-block`}
+          >
+            {theme == "dark" ? (
+              <BsSun className="icon" />
+            ) : (
+              <BsMoonFill className="icon" />
+            )}
+          </span>
 
           <span className="title">light theme</span>
         </button>

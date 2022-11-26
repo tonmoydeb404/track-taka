@@ -1,4 +1,5 @@
 import React from "react";
+import { BsList, BsMoonFill, BsSun } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useGlobal } from "../common/contexts/GlobalContext";
 
@@ -8,10 +9,10 @@ const Navbar = () => {
   return (
     <div className="bg-white flex items-center gap-4 px-5 py-2 md:px-10 sticky top-0 left-0 w-full lg:hidden border-b border-b-gray-200 dark:border-b-gray-700 dark:bg-slate-800 z-[1000]">
       <button
-        className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 duration-300 text-lg text-white rounded"
+        className="px-2.5 py-2.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 duration-300 text-lg text-white rounded"
         onClick={toggleSidebar}
       >
-        <i className="bi bi-list"></i>
+        <BsList />
       </button>
 
       <Link to="/" className="text-xl font-medium">
@@ -19,12 +20,10 @@ const Navbar = () => {
       </Link>
 
       <button
-        className="px-3 py-1.5 bg-slate-800/10 text-lg ml-auto rounded-full hover:bg-slate-800 hover:text-white duration-300"
+        className="px-2.5 py-2.5 bg-slate-800/10 text-lg ml-auto rounded-full hover:bg-slate-800 hover:text-white duration-300"
         onClick={toggleTheme}
       >
-        <i
-          className={`bi ${theme == "dark" ? "bi-sun-fill" : "bi-moon-fill"}`}
-        ></i>
+        {theme == "dark" ? <BsSun /> : <BsMoonFill />}
       </button>
     </div>
   );

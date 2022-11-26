@@ -25,8 +25,7 @@
     items-stretch flex-col gap-2;
 }
 .sidebar_links_item {
-  @apply px-3 py-2 flex
-    w-full gap-3 rounded-l duration-300;
+  @apply px-3 py-2 flex w-full gap-3 rounded-l duration-300 items-center;
 }
 .sidebar_links_item.active {
   @apply bg-blue-600/10 text-blue-700;

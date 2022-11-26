@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import ReactDatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { BsChevronDown } from "react-icons/bs";
 import { useGlobal } from "../contexts/GlobalContext";
 
 const MonthFilter = ({}) => {
@@ -13,7 +14,7 @@ const MonthFilter = ({}) => {
       ref={ref}
     >
       {monthFilter.enable ? value : "All Data"}
-      <i className="bi bi-chevron-down group-focus:rotate-180 duration-300"></i>
+      <BsChevronDown className="group-focus:rotate-180 duration-300"></BsChevronDown>
     </button>
   ));
 
