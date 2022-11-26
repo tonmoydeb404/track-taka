@@ -12,7 +12,7 @@ import {
   initDB,
   updateData,
 } from "../../../utilities/indexedDB";
-import { DBNAME, DBVERSION } from "./constant";
+import { DBNAME, DBOLDSTORE, DBSTORE, DBVERSION } from "./constant";
 
 // transection context
 export const TransectionContext = createContext({});
@@ -36,7 +36,7 @@ export const TransectionProvider = ({ children }) => {
         const response = await getCollection({
           dbname: DBNAME,
           version: DBVERSION,
-          store: "transections",
+          store: DBSTORE,
         });
 
         if (response) {
@@ -63,7 +63,7 @@ export const TransectionProvider = ({ children }) => {
         await createData({
           dbname: DBNAME,
           version: DBVERSION,
-          store: "transections",
+          store: DBSTORE,
           dataObj: newTransection,
         });
 
@@ -79,7 +79,7 @@ export const TransectionProvider = ({ children }) => {
         await updateData({
           dbname: DBNAME,
           version: DBVERSION,
-          store: "transections",
+          store: DBSTORE,
           dataObj: transection,
         });
 
@@ -97,7 +97,7 @@ export const TransectionProvider = ({ children }) => {
             await deleteData({
               dbname: DBNAME,
               version: DBVERSION,
-              store: "transections",
+              store: DBSTORE,
               id,
             })
         );
@@ -137,7 +137,7 @@ export const TransectionProvider = ({ children }) => {
           await createData({
             dbname: DBNAME,
             version: DBVERSION,
-            store: "transections",
+            store: DBSTORE,
             dataObj: transection,
           })
       );
@@ -151,7 +151,7 @@ export const TransectionProvider = ({ children }) => {
       await clearData({
         dbname: DBNAME,
         version: DBVERSION,
-        store: "transections",
+        store: DBSTORE,
       });
 
       // update local db
@@ -187,7 +187,9 @@ export const TransectionProvider = ({ children }) => {
         await initDB({
           dbname: DBNAME,
           version: DBVERSION,
-          stores: ["transections"],
+          stores: [DBSTORE],
+          deleteStores: [DBOLDSTORE],
+          keyPath: "id",
         });
         // fetch data
         const response = await txActions.get();

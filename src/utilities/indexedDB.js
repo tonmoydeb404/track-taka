@@ -10,6 +10,7 @@ export const initDB = ({
   dbname = "",
   version = null,
   stores = [],
+  deleteStores = [],
   keyPath = null,
 }) => {
   return new Promise((resolve, reject) => {
@@ -40,6 +41,15 @@ export const initDB = ({
           response[store] = `allready created`;
         }
       });
+
+      // handle delete stores
+      deleteStores.forEach((store) => {
+        if (db.objectStoreNames.contains(store)) {
+          db.deleteObjectStore(store);
+          response[store] = `deleted successfull`;
+        }
+      });
+
       resolve(response);
     };
     // handle database success
@@ -110,7 +120,7 @@ export const createData = ({
       const tx = db.transaction(store, "readwrite");
       const txStore = tx.objectStore(store);
       // collection data
-      const data = txStore.add({ ...dataObj });
+      const data = txStore.add(dataObj);
 
       // handle data success
       data.onsuccess = (event) => {
