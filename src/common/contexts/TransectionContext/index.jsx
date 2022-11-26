@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { LOCAL_TRANSECTION_KEY } from "../../../data/constant";
 import { defaultCategories } from "../../../data/siteData";
 import {
+  clearData,
   createData,
   deleteData,
   getCollection,
@@ -145,6 +146,17 @@ export const TransectionProvider = ({ children }) => {
       // update local db
       await txActions.get();
     },
+    async clear() {
+      // clear store
+      await clearData({
+        dbname: DBNAME,
+        version: DBVERSION,
+        store: "transections",
+      });
+
+      // update local db
+      await txActions.get();
+    },
   };
   // category actions
   const ctActions = {
@@ -198,6 +210,9 @@ export const TransectionProvider = ({ children }) => {
               });
             }
           }
+        } else {
+          // clear local storage
+          localStorage.removeItem(LOCAL_TRANSECTION_KEY);
         }
       } catch (error) {
         console.error(error);
@@ -266,6 +281,7 @@ export const TransectionProvider = ({ children }) => {
       deleteTransection: txActions.delete,
       updateTransection: txActions.update,
       insertTransection: txActions.insert,
+      clearTransection: txActions.clear,
       createCategory: ctActions.create,
       insertCategories: ctActions.insert,
     }),

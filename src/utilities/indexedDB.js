@@ -197,3 +197,34 @@ export const deleteData = ({
     };
   });
 };
+
+export const clearData = ({ dbname = "", version = null, store = null }) => {
+  return new Promise((resolve, reject) => {
+    // open database
+    const databaseReq = idb.open(dbname, version);
+    // handle database error
+    databaseReq.onerror = (event) => {
+      reject(Error(event.target?.error?.toString()));
+    };
+    // handle database success
+    databaseReq.onsuccess = (event) => {
+      const db = databaseReq.result;
+      // collection transection
+      const tx = db.transaction(store, "readwrite");
+      const txStore = tx.objectStore(store);
+      // delete collection from data
+      const data = txStore.clear();
+
+      // handle data success
+      data.onsuccess = (event) => {
+        // close database on transection complete
+        tx.oncomplete = () => db.close();
+        resolve(data.result);
+      };
+      // handle data error
+      data.onerror = (event) => {
+        reject(Error(event?.target?.error?.toString()));
+      };
+    };
+  });
+};

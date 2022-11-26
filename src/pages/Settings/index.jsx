@@ -20,7 +20,7 @@ const Settings = () => {
       await uploadTransections({ uid: user?.uid, data: transections });
     }
     await handleLogOut();
-    clearTransection();
+    await clearTransection();
     // toast
     toast.success("log out successfully");
   };
