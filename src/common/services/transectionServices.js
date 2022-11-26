@@ -38,7 +38,7 @@ export const setTransections = async ({ data = {}, uid = null }) => {
 
 export const downloadTransections = async ({
   uid = null,
-  updateState = () => {},
+  updateState = async () => {},
 }) => {
   // fetch data from firebase
   const state = await toast.promise(fetchTransections({ uid }), {
@@ -50,7 +50,11 @@ export const downloadTransections = async ({
   // convert data to array
   const stateArr = await objToArray(state);
   // update app state
-  await updateState(stateArr);
+  await toast.promise(updateState(stateArr), {
+    loading: "updating app state",
+    error: "error in updating app state",
+    success: "successfully updated app state",
+  });
 };
 
 export const uploadTransections = async ({ uid = null, data = [] }) => {

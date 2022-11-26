@@ -16,19 +16,37 @@ const Settings = () => {
 
   // logout from app
   const handleSignOut = async () => {
-    if (transections && transections.length) {
-      await uploadTransections({ uid: user?.uid, data: transections });
+    try {
+      if (transections && transections.length) {
+        await uploadTransections({ uid: user?.uid, data: transections });
+      }
+      // clear transections from local database
+      await toast.promise(clearTransection(), {
+        loading: "clearing transection from local server...",
+        success: "transection cleared from local server.",
+        error: "error in clearing transection",
+      });
+      // sign out from app
+      await toast.promise(handleLogOut(), {
+        loading: "signing out...",
+        success: "sign out successfully",
+        error: "error in sign out",
+      });
+    } catch (error) {
+      console.error(error);
     }
-    await handleLogOut();
-    await clearTransection();
-    // toast
-    toast.success("log out successfully");
   };
 
   // handle user log in
   const handleLogIn = async () => {
     try {
-      const res = await handleSignIn();
+      const res = await toast.promise(handleSignIn(), {
+        loading: "logging in...",
+        success: "login successfully",
+        error: "error in sign in",
+      });
+
+      // validate user
       if (res && res.user?.uid) {
         await downloadTransections({
           uid: res.user?.uid,
@@ -36,7 +54,7 @@ const Settings = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
