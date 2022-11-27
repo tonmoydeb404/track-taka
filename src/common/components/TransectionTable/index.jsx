@@ -126,7 +126,14 @@ const TransectionTable = ({ className = "", data = [] }) => {
 
       <div className="overflow-x-auto mt-8">
         <table className="w-full border border-gray-200 dark:border-gray-700">
-          <TransectionTH callBack={handleAllSelect} />
+          <TransectionTH
+            callBack={handleAllSelect}
+            isAllSelected={
+              tableData &&
+              tableData.length &&
+              selectedRows.length == tableData.length
+            }
+          />
           <tbody>
             {tableData && tableData.length ? (
               tableData.map((item) => (

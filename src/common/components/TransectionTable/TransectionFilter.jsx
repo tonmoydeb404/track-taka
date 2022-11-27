@@ -1,4 +1,5 @@
 import React from "react";
+import { BsXLg } from "react-icons/bs";
 import { useTransection } from "../../contexts/TransectionContext";
 
 const TransectionFilter = ({
@@ -20,7 +21,7 @@ const TransectionFilter = ({
       }`}
     >
       <div
-        className={`flex flex-col bg-white dark:bg-slate-800 p-8 duration-300  h-full border-l border-l-gray-200 dark:border-l-gray-700 overflow-hidden ${
+        className={`flex flex-col bg-white dark:bg-slate-800 p-8 duration-300  h-full border-l border-l-gray-200 dark:border-l-gray-700 overflow-x-hidden overflow-y-auto ${
           viewFilter ? "w-full sm:w-[300px]" : "w-0 px-0"
         }`}
       >
@@ -28,10 +29,10 @@ const TransectionFilter = ({
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-medium">Filters</h2>
           <button
-            className="btn btn-danger btn-sm"
+            className="btn btn-danger btn-icon btn-sm"
             onClick={() => setViewFilter(false)}
           >
-            <i className="bi bi-x-lg"></i>
+            <BsXLg />
           </button>
         </div>
 

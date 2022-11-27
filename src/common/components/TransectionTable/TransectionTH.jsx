@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
-const TransectionTH = ({ callBack = () => {} }) => {
-  const [selectAll, setSelectAll] = useState(false);
-
+const TransectionTH = ({ callBack = () => {}, isAllSelected }) => {
   return (
     <thead>
       <tr className="transection_head_row">
         <th>
           <input
             type="checkbox"
-            checked={selectAll}
+            checked={isAllSelected}
             onChange={(e) => {
-              setSelectAll(e.target.checked);
               callBack(e.target.checked);
             }}
           />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   BsFunnel,
+  BsPlusLg,
   BsSearch,
   BsThreeDotsVertical,
   BsTrash,
@@ -43,6 +44,12 @@ const TransectionHeader = ({
           loading ? "cursor-not-allowed" : ""
         }`}
       >
+        <Link
+          className={`btn btn-icon btn-success`}
+          to={"/transections/create"}
+        >
+          <BsPlusLg />
+        </Link>
         <button
           className={`btn btn-icon btn-warning ${
             loading ? "pointer-events-none" : ""
@@ -66,7 +73,7 @@ const TransectionHeader = ({
 
         <div className="dropdown relative">
           <button
-            className="btn btn-icon btn-success"
+            className="btn btn-icon btn-primary"
             onClick={() => setDropdown((prevState) => !prevState)}
           >
             <BsThreeDotsVertical />
@@ -80,7 +87,7 @@ const TransectionHeader = ({
             <li>
               <Link
                 onClick={() => setDropdown(false)}
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 rounded-sm`}
+                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm`}
                 to={"/transections/create"}
               >
                 Add new
@@ -89,7 +96,7 @@ const TransectionHeader = ({
             <li>
               <a
                 onClick={() => setDropdown(false)}
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 rounded-sm ${
+                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm ${
                   loading ? "pointer-events-none" : ""
                 }`}
                 href={downloadFile(tableData)}
@@ -101,9 +108,10 @@ const TransectionHeader = ({
             <li>
               <label
                 htmlFor="json"
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 rounded-sm w-full cursor-pointer  ${
+                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm w-full cursor-pointer  ${
                   loading ? "pointer-events-none" : ""
                 }`}
+                onClick={() => setDropdown(false)}
               >
                 Import Transections
                 <ImportFile id={"json"} setLoading={setLoading} />

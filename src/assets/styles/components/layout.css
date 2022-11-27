@@ -42,9 +42,15 @@ body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {
 body:not([data-sidebar="true"]) .sidebar .sidebar_item {
   @apply p-1;
 }
+body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {
+  @apply p-2.5;
+}
 body:not([data-sidebar="true"]) .sidebar .title {
   @apply hidden;
 }
-body:not([data-sidebar="true"]) .sidebar .icon {
+body:not([data-sidebar="true"]) .sidebar .sidebar_item .icon {
   @apply text-lg;
+}
+body:not([data-sidebar="true"]) .sidebar .sidebar_links_item .icon {
+  @apply text-xl;
 }
