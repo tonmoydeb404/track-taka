@@ -1,6 +1,7 @@
 // import { useCallback, useEffect } from "preact/hooks";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { HiOutlineLightBulb } from "react-icons/hi/";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
 const ServiceWorker = () => {
@@ -18,24 +19,18 @@ const ServiceWorker = () => {
         "[📦 pheralb/Preact-PWA] - Your app has been installed, it now works offline!"
       );
     } else if (needRefresh) {
-      // console.log("[📦 pheralb/Preact-PWA] - A new update is available!");
+      console.log("[📦 pheralb/Preact-PWA] - A new update is available!");
       toast.custom(
         (t) => (
           <div
             className={`${
               t.visible ? "animate-enter" : "animate-leave"
-            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            } max-w-sm w-full bg-white dark:bg-slate-700 shadow-lg rounded pointer-events-auto flex ring-1 ring-black dark:ring-slate-500 ring-opacity-5`}
           >
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-900">
-                    new update available
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
+            <div className="flex-1 flex flex-wrap items-center gap-2 p-4">
+              <HiOutlineLightBulb className="text-lg" />
+              <p className="text-sm font-medium">New update available</p>
+
               <button
                 onClick={async () => {
                   toast.dismiss(t.id);
@@ -43,7 +38,7 @@ const ServiceWorker = () => {
                   setOfflineReady(false);
                   setNeedRefresh(false);
                 }}
-                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="btn btn-primary btn-sm ml-auto "
               >
                 update now
               </button>
