@@ -13,7 +13,6 @@ export default defineConfig({
         "/icons/apple-touch-icon.png",
         "/icons/favicon-32x32.png",
         "/icons/favicon-16x16.png",
-        "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css",
       ],
       devOptions: {
         enabled: false,
