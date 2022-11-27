@@ -16,10 +16,10 @@ const ServiceWorker = () => {
 
     if (offlineReady) {
       console.log(
-        "[📦 pheralb/Preact-PWA] - Your app has been installed, it now works offline!"
+        "[📦 Track Taka] - Your app has been installed, it now works offline!"
       );
     } else if (needRefresh) {
-      console.log("[📦 pheralb/Preact-PWA] - A new update is available!");
+      console.log("[📦 Track Taka] - A new update is available!");
       toast.custom(
         (t) => (
           <div
