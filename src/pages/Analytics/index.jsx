@@ -88,18 +88,18 @@ const Analytics = () => {
         <div className="lg:col-span-3 bg-white border border-gray-200 p-4 min-h-[400px] dark:bg-slate-800 dark:border-slate-700 ">
           <ResponsiveContainer height={400}>
             <AreaChart data={graphData.chart} className="w-full">
-              <Tooltip />
+              <Tooltip contentStyle={{ color: "black" }} />
               <Area
                 type={"monotone"}
                 dataKey="expense"
-                stroke="#f00"
-                fill="#f00"
+                stroke="#EF4444"
+                fill="#EF4444aa"
               />
               <Area
                 type={"monotone"}
                 dataKey="income"
-                stroke="#8884d8"
-                fill="#8884d8"
+                stroke="#22c55e"
+                fill="#22c55eaa"
               />
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey={"date"} />
