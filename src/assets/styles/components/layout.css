@@ -9,31 +9,36 @@
 
 /* layout */
 
-body:not([data-sidebar="true"]) {
+/* body:not([data-sidebar="true"]) {
   --sidebar-width: 0px;
 }
 body[data-sidebar="true"] {
   --sidebar-width: 250px;
-}
+} */
 
-@screen lg {
+@screen sm {
   body:not([data-sidebar="true"]) {
     --sidebar-width: 58px;
   }
   body[data-sidebar="true"] {
     --sidebar-width: 250px;
   }
-  .main {
-    margin-left: var(--sidebar-width);
+
+  body:not([data-sidebar="true"]) .main {
+    @apply ml-[var(--sidebar-width)];
+  }
+
+  body[data-sidebar="true"] .main {
+    @apply lg:ml-[var(--sidebar-width)];
   }
 }
 
 /* sidebar collaped */
 body:not([data-sidebar="true"]) .sidebar {
-  @apply w-0 lg:w-auto;
+  @apply w-auto;
 }
 body:not([data-sidebar="true"]) .sidebar .sidebar_container {
-  @apply px-0 lg:px-2;
+  @apply px-2;
 }
 body:not([data-sidebar="true"]) .sidebar .sidebar_item,
 body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {

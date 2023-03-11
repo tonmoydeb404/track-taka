@@ -3,12 +3,12 @@
 .sidebar {
   transition-property: background;
   @apply h-screen duration-300 fixed
-    top-0 left-0 w-full bg-black/50 z-[1001]  lg:w-auto lg:bg-transparent;
+    top-0 left-0 w-full bg-black/50 z-[1001]  lg:w-auto lg:bg-transparent hidden sm:block;
 }
 .sidebar_container {
   width: var(--sidebar-width);
   @apply h-full pl-4 duration-300
-    flex flex-col bg-white dark:bg-slate-900 dark:text-white py-4 lg:border-r
+    flex flex-col bg-white dark:bg-slate-900 dark:text-white py-4 border-r
     border-r-gray-200 dark:border-r-gray-800 overflow-hidden;
 }
 .sidebar_item {
