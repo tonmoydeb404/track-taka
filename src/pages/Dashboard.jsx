@@ -9,12 +9,12 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
-import MonthFilter from "../../common/components/MonthFilter";
-import StatCard from "../../common/components/StatCard";
-import { useTransection } from "../../common/contexts/TransectionContext";
-import { chartData, pieData } from "../../utilities/chartData";
+import MonthFilter from "../common/components/MonthFilter";
+import StatCard from "../common/components/StatCard";
+import { useTransection } from "../common/contexts/TransectionContext";
+import { chartData, pieData } from "../utilities/chartData";
 
-const Analytics = () => {
+const Dashboard = () => {
   const { filteredTransections: transectionList } = useTransection();
 
   // total incomes
@@ -46,7 +46,7 @@ const Analytics = () => {
     <>
       {/* page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold">Analytics</h2>
+        <h2 className="text-2xl font-semibold">Dashboard</h2>
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
@@ -111,4 +111,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default Dashboard;

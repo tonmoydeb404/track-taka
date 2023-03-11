@@ -1,4 +1,4 @@
-import { BsCash, BsGear, BsPieChart, BsPlusSquare } from "react-icons/bs";
+import { BiCog, BiHomeAlt, BiMoney, BiPlusCircle } from "react-icons/bi";
 
 export const defaultCategories = [
   "food",
@@ -10,18 +10,18 @@ export const defaultCategories = [
 ];
 
 export const siteLinks = [
-  { id: "#1", title: "Analytics", icon: BsPieChart, link: "/" },
+  { id: "#1", title: "Dashboard", icon: BiHomeAlt, link: "/dashboard" },
   {
     id: "#2",
     title: "Transections",
-    icon: BsCash,
+    icon: BiMoney,
     link: "/transections",
   },
   {
     id: "#3",
     title: "New transection",
-    icon: BsPlusSquare,
+    icon: BiPlusCircle,
     link: "/transections/create",
   },
-  { id: "#4", title: "Settings", icon: BsGear, link: "/settings" },
+  { id: "#4", title: "Settings", icon: BiCog, link: "/settings" },
 ];

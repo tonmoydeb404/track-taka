@@ -1,5 +1,5 @@
 import React from "react";
-import { BsMoonFill, BsSun } from "react-icons/bs";
+import { BiMoon, BiSun } from "react-icons/bi";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 import { useGlobal } from "../common/contexts/GlobalContext";
@@ -68,9 +68,9 @@ const Sidebar = () => {
             className={` px-2 py-2 bg-blue-600 text-white rounded inline-block`}
           >
             {theme == "dark" ? (
-              <BsSun className="icon" />
+              <BiSun className="icon" />
             ) : (
-              <BsMoonFill className="icon" />
+              <BiMoon className="icon" />
             )}
           </span>
 

@@ -12,7 +12,7 @@ import { useGlobal } from "../common/contexts/GlobalContext";
 
 const list = [
   {
-    path: "/",
+    path: "/dashboard",
     icon: BiHomeAlt,
     title: "Dashboard",
   },

@@ -7,8 +7,9 @@ import { GlobalProvider } from "../common/contexts/GlobalContext";
 import { TransectionProvider } from "../common/contexts/TransectionContext";
 import Layout from "../layout";
 import ServiceWorker from "../pwa/serviceWorker";
-import Analytics from "./Analytics";
+import Dashboard from "./Dashboard";
 import HandleTransection from "./HandleTransection";
+import Home from "./Home";
 import Settings from "./Settings";
 import Transections from "./Transections";
 
@@ -18,9 +19,10 @@ const App = () => {
       <GlobalProvider>
         <TransectionProvider>
           <Toaster position="bottom-right" />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Analytics />}></Route>
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/" element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route path="/transections" element={<Transections />}></Route>
               <Route
                 path="/transections/create"
@@ -31,8 +33,9 @@ const App = () => {
                 element={<HandleTransection mode="edit" />}
               ></Route>
               <Route path="/settings" element={<Settings />}></Route>
-            </Routes>
-          </Layout>
+            </Route>
+          </Routes>
+
           <AutoBackup />
           <ServiceWorker />
         </TransectionProvider>
