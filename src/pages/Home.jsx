@@ -17,7 +17,7 @@ const Home = () => {
       </p>
 
       <div className="flex flex-wrap items-center gap-2 mt-10">
-        <Link className="btn btn-primary gap-1" to="/dashboard">
+        <Link className="btn btn-primary gap-1" to="/signin">
           Get Started <BsArrowRight />
         </Link>
         <Link className="btn btn-warning gap-1" to="/">

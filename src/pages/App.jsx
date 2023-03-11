@@ -11,6 +11,7 @@ import Dashboard from "./Dashboard";
 import HandleTransection from "./HandleTransection";
 import Home from "./Home";
 import Settings from "./Settings";
+import SignIn from "./SignIn";
 import Transections from "./Transections";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Toaster position="bottom-right" />
           <Routes>
             <Route path="/" element={<Home />}></Route>
+            <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/" element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route path="/transections" element={<Transections />}></Route>
