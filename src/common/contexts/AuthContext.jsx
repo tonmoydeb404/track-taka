@@ -1,13 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import {
-  getAuth,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../../firebase";
+import { logOut, signInWithGoogle } from "../../lib/auth";
 
 // firebase auth
 const auth = getAuth(app);
@@ -21,11 +16,19 @@ export const useAuth = () => useContext(AuthContext);
 // use auth context provider
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [status, setStatus] = useState("INITIAL"); // INITIAL, AUTHORIZED, UNAUTHORIZED, LOADING
+  const [error, setError] = useState(null);
 
   // handle user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setStatus("AUTHORIZED");
+        setUser(currentUser);
+      } else {
+        setStatus("UNAUTHORIZED");
+        setUser(null);
+      }
     });
 
     return () => {
@@ -34,36 +37,49 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // handle sign in
-  const handleSignIn = async () => {
+  const handleGoogleSignIn = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      const response = await signInWithPopup(auth, provider);
+      setStatus("LOADING");
+      const response = await signInWithGoogle();
+      // set user
+      setUser(response);
+      setStatus("AUTHORIZED");
       return response;
-    } catch (error) {
-      console.log(error);
-      return { error };
+    } catch (err) {
+      setStatus("UNAUTHORIZED");
+      setError(err);
+      return err;
     }
   };
 
   // handle log out
   const handleLogOut = async () => {
     try {
-      const response = await signOut(auth);
+      const response = await logOut();
+      setStatus("UNAUTHORIZED");
+      setUser(null);
       return response;
-    } catch (error) {
-      console.log(error);
-      return { error };
+    } catch (err) {
+      setStatus("UNAUTHORIZED");
+      setError(err);
+      return err;
     }
   };
 
   const value = useMemo(
     () => ({
       user,
-      handleSignIn,
+      status,
+      error,
+      handleGoogleSignIn,
       handleLogOut,
     }),
-    [user]
+    [user, status, error]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <>
+      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    </>
+  );
 };

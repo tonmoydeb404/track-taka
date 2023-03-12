@@ -2,9 +2,12 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import AutoBackup from "../common/components/AutoBackup";
+import Preloader from "../common/components/Preloader";
 import { AuthProvider } from "../common/contexts/AuthContext";
 import { GlobalProvider } from "../common/contexts/GlobalContext";
 import { TransectionProvider } from "../common/contexts/TransectionContext";
+import PrivateOutlet from "../common/outlets/PrivateOutlet";
+import PublicOutlet from "../common/outlets/PublicOutlet";
 import Layout from "../layout";
 import ServiceWorker from "../pwa/serviceWorker";
 import Dashboard from "./Dashboard";
@@ -21,23 +24,30 @@ const App = () => {
         <TransectionProvider>
           <Toaster position="bottom-right" />
           <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/signin" element={<SignIn />}></Route>
-            <Route path="/" element={<Layout />}>
-              <Route path="/dashboard" element={<Dashboard />}></Route>
-              <Route path="/transections" element={<Transections />}></Route>
-              <Route
-                path="/transections/create"
-                element={<HandleTransection mode="create" />}
-              ></Route>
-              <Route
-                path="/transections/edit/:id"
-                element={<HandleTransection mode="edit" />}
-              ></Route>
-              <Route path="/settings" element={<Settings />}></Route>
+            <Route path="/" element={<Home />} />
+            {/* only unauthorized users can visit */}
+            <Route element={<PublicOutlet />}>
+              <Route path="/signin" element={<SignIn />} />
+            </Route>
+            {/* only authorized users can visit */}
+            <Route element={<PrivateOutlet />}>
+              <Route element={<Layout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/transections" element={<Transections />} />
+                <Route
+                  path="/transections/create"
+                  element={<HandleTransection mode="create" />}
+                />
+                <Route
+                  path="/transections/edit/:id"
+                  element={<HandleTransection mode="edit" />}
+                />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
             </Route>
           </Routes>
 
+          <Preloader />
           <AutoBackup />
           <ServiceWorker />
         </TransectionProvider>
