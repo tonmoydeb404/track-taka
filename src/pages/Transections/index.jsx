@@ -5,7 +5,7 @@ import TransectionTable from "../../common/components/TransectionTable";
 import { useTransection } from "../../common/contexts/TransectionContext";
 
 const Transections = () => {
-  const { filteredTransections: transectionList } = useTransection();
+  const { transections, transectionLoading } = useTransection();
 
   return (
     <>
@@ -21,7 +21,7 @@ const Transections = () => {
 
       <StatCards />
 
-      <TransectionTable className="mt-10" data={transectionList} />
+      <TransectionTable className="mt-10" data={transections} />
     </>
   );
 };

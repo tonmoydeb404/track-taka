@@ -1,9 +1,9 @@
 import { Field, Form, Formik } from "formik";
-import React, { useMemo } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import Createable from "react-select/creatable";
+import ReactSelect from "react-select";
 import * as Yup from "yup";
-import { useTransection } from "../../common/contexts/TransectionContext";
+import categories from "../../data/categories.json";
 
 const transectionSchema = Yup.object({
   title: Yup.string().max(30).required(),
@@ -17,17 +17,7 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
   // router navigate
   const navigate = useNavigate();
 
-  // transection context
-  const { categories } = useTransection();
-
-  // custom select options
-  const customOptions = useMemo(
-    () =>
-      categories && categories.length
-        ? categories.map((item) => ({ label: item, value: item }))
-        : [],
-    [categories]
-  );
+  const categoryOptions = Object.values(categories);
 
   return (
     <Formik
@@ -86,24 +76,21 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
 
             <div className="input_group" data-invalid={!!errors.category}>
               <label htmlFor="category">Transection Category</label>
-              <Createable
+              <ReactSelect
                 name="category"
                 value={
-                  values.category
-                    ? {
-                        label: values.category,
-                        value: values.category,
-                      }
+                  values.category && categories[values.category]
+                    ? categories[values.category]
                     : ""
                 }
-                placeholder="select or create category"
-                options={customOptions}
+                placeholder="select category"
+                options={categoryOptions}
                 className
                 onChange={(cate) =>
                   setFieldValue("category", cate.value.toLowerCase())
                 }
                 classNamePrefix="custom-select"
-              ></Createable>
+              />
               <p className="input_error">{errors.category}</p>
             </div>
 

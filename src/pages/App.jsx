@@ -8,7 +8,6 @@ import { TransectionProvider } from "../common/contexts/TransectionContext";
 import PrivateOutlet from "../common/outlets/PrivateOutlet";
 import PublicOutlet from "../common/outlets/PublicOutlet";
 import Layout from "../layout";
-import ServiceWorker from "../pwa/serviceWorker";
 import Dashboard from "./Dashboard";
 import HandleTransection from "./HandleTransection";
 import Home from "./Home";
@@ -46,7 +45,7 @@ const App = () => {
             </Route>
           </Routes>
           <Preloader />
-          <ServiceWorker />
+          {/* <ServiceWorker /> */}
         </TransectionProvider>
       </GlobalProvider>
     </AuthProvider>

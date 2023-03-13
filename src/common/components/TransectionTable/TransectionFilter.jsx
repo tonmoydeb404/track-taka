@@ -1,6 +1,6 @@
 import React from "react";
 import { BsXLg } from "react-icons/bs";
-import { useTransection } from "../../contexts/TransectionContext";
+import categories from "../../../data/categories.json";
 
 const TransectionFilter = ({
   viewFilter = false,
@@ -12,7 +12,7 @@ const TransectionFilter = ({
   typeFilter = "ALL",
   setTypeFilter = () => {},
 }) => {
-  const { categories } = useTransection();
+  const categoryOptions = Object.values(categories);
 
   return (
     <div
@@ -65,24 +65,24 @@ const TransectionFilter = ({
         <div className="mt-5 flex flex-col gap-3">
           <label className="text-base font-medium">Categories</label>
           <div className="flex flex-col gap-2">
-            {categories &&
-              categories.length &&
-              categories.map((item) => (
-                <label
-                  htmlFor={item}
-                  key={item}
-                  className="flex items-center gap-1"
-                >
-                  <input
-                    type="checkbox"
-                    name={item}
-                    id={item}
-                    checked={cateFilter.includes(item.toLowerCase())}
-                    onChange={() => handleCateSelect(item.toLowerCase())}
-                  />
-                  <span>{item}</span>
-                </label>
-              ))}
+            {categoryOptions?.length
+              ? categoryOptions.map((item) => (
+                  <label
+                    htmlFor={item.value}
+                    key={item.value}
+                    className="flex items-center gap-1"
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.value}
+                      id={item.value}
+                      checked={cateFilter.includes(item.value)}
+                      onChange={() => handleCateSelect(item.value)}
+                    />
+                    <span>{item.label}</span>
+                  </label>
+                ))
+              : null}
           </div>
         </div>
       </div>

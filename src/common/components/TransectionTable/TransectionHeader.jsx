@@ -1,14 +1,6 @@
-import React, { useState } from "react";
-import {
-  BsFunnel,
-  BsPlusLg,
-  BsSearch,
-  BsThreeDotsVertical,
-  BsTrash,
-} from "react-icons/bs";
+import React from "react";
+import { BsFunnel, BsPlusLg, BsSearch, BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { downloadFile } from "../../../utilities/downloadFile";
-import ImportFile from "../ImportFile";
 
 const TransectionHeader = ({
   deleteAble = false,
@@ -21,8 +13,6 @@ const TransectionHeader = ({
   loading = true,
   setLoading = () => {},
 }) => {
-  // dropdown
-  const [dropdown, setDropdown] = useState(false);
   return (
     <div className="transection_head">
       {/* <!-- table search --> */}
@@ -70,55 +60,6 @@ const TransectionHeader = ({
             <BsTrash />
           </button>
         )}
-
-        <div className="dropdown relative">
-          <button
-            className="btn btn-icon btn-primary"
-            onClick={() => setDropdown((prevState) => !prevState)}
-          >
-            <BsThreeDotsVertical />
-          </button>
-
-          <ul
-            className={`dropdown_list  flex-col absolute bg-white border-gray-300 dark:bg-slate-700 text-right min-w-[200px] right-0 z-[999] p-2 mt-2 rounded border dark:border-gray-600 ${
-              dropdown ? "flex" : "hidden"
-            } `}
-          >
-            <li>
-              <Link
-                onClick={() => setDropdown(false)}
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm`}
-                to={"/transections/create"}
-              >
-                Add new
-              </Link>
-            </li>
-            <li>
-              <a
-                onClick={() => setDropdown(false)}
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm ${
-                  loading ? "pointer-events-none" : ""
-                }`}
-                href={downloadFile(tableData)}
-                download={`track-taka-${new Date().getTime()}.json`}
-              >
-                Export Transections
-              </a>
-            </li>
-            <li>
-              <label
-                htmlFor="json"
-                className={`px-2 py-1.5 block dark:hover:bg-slate-600 hover:bg-slate-900/10 rounded-sm w-full cursor-pointer  ${
-                  loading ? "pointer-events-none" : ""
-                }`}
-                onClick={() => setDropdown(false)}
-              >
-                Import Transections
-                <ImportFile id={"json"} setLoading={setLoading} />
-              </label>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   );

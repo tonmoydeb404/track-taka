@@ -1,19 +1,16 @@
-import { useGlobal } from "./GlobalContext";
-
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { defaultCategories } from "../../data/siteData";
-import {
-  createDocument,
-  deleteDocument,
-  readCollectionRealtime,
-  updateDocument,
-} from "../../lib/database";
+import { createContext, useContext, useMemo, useState } from "react";
+import useUserTransections from "../hooks/useUserTransections";
 import { useAuth } from "./AuthContext";
 
 // transection context
 export const TransectionContext = createContext({
   transections: [],
-  categories: [],
+  transectionLoading: true,
+  createTransection: () => {},
+  updateTransection: () => {},
+  deleteTransection: () => {},
+  transectionTime: Date.now(),
+  setTransectionTime: () => {},
 });
 
 // use transection values
@@ -21,185 +18,53 @@ export const useTransection = () => useContext(TransectionContext);
 
 // transection context provider
 export const TransectionProvider = ({ children }) => {
-  // other contexts
-  const { monthFilter } = useGlobal();
+  // auth contexts
   const { user } = useAuth();
+  // transection state
+  const {
+    userTransections,
+    createTransection,
+    updateTransection,
+    deleteTransection,
+    transectionLoading,
+  } = useUserTransections(user?.uid);
+  // transection time state
+  const [transectionTime, setTransectionTime] = useState(Date.now());
 
-  // database collection path
-  const transectionCollection = useMemo(
-    () => ["users", user?.uid, "transections"],
-    [user]
-  );
+  // monthly transections
+  const transections = useMemo(() => {
+    // when transection time is disabled
+    if (transectionTime === null) return userTransections;
 
-  // transection states
-  const [transections, setTransections] = useState([]);
-  const [categories, setCategories] = useState([]);
-  // sorted transection
-  const [sortedTx, setSortedTx] = useState([]);
+    // when user transections is or empty or invalid
+    if (!userTransections || !userTransections?.length) return [];
 
-  // TODO: refactor transection actions
-  // transection actions
-  const txActions = {
-    async create(transection = {}) {
-      try {
-        // new transection
-        const newTransection = {
-          id: transection.id,
-          title: transection.title,
-          amount: transection.amount,
-          type: transection.type,
-          category: transection.category,
-          date: transection.date,
-          createdAt: Date.now(),
-        };
-        // create data to database
-        const response = await createDocument(
-          transectionCollection,
-          newTransection.id,
-          newTransection
-        );
-
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async update(id, transection = {}) {
-      try {
-        // update data to database
-        const response = await updateDocument(
-          transectionCollection,
-          id,
-          transection
-        );
-
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async delete(idList = []) {
-      try {
-        // delete data to database
-        const promises = idList.map(
-          async (id) => await deleteDocument(transectionCollection, id)
-        );
-        const response = await Promise.all(promises);
-
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async insert() {},
-    async clear() {},
-  };
-  // TODO: refactor category actions
-  // category actions
-  const ctActions = {
-    create(cate = "") {
-      // checking for category already exist or not
-      if (cate && !categories.includes(cate?.toLowerCase())) {
-        setCategories((prevState) => [...prevState, cate?.toLowerCase()]);
-      }
-    },
-    insert(cates = []) {
-      // looking for unique category
-      let catesState = cates.filter(
-        (cate, index, arr) => arr.indexOf(cate) === index
+    // filter by transection time
+    const transectionDate = new Date(transectionTime);
+    return userTransections.filter((t) => {
+      const tDate = new Date(t.date);
+      return (
+        tDate.getMonth() === transectionDate.getMonth() &&
+        tDate.getFullYear() === transectionDate.getFullYear()
       );
-      // check for category already has or not
-      catesState = [...catesState].filter((cate) => !categories.includes(cate));
-
-      // update categories
-      setCategories([...categories, ...catesState]);
-    },
-  };
-
-  // fetch transections if user is authorized
-  useEffect(() => {
-    let unsubscribe = () => {};
-
-    if (user && user?.uid) {
-      unsubscribe = readCollectionRealtime(["users", user.uid, "transections"])(
-        (data) => {
-          setTransections(data);
-        }
-      );
-    }
-    // clean up
-    return () => {
-      unsubscribe();
-    };
-  }, [user]);
-
-  // TODO: refactor update
-  // on transection update
-  useEffect(() => {
-    // set sort
-    const sorted = transections.sort((a, b) => {
-      const aCreated = new Date(a.createdAt || Date.now());
-      const bCreated = new Date(b.createdAt || Date.now());
-
-      const aDate = new Date(a.date).setHours(
-        aCreated.getHours(),
-        aCreated.getMinutes(),
-        aCreated.getSeconds()
-      );
-
-      const bDate = new Date(b.date).setHours(
-        bCreated.getHours(),
-        bCreated.getMinutes(),
-        bCreated.getSeconds()
-      );
-
-      return new Date(bDate) - new Date(aDate);
     });
-    setSortedTx(sorted);
-
-    // set categories
-    ctActions.insert([
-      ...defaultCategories,
-      ...transections.map((d) => d.category),
-    ]);
-
-    return () => {
-      setSortedTx([]);
-      setCategories([]);
-    };
-  }, [transections]);
-
-  // TODO: refactor filter
-  // filter transection data by month
-  const filteredTransections = useMemo(() => {
-    return monthFilter.enable && sortedTx
-      ? sortedTx.filter((item) => {
-          const itemDate = new Date(item.date);
-          const selectedDate = new Date(monthFilter.value);
-
-          return (
-            itemDate.getMonth() == selectedDate.getMonth() &&
-            itemDate.getFullYear() == itemDate.getFullYear()
-          );
-        })
-      : transections;
-  }, [sortedTx, monthFilter.enable, monthFilter.value]);
+  }, [transectionTime, userTransections]);
 
   // context value with memorization
   const value = useMemo(
     () => ({
-      transections: transections,
-      categories: categories,
-      filteredTransections,
-      createTransection: txActions.create,
-      deleteTransection: txActions.delete,
-      updateTransection: txActions.update,
-      insertTransection: txActions.insert,
-      clearTransection: txActions.clear,
-      createCategory: ctActions.create,
-      insertCategories: ctActions.insert,
+      // main transection
+      transections,
+      allTransections: userTransections,
+      transectionLoading,
+      createTransection,
+      updateTransection,
+      deleteTransection,
+      // transection time
+      transectionTime,
+      setTransectionTime,
     }),
-    [transections, categories, filteredTransections]
+    [userTransections, transectionTime, transections, transectionLoading]
   );
 
   return (

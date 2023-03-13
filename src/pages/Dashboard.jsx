@@ -15,15 +15,15 @@ import { useTransection } from "../common/contexts/TransectionContext";
 import { chartData, pieData } from "../utilities/chartData";
 
 const Dashboard = () => {
-  const { filteredTransections: transectionList } = useTransection();
+  const { transections } = useTransection();
 
   // generate graph data for analytics
   const graphData = useMemo(
     () => ({
-      chart: chartData(transectionList),
-      pie: pieData(transectionList),
+      chart: chartData(transections),
+      pie: pieData(transections),
     }),
-    [transectionList]
+    [transections]
   );
 
   return (

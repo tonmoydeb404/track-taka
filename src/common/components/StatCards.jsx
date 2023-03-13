@@ -4,11 +4,11 @@ import { useTransection } from "../contexts/TransectionContext";
 import StatCard from "./StatCard";
 
 const StatCards = () => {
-  const { filteredTransections: transectionList } = useTransection();
+  const { transections } = useTransection();
 
   // total incomes
   const incomes =
-    transectionList?.reduce((prev, current) => {
+    transections?.reduce((prev, current) => {
       if (current.type == "income") {
         return prev + current.amount;
       }
@@ -17,7 +17,7 @@ const StatCards = () => {
 
   // total expenses
   const expenses =
-    transectionList?.reduce((prev, current) => {
+    transections?.reduce((prev, current) => {
       if (current.type == "expense") {
         return prev + current.amount;
       }
