@@ -1,20 +1,11 @@
 /* main css */
 .main {
-  @apply flex-1 w-full min-h-screen duration-300;
+  @apply w-full min-h-screen duration-300;
 }
 
 .main_content {
-  @apply px-5 pt-10 md:px-10 lg:py-10;
+  @apply w-full pt-10 lg:py-10 px-5 md:px-10 overflow-hidden;
 }
-
-/* layout */
-
-/* body:not([data-sidebar="true"]) {
-  --sidebar-width: 0px;
-}
-body[data-sidebar="true"] {
-  --sidebar-width: 250px;
-} */
 
 @screen sm {
   body:not([data-sidebar="true"]) {

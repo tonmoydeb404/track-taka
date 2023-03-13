@@ -1,35 +1,30 @@
 import {
-  getAdditionalUserInfo,
+  FacebookAuthProvider,
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-  updateProfile,
 } from "firebase/auth";
 import app from "../firebase";
 
 const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
-
-// perform new user tasks
-const newUserTask = async (user) => {
-  try {
-    // update profile
-    const photoURL = `https://api.dicebear.com/5.x/thumbs/svg?seed=${user.uid}`;
-    await updateProfile(user, { photoURL });
-  } catch (error) {
-    console.log(error);
-  }
+const providers = {
+  google: GoogleAuthProvider,
+  facebook: FacebookAuthProvider,
+  github: GithubAuthProvider,
 };
 
-// sign with google
-export const signInWithGoogle = () =>
+// sign with third party providers google
+export const signInWith = (provider) =>
   new Promise(async (resolve, reject) => {
+    if (!provider || !providers[provider])
+      throw Error("valid auth provider is required");
+    // select auth provider
+    const authProvider = new providers[provider]();
+
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
-      // if user is new then perform new user task
-      if (isNewUser) await newUserTask(result.user);
+      const result = await signInWithPopup(auth, authProvider);
 
       resolve(result.user);
     } catch (error) {

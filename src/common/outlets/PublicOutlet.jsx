@@ -1,11 +1,13 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const PublicOutlet = () => {
+  const location = useLocation();
   const { user, status } = useAuth();
 
-  if (status === "AUTHORIZED") return <Navigate to="/dashboard" />;
+  if (status === "AUTHORIZED")
+    return <Navigate to={location.state?.path || "/dashboard"} />;
 
   return <Outlet context={{ user, status }} />;
 };

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../../firebase";
-import { logOut, signInWithGoogle } from "../../lib/auth";
+import { logOut, signInWith } from "../../lib/auth";
 
 // firebase auth
 const auth = getAuth(app);
@@ -37,10 +37,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // handle sign in
-  const handleGoogleSignIn = async () => {
+  const handleSignInWith = (provider) => async () => {
     try {
       setStatus("LOADING");
-      const response = await signInWithGoogle();
+      const response = await signInWith(provider);
       // set user
       setUser(response);
       setStatus("AUTHORIZED");
@@ -51,6 +51,13 @@ export const AuthProvider = ({ children }) => {
       return err;
     }
   };
+
+  // handle Google Sign In
+  const handleGoogleSignIn = handleSignInWith("google");
+  // handle Facebook Sign In
+  const handleFacebookSignIn = handleSignInWith("facebook");
+  // handle Github Sign In
+  const handleGithubSignIn = handleSignInWith("github");
 
   // handle log out
   const handleLogOut = async () => {
@@ -72,6 +79,8 @@ export const AuthProvider = ({ children }) => {
       status,
       error,
       handleGoogleSignIn,
+      handleFacebookSignIn,
+      handleGithubSignIn,
       handleLogOut,
     }),
     [user, status, error]

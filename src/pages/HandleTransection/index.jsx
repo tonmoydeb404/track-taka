@@ -54,7 +54,7 @@ const HandleTransection = ({ mode }) => {
           error: "error: transection not created",
         });
       } else if (mode == "edit") {
-        const promise = updateTransection({ ...setDefState, ...values });
+        const promise = updateTransection(defState.id, values);
         await toast.promise(promise, {
           loading: "editing transection...",
           success: "transection edited successfully",

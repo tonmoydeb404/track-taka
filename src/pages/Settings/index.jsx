@@ -1,10 +1,8 @@
 import React from "react";
-import toast from "react-hot-toast";
 import {
   BsBoxArrowRight,
   BsCloudDownload,
   BsCloudUpload,
-  BsGoogle,
 } from "react-icons/bs";
 import { useAuth } from "../../common/contexts/AuthContext";
 import { useGlobal } from "../../common/contexts/GlobalContext";
@@ -15,54 +13,10 @@ import {
 } from "../../common/services/transectionServices";
 
 const Settings = () => {
-  const { handleSignIn, user, handleLogOut } = useAuth();
+  const { user, handleLogOut } = useAuth();
   const { transections, insertTransection, clearTransection } =
     useTransection();
   const { autoBackup, setAutoBackupDuration, isOnline } = useGlobal();
-
-  // logout from app
-  const handleSignOut = async () => {
-    try {
-      if (transections && transections.length) {
-        await uploadTransections({ uid: user?.uid, data: transections });
-      }
-      // clear transections from local database
-      await toast.promise(clearTransection(), {
-        loading: "clearing transection from local server...",
-        success: "transection cleared from local server.",
-        error: "error in clearing transection",
-      });
-      // sign out from app
-      await toast.promise(handleLogOut(), {
-        loading: "signing out...",
-        success: "sign out successfully",
-        error: "error in sign out",
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // handle user log in
-  const handleLogIn = async () => {
-    try {
-      const res = await toast.promise(handleSignIn(), {
-        loading: "logging in...",
-        success: "login successfully",
-        error: "error in sign in",
-      });
-
-      // validate user
-      if (res && res.user?.uid) {
-        await downloadTransections({
-          uid: res.user?.uid,
-          updateState: insertTransection,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <>
@@ -72,7 +26,7 @@ const Settings = () => {
 
       <div className="mt-10">
         <div className="w-full lg:w-[500px] flex flex-col gap-2.5">
-          {user?.uid ? (
+          {user?.uid && isOnline ? (
             <>
               <div className="settings_item">
                 <img
@@ -85,7 +39,7 @@ const Settings = () => {
 
                 <button
                   className="btn btn-icon btn-danger ml-auto"
-                  onClick={handleSignOut}
+                  onClick={handleLogOut}
                 >
                   <BsBoxArrowRight />
                 </button>
@@ -158,22 +112,7 @@ const Settings = () => {
           ) : (
             <>
               <div className="settings_item">
-                {isOnline ? (
-                  <>
-                    <h2>Login with google</h2>
-
-                    <button
-                      className="btn btn-icon btn-primary ml-auto"
-                      onClick={handleLogIn}
-                    >
-                      <BsGoogle />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <h2>make sure your internet connection is stable</h2>
-                  </>
-                )}
+                <h2>make sure your internet connection is stable</h2>
               </div>
             </>
           )}

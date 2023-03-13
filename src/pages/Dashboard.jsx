@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { BsGraphDown, BsGraphUp, BsPlus, BsWallet } from "react-icons/bs";
+import { BsPlus } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import {
   Area,
@@ -10,28 +10,12 @@ import {
   XAxis,
 } from "recharts";
 import MonthFilter from "../common/components/MonthFilter";
-import StatCard from "../common/components/StatCard";
+import StatCards from "../common/components/StatCards";
 import { useTransection } from "../common/contexts/TransectionContext";
 import { chartData, pieData } from "../utilities/chartData";
 
 const Dashboard = () => {
   const { filteredTransections: transectionList } = useTransection();
-
-  // total incomes
-  const incomes = transectionList.reduce((prev, current) => {
-    if (current.type == "income") {
-      return prev + current.amount;
-    }
-    return prev;
-  }, 0);
-
-  // total expenses
-  const expenses = transectionList.reduce((prev, current) => {
-    if (current.type == "expense") {
-      return prev + current.amount;
-    }
-    return prev;
-  }, 0);
 
   // generate graph data for analytics
   const graphData = useMemo(
@@ -60,33 +44,12 @@ const Dashboard = () => {
       </div>
 
       {/* <!-- analytics cards start --> */}
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
-        <StatCard
-          type="savings"
-          title="wallet"
-          amount={incomes - expenses}
-          icon={BsWallet}
-        />
-
-        <StatCard
-          type="income"
-          title="income"
-          amount={incomes}
-          icon={BsGraphUp}
-        />
-
-        <StatCard
-          type="expense"
-          title="expense"
-          amount={expenses}
-          icon={BsGraphDown}
-        />
-      </div>
+      <StatCards />
 
       <div className="grid lg:grid-cols-3 gap-5 mt-10">
         {/* <!-- analytics graph chart start --> */}
         <div className="lg:col-span-3 bg-white border border-gray-200 p-4 min-h-[400px] dark:bg-slate-800 dark:border-slate-700 ">
-          <ResponsiveContainer height={400}>
+          <ResponsiveContainer height={400} width={"100%"}>
             <AreaChart data={graphData.chart} className="w-full">
               <Tooltip contentStyle={{ color: "black" }} />
               <Area

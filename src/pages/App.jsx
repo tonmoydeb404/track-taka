@@ -1,7 +1,6 @@
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
-import AutoBackup from "../common/components/AutoBackup";
 import Preloader from "../common/components/Preloader";
 import { AuthProvider } from "../common/contexts/AuthContext";
 import { GlobalProvider } from "../common/contexts/GlobalContext";
@@ -46,9 +45,7 @@ const App = () => {
               </Route>
             </Route>
           </Routes>
-
           <Preloader />
-          <AutoBackup />
           <ServiceWorker />
         </TransectionProvider>
       </GlobalProvider>
