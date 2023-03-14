@@ -12,8 +12,6 @@ dist
 dev-dist
 dist-ssr
 *.local
-demo-db.json
-/markup
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +23,8 @@ demo-db.json
 *.njsproj
 *.sln
 *.sw?
+
+# custom
+todo.md
+demo-db.json
+/markup
