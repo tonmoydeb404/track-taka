@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
+import TransectionForm from "../../common/components/Transection/TransectionForm";
 import { useTransection } from "../../common/contexts/TransectionContext";
-import TransectionForm from "./TransectionForm";
 
-const HandleTransection = ({ mode }) => {
+const EditTransection = ({ mode }) => {
   // router hooks
   const navigate = useNavigate();
   const { id } = useParams();
@@ -24,9 +24,8 @@ const HandleTransection = ({ mode }) => {
 
   // handle default data
   useEffect(() => {
-    if (mode == "edit" && id) {
+    if (id) {
       const targetedState = transections.find((item) => item.id == id);
-
       if (targetedState !== undefined) {
         setDefState({ ...targetedState });
       }
@@ -46,21 +45,13 @@ const HandleTransection = ({ mode }) => {
   // handle submit
   const handleSubmit = async (values) => {
     try {
-      if (mode == "create") {
-        const promise = createTransection(values);
-        await toast.promise(promise, {
-          loading: "creating transection...",
-          success: "transection created successfully",
-          error: "error: transection not created",
-        });
-      } else if (mode == "edit") {
-        const promise = updateTransection(defState.id, values);
-        await toast.promise(promise, {
-          loading: "editing transection...",
-          success: "transection edited successfully",
-          error: "error: transection not edited",
-        });
-      }
+      const promise = updateTransection(defState.id, values);
+      await toast.promise(promise, {
+        loading: "editing transection...",
+        success: "transection edited successfully",
+        error: "error: transection not edited",
+      });
+
       navigate("/transections");
     } catch (error) {
       console.error(error);
@@ -70,14 +61,12 @@ const HandleTransection = ({ mode }) => {
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold">
-          {mode == "edit" ? "Edit" : "New"} Transection
-        </h2>
+        <h2 className="text-2xl font-semibold">Edit Transection</h2>
       </div>
 
       <div className="mt-10">
         <TransectionForm
-          mode={mode}
+          mode={"EDIT"}
           initialValues={defState}
           handleSubmit={handleSubmit}
         />
@@ -86,4 +75,4 @@ const HandleTransection = ({ mode }) => {
   );
 };
 
-export default HandleTransection;
+export default EditTransection;

@@ -1,10 +1,10 @@
 import React from "react";
-import { BsBoxArrowRight } from "react-icons/bs";
-import { useAuth } from "../../common/contexts/AuthContext";
-import { useGlobal } from "../../common/contexts/GlobalContext";
+import AuthItem from "../common/components/Settings/AuthItem";
+import { useAuth } from "../common/contexts/AuthContext";
+import { useGlobal } from "../common/contexts/GlobalContext";
 
 const Settings = () => {
-  const { user, handleLogOut } = useAuth();
+  const { user } = useAuth();
   const { isOnline } = useGlobal();
 
   return (
@@ -17,22 +17,7 @@ const Settings = () => {
         <div className="w-full lg:w-[500px] flex flex-col gap-2.5">
           {user?.uid && isOnline ? (
             <>
-              <div className="settings_item">
-                <img
-                  src={user?.photoURL}
-                  alt=""
-                  className="w-12 h-12 rounded"
-                />
-
-                <h2>{user?.displayName}</h2>
-
-                <button
-                  className="btn btn-icon btn-danger ml-auto"
-                  onClick={handleLogOut}
-                >
-                  <BsBoxArrowRight />
-                </button>
-              </div>
+              <AuthItem user={user} />
             </>
           ) : (
             <>

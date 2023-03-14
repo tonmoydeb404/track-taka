@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ReactSelect from "react-select";
 import * as Yup from "yup";
-import categories from "../../data/categories.json";
+import categories from "../../../data/categories.json";
 
 const transectionSchema = Yup.object({
   title: Yup.string().max(30).required(),
@@ -13,7 +13,7 @@ const transectionSchema = Yup.object({
   date: Yup.date().required(),
 });
 
-const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
+const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
   // router navigate
   const navigate = useNavigate();
 
@@ -120,7 +120,7 @@ const TransectionForm = ({ mode = "create", initialValues, handleSubmit }) => {
 
               <button
                 className={`btn ${
-                  mode == "create" ? "btn-success" : "btn-warning"
+                  mode == "CREATE" ? "btn-success" : "btn-warning"
                 }`}
                 type="submit"
               >

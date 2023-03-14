@@ -3,8 +3,8 @@ import { BiError } from "react-icons/bi";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { FcGoogle } from "react-icons/fc";
-import { useAuth } from "../common/contexts/AuthContext";
-import authErrorMessage from "../utilities/authErrorMessage";
+import { useAuth } from "../../common/contexts/AuthContext";
+import authErrorMessage from "../../utilities/authErrorMessage";
 
 const SignIn = () => {
   const {
