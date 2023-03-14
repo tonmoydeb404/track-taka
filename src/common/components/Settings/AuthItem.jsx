@@ -1,7 +1,7 @@
 import React from "react";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/authContext";
 
 const AuthItem = ({ user }) => {
   const navigate = useNavigate();

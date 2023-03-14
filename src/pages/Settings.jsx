@@ -1,7 +1,7 @@
 import React from "react";
 import AuthItem from "../common/components/Settings/AuthItem";
-import { useAuth } from "../common/contexts/AuthContext";
-import { useGlobal } from "../common/contexts/GlobalContext";
+import { useAuth } from "../common/contexts/authContext";
+import { useGlobal } from "../common/contexts/globalContext";
 
 const Settings = () => {
   const { user } = useAuth();

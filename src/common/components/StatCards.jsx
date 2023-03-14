@@ -1,6 +1,6 @@
 import React from "react";
 import { BsGraphDown, BsGraphUp, BsWallet } from "react-icons/bs";
-import { useTransection } from "../contexts/TransectionContext";
+import { useTransection } from "../contexts/transectionContext";
 import StatCard from "./StatCard";
 
 const StatCards = () => {

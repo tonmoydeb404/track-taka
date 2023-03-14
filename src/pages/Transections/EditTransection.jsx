@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 import TransectionForm from "../../common/components/Transection/TransectionForm";
-import { useTransection } from "../../common/contexts/TransectionContext";
+import { useTransection } from "../../common/contexts/transectionContext";
 
 const EditTransection = ({ mode }) => {
   // router hooks

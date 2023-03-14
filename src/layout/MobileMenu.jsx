@@ -8,7 +8,7 @@ import {
   BiSun,
 } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
-import { useGlobal } from "../common/contexts/GlobalContext";
+import { useTheme } from "../common/contexts/themeContext";
 
 const list = [
   {
@@ -34,7 +34,7 @@ const list = [
 ];
 
 const MobileMenu = () => {
-  const { theme, toggleTheme } = useGlobal();
+  const { theme, toggleTheme } = useTheme();
   return (
     <nav className="mobile-menu">
       <div className="mobile-menu_wrapper">

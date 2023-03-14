@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import MonthFilter from "../common/components/MonthFilter";
 import StatCards from "../common/components/StatCards";
-import { useTransection } from "../common/contexts/TransectionContext";
+import { useTransection } from "../common/contexts/transectionContext";
 import { chartData, pieData } from "../utilities/chartData";
 
 const Dashboard = () => {

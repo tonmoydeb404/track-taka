@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import useUserTransections from "../hooks/useUserTransections";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./authContext";
 
 // transection context
 export const TransectionContext = createContext({

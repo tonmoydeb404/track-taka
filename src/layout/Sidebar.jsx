@@ -2,20 +2,21 @@ import React from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
-import { useGlobal } from "../common/contexts/GlobalContext";
+import { useGlobal } from "../common/contexts/globalContext";
+import { useTheme } from "../common/contexts/themeContext";
 import { siteLinks } from "../data/siteData";
 import { getBreakpointValue } from "../utilities/getBreakpoint";
 
 const Sidebar = () => {
-  const { theme, toggleSidebar, setSidebar, sidebar, toggleTheme } =
-    useGlobal();
+  const { sidebar, toggleSidebar, hideSidebar } = useGlobal();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div
       className="sidebar"
       onClick={() => {
         if (sidebar) {
-          setSidebar(false);
+          hideSidebar();
         }
       }}
     >
@@ -40,7 +41,7 @@ const Sidebar = () => {
                 key={item.id}
                 onClick={() => {
                   if (window.innerWidth <= getBreakpointValue("lg")) {
-                    setSidebar(false);
+                    hideSidebar();
                   }
                 }}
               >
