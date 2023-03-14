@@ -8,13 +8,13 @@ import {
 } from "react";
 import config from "../../data/config.json";
 
-const themeContext = createContext({
+const ThemeContext = createContext({
   theme: config.defaultTheme,
   toggleTheme: () => {},
 });
 
 // use theme values
-export const useTheme = () => useContext(themeContext);
+export const useTheme = () => useContext(ThemeContext);
 
 // theme provider
 export const ThemeProvider = ({ children }) => {
@@ -44,6 +44,6 @@ export const ThemeProvider = ({ children }) => {
   const value = useMemo(() => ({ theme, toggleTheme }), [theme]);
 
   return (
-    <themeContext.Provider value={value}>{children}</themeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
