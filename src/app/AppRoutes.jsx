@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import Layout from "../common/layout";
 import PrivateOutlet from "../common/outlets/PrivateOutlet";
 import PublicOutlet from "../common/outlets/PublicOutlet";
-import Layout from "../layout";
 import SignIn from "../pages/Auth/SignIn";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";

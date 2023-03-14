@@ -19,5 +19,5 @@
 }
 
 .mobile-menu_item.active {
-  @apply bg-blue-600/20 dark:bg-blue-700/10 text-blue-600 ring-1;
+  @apply bg-slate-300 dark:bg-slate-700;
 }

@@ -23,32 +23,3 @@
     @apply lg:ml-[var(--sidebar-width)];
   }
 }
-
-/* sidebar collaped */
-body:not([data-sidebar="true"]) .sidebar {
-  @apply w-auto;
-}
-body:not([data-sidebar="true"]) .sidebar .sidebar_container {
-  @apply px-2;
-}
-body:not([data-sidebar="true"]) .sidebar .sidebar_item,
-body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {
-  @apply justify-start rounded;
-}
-body:not([data-sidebar="true"]) .sidebar .sidebar_item {
-  @apply p-1;
-}
-body:not([data-sidebar="true"]) .sidebar .sidebar_links_item {
-  @apply p-2.5;
-}
-body:not([data-sidebar="true"]) .sidebar .title {
-  @apply hidden;
-}
-body:not([data-sidebar="true"]) .sidebar .sidebar_item .icon {
-  @apply text-lg;
-}
-
-/* sidebar oppend */
-body[data-sidebar="true"] .sidebar .sidebar_links_item .icon {
-  @apply text-xl;
-}
