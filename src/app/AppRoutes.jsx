@@ -5,6 +5,7 @@ import PublicOutlet from "../common/outlets/PublicOutlet";
 import Layout from "../layout";
 import SignIn from "../pages/Auth/SignIn";
 import Dashboard from "../pages/Dashboard";
+import Home from "../pages/Home";
 import Settings from "../pages/Settings";
 import Transections from "../pages/Transections";
 import CreateTransection from "../pages/Transections/CreateTransection";
@@ -13,7 +14,7 @@ import EditTransection from "../pages/Transections/EditTransection";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<Home />} />
 
       {/* unauthorized routes */}
       <Route element={<PublicOutlet />}>
