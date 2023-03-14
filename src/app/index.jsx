@@ -10,16 +10,16 @@ import AppRoutes from "./AppRoutes";
 const App = () => {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <GlobalProvider>
+      <GlobalProvider>
+        <AuthProvider>
           <TransectionProvider>
             <Toaster position="bottom-right" />
             <AppRoutes />
             <Preloader />
             {/* <ServiceWorker /> */}
           </TransectionProvider>
-        </GlobalProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </GlobalProvider>
     </ThemeProvider>
   );
 };
