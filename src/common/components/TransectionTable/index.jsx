@@ -1,162 +1,103 @@
-import React, { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import React, { useState } from "react";
 import { useTransection } from "../../contexts/transectionContext";
+import useSelect from "../../hooks/useSelect";
+import useTransectionFilter from "../../hooks/useTransectionFilter";
 import TransectionFilter from "./TransectionFilter";
 import TransectionHeader from "./TransectionHeader";
 import TransectionTH from "./TransectionTH";
 import TransectionTR from "./TransectionTR";
 
-const TransectionTable = ({ className = "", data = [] }) => {
-  // app ref
-  const txRef = useRef(null);
-
-  // app states
-  const [tableData, setTableData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [query, setQuery] = useState("");
-
-  // filter states
-  const [viewFilter, setViewFilter] = useState(false);
-  const [sortByFilter, setSortByFilter] = useState("Default");
-  const [typeFilter, setTypeFilter] = useState("ALL");
-  const [cateFilter, setCateFilter] = useState([]);
-
+const TransectionTable = ({
+  className = "",
+  data = [],
+  control = false,
+  footer = false,
+}) => {
   // transection context
   const { deleteTransection } = useTransection();
-
+  // filter states
+  const {
+    filteredData: tableData,
+    filterCategories,
+    filterSort,
+    filterType,
+    query,
+    setFilterSort,
+    setFilterType,
+    setQuery,
+    toggleFilterCategory,
+  } = useTransectionFilter(data);
+  const [showFilter, setShowFilter] = useState(false);
+  // selected row states
+  const {
+    selected: selectedRows,
+    removeMultiple,
+    allSelect,
+    clearSelect,
+    removeSelect,
+    toggleSelect,
+  } = useSelect(tableData, "id");
   // transection loading
   const [loading, setLoading] = useState(false);
 
-  // handle data filtering
-  useEffect(() => {
-    let filteredData = [...data];
-
-    // searchFilter
-    if (typeof query == "string" && query.length) {
-      filteredData = filteredData.filter((item) =>
-        item.title.toLowerCase().includes(query.toLowerCase())
-      );
-    }
-
-    // category filter
-    if (cateFilter && cateFilter.length) {
-      filteredData = filteredData.filter((item) =>
-        cateFilter.includes(item.category.toLowerCase())
-      );
-    }
-
-    // sort filter
-    if (sortByFilter == "AMOUNT_LOW_TO_HIGH") {
-      filteredData = filteredData.sort((a, b) => a.amount - b.amount);
-    } else if (sortByFilter == "AMOUNT_HIGH_TO_LOW") {
-      filteredData = filteredData.sort((a, b) => b.amount - a.amount);
-    }
-
-    // type filter
-    if (typeFilter == "INCOME") {
-      filteredData = filteredData.filter((item) => item.type == "income");
-    } else if (typeFilter == "EXPENSE") {
-      filteredData = filteredData.filter((item) => item.type == "expense");
-    }
-
-    // update table data
-    setTableData([...filteredData]);
-  }, [query, data, sortByFilter, cateFilter, typeFilter]);
-
-  //   handle individual select
-  const handleSelect = (id, source = [], update = () => {}) => {
-    const selectedItems = [...source];
-
-    if (selectedItems.includes(id)) {
-      selectedItems.splice(selectedItems.indexOf(id), 1);
-    } else {
-      selectedItems.push(id);
-    }
-
-    update([...selectedItems]);
-  };
-
-  // handle table row select
-  const handleRowSelect = (id) =>
-    handleSelect(id, selectedRows, setSelectedRows);
-
-  // handle filter category select
-  const handleCateSelect = (id) => handleSelect(id, cateFilter, setCateFilter);
-
-  //   handle all select
-  const handleAllSelect = (isSelected) => {
-    let allIds = [];
-
-    if (isSelected) {
-      allIds = tableData.map((item) => item.id);
-    }
-
-    setSelectedRows([...allIds]);
-  };
-
-  // handle delete transection
-  const handleDelete = async (id = [], clear = () => {}) => {
-    // set loading true
+  // delete selected rows
+  const handleDeleteSelectedRow = async () => {
     setLoading(true);
-    const promise = deleteTransection(id);
-    await toast.promise(promise, {
-      loading: "deleting transection...",
-      error: "error: cannot delete transection",
-      success: "transection deleted successfully",
-    });
-    clear();
-    // set loading false
+    await deleteTransection(selectedRows);
+
+    // reset states
+    clearSelect();
     setLoading(false);
   };
 
-  return (
-    <div ref={txRef} className={className}>
-      <TransectionHeader
-        deleteAble={!!selectedRows.length}
-        query={query}
-        setQuery={setQuery}
-        handleDelete={() =>
-          handleDelete(selectedRows, () => handleAllSelect(false))
-        }
-        handleFilter={() => setViewFilter(true)}
-        tableData={tableData}
-        loading={loading}
-        setLoading={setLoading}
-      />
+  // delete specific row
+  const handleDeleteRow = async (id) => {
+    setLoading(true);
+    await deleteTransection([id]);
 
-      <div className="overflow-x-auto mt-8">
-        <table className="w-full border border-gray-200 dark:border-gray-700">
+    // reset states
+    removeSelect(id);
+    setLoading(false);
+  };
+
+  console.log(tableData);
+
+  return (
+    <div className={` overflow-hidden ${className}`}>
+      {control ? (
+        <TransectionHeader
+          query={query}
+          setQuery={setQuery}
+          handleDelete={handleDeleteSelectedRow}
+          deleteAble={!!selectedRows.length}
+          handleFilter={() => setShowFilter(true)}
+          loading={loading}
+        />
+      ) : null}
+
+      <div
+        className={`overflow-auto relative max-h-[400px] block py-0 ${
+          control ? "mt-5" : ""
+        }`}
+      >
+        <table className="w-full dark:border-gray-700 border-b">
           <TransectionTH
-            callBack={handleAllSelect}
+            selectAll={allSelect}
+            deselectAll={clearSelect}
             isAllSelected={
-              tableData &&
-              tableData.length &&
-              selectedRows.length == tableData.length
+              tableData?.length && selectedRows?.length === tableData?.length
             }
           />
           <tbody>
             {tableData && tableData.length ? (
               tableData.map((item) => (
                 <TransectionTR
-                  title={item.title}
-                  type={item.type}
-                  amount={item.amount}
-                  category={item.category}
-                  date={item.date}
-                  id={item.id}
+                  {...item}
                   key={item.id}
-                  handleSelect={() => handleRowSelect(item.id)}
+                  handleSelect={() => toggleSelect(item.id)}
                   isSelected={selectedRows.includes(item.id)}
-                  handleDelete={() =>
-                    handleDelete(
-                      [item.id],
-                      selectedRows.includes(item.id)
-                        ? () => handleRowSelect(item.id)
-                        : () => {}
-                    )
-                  }
+                  handleDelete={async () => await handleDeleteRow(item.id)}
                   loading={loading}
-                  setLoading={setLoading}
                 />
               ))
             ) : (
@@ -167,19 +108,37 @@ const TransectionTable = ({ className = "", data = [] }) => {
               </tr>
             )}
           </tbody>
+          {footer ? (
+            <tfoot className="sticky bottom-0">
+              <tr className="transection_footer_row">
+                <th></th>
+                <th colSpan={1}>total transections:</th>
+                <th colSpan={2}>
+                  <span className="font-semibold">100</span>
+                </th>
+                <th colSpan={3}>
+                  <span className="transection_type btn-success">100</span>
+                  &nbsp;
+                  <span className="transection_type btn-danger">100</span>
+                </th>
+              </tr>
+            </tfoot>
+          ) : null}
         </table>
       </div>
 
-      <TransectionFilter
-        viewFilter={viewFilter}
-        setViewFilter={setViewFilter}
-        cateFilter={cateFilter}
-        handleCateSelect={handleCateSelect}
-        sortByFilter={sortByFilter}
-        setSortByFilter={setSortByFilter}
-        typeFilter={typeFilter}
-        setTypeFilter={setTypeFilter}
-      />
+      {control ? (
+        <TransectionFilter
+          isOpen={showFilter}
+          close={() => setShowFilter(false)}
+          filterCategories={filterCategories}
+          filterSort={filterSort}
+          filterType={filterType}
+          setFilterSort={setFilterSort}
+          setFilterType={setFilterType}
+          toggleFilterCategory={toggleFilterCategory}
+        />
+      ) : null}
     </div>
   );
 };

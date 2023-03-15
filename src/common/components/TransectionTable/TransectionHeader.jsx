@@ -8,10 +8,7 @@ const TransectionHeader = ({
   setQuery = () => {},
   handleDelete = () => {},
   handleFilter = () => {},
-  tableData = {},
-
   loading = true,
-  setLoading = () => {},
 }) => {
   return (
     <div className="transection_head">

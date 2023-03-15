@@ -11,10 +11,8 @@ const TransectionTR = ({
   id = null,
   isSelected = false,
   handleSelect = () => {},
-  handleDelete = () => {},
-
+  handleDelete = async () => {},
   loading = false,
-  setLoading = () => {},
 }) => {
   return (
     <tr className={`transection_body_row ${type}`}>
@@ -30,23 +28,19 @@ const TransectionTR = ({
       <td className="">{date}</td>
       <td
         className={`flex items-center gap-1 justify-center ${
-          loading ? "cursor-not-allowed" : ""
+          loading ? "cursor-not-allowed pointer-events-none" : ""
         }`}
       >
         <Link
-          className={`btn btn-icon btn-primary btn-sm ${
-            loading ? "pointer-events-none" : ""
-          }`}
+          className={`btn btn-icon btn-primary btn-sm`}
           to={`/transections/edit/${id}`}
         >
           <BsPen />
         </Link>
 
         <button
-          className={`btn btn-icon btn-danger btn-sm ${
-            loading ? "pointer-events-none" : ""
-          }`}
-          onClick={() => handleDelete(id)}
+          className={`btn btn-icon btn-danger btn-sm`}
+          onClick={handleDelete}
         >
           <BsTrash />
         </button>

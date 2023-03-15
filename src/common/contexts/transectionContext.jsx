@@ -5,6 +5,7 @@ import { useAuth } from "./authContext";
 // transection context
 export const TransectionContext = createContext({
   transections: [],
+  allTransections: [],
   transectionLoading: true,
   createTransection: () => {},
   updateTransection: () => {},

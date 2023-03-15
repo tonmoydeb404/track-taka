@@ -3,26 +3,26 @@ import { BsXLg } from "react-icons/bs";
 import categories from "../../../data/categories.json";
 
 const TransectionFilter = ({
-  viewFilter = false,
-  setViewFilter = () => {},
-  cateFilter = [],
-  handleCateSelect = () => {},
-  sortByFilter = "",
-  setSortByFilter = () => {},
-  typeFilter = "ALL",
-  setTypeFilter = () => {},
+  isOpen = false,
+  close = () => {},
+  filterCategories = [],
+  filterSort = "DEFAULT",
+  filterType = "ALL",
+  setFilterSort = () => {},
+  setFilterType = () => {},
+  toggleFilterCategory = () => {},
 }) => {
   const categoryOptions = Object.values(categories);
 
   return (
     <div
       className={`fixed z-[9999] top-0 right-0 h-full sm:w-auto ${
-        viewFilter ? "w-full" : "w-0"
+        isOpen ? "w-full" : "w-0"
       }`}
     >
       <div
         className={`flex flex-col bg-white dark:bg-slate-800 p-8 duration-300  h-full border-l border-l-gray-200 dark:border-l-gray-700 overflow-x-hidden overflow-y-auto ${
-          viewFilter ? "w-full sm:w-[300px]" : "w-0 px-0"
+          isOpen ? "w-full sm:w-[300px]" : "w-0 px-0"
         }`}
       >
         {/* filter header */}
@@ -30,7 +30,7 @@ const TransectionFilter = ({
           <h2 className="text-xl font-medium">Filters</h2>
           <button
             className="btn btn-danger btn-icon btn-sm"
-            onClick={() => setViewFilter(false)}
+            onClick={() => close(false)}
           >
             <BsXLg />
           </button>
@@ -40,8 +40,8 @@ const TransectionFilter = ({
           <label className="text-base font-medium">Transection Type:</label>
           <select
             className="select"
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
           >
             <option value="ALL">All</option>
             <option value="INCOME">Income</option>
@@ -53,8 +53,8 @@ const TransectionFilter = ({
           <label className="text-base font-medium">Sort By:</label>
           <select
             className="select"
-            value={sortByFilter}
-            onChange={(e) => setSortByFilter(e.target.value)}
+            value={filterSort}
+            onChange={(e) => setFilterSort(e.target.value)}
           >
             <option value="Default">Default</option>
             <option value="AMOUNT_LOW_TO_HIGH">Amount Low To High</option>
@@ -76,8 +76,8 @@ const TransectionFilter = ({
                       type="checkbox"
                       name={item.value}
                       id={item.value}
-                      checked={cateFilter.includes(item.value)}
-                      onChange={() => handleCateSelect(item.value)}
+                      checked={filterCategories.includes(item.value)}
+                      onChange={() => toggleFilterCategory(item.value)}
                     />
                     <span>{item.label}</span>
                   </label>

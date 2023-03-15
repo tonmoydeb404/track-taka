@@ -1,6 +1,5 @@
 import React from "react";
 import MonthFilter from "../../common/components/MonthFilter";
-import StatCards from "../../common/components/StatCards";
 import TransectionTable from "../../common/components/TransectionTable";
 import { useTransection } from "../../common/contexts/transectionContext";
 
@@ -19,9 +18,7 @@ const Transections = () => {
         </div>
       </div>
 
-      <StatCards />
-
-      <TransectionTable className="mt-10" data={transections} />
+      <TransectionTable className="mt-10" data={transections} control={true} />
     </>
   );
 };
