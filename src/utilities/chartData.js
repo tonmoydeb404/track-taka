@@ -85,7 +85,7 @@ export const dateData = (data = [], filter, target = null) => {
       });
       break;
     }
-    case "ALL": {
+    default: {
       const dateOptions = [];
       data.forEach((item) => {
         if (!dateOptions.includes(item.date)) {
@@ -119,8 +119,6 @@ export const dateData = (data = [], filter, target = null) => {
 
       break;
     }
-    default:
-      break;
   }
 
   return cData;

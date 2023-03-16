@@ -1,17 +1,14 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo } from "react";
 import useUserTransections from "../hooks/useUserTransections";
 import { useAuth } from "./authContext";
 
 // transection context
 export const TransectionContext = createContext({
   transections: [],
-  allTransections: [],
   transectionLoading: true,
-  createTransection: () => {},
-  updateTransection: () => {},
-  deleteTransection: () => {},
-  transectionTime: Date.now(),
-  setTransectionTime: () => {},
+  createTransection: async () => {},
+  updateTransection: async () => {},
+  deleteTransection: async () => {},
 });
 
 // use transection values
@@ -29,43 +26,18 @@ export const TransectionProvider = ({ children }) => {
     deleteTransection,
     transectionLoading,
   } = useUserTransections(user?.uid);
-  // transection time state
-  const [transectionTime, setTransectionTime] = useState(Date.now());
-
-  // monthly transections
-  const transections = useMemo(() => {
-    // when transection time is disabled
-    if (transectionTime === null) return userTransections;
-
-    // when user transections is or empty or invalid
-    if (!userTransections || !userTransections?.length) return [];
-
-    // filter by transection time
-    const transectionDate = new Date(transectionTime);
-    return userTransections.filter((t) => {
-      const tDate = new Date(t.date);
-      return (
-        tDate.getMonth() === transectionDate.getMonth() &&
-        tDate.getFullYear() === transectionDate.getFullYear()
-      );
-    });
-  }, [transectionTime, userTransections]);
 
   // context value with memorization
   const value = useMemo(
     () => ({
       // main transection
-      transections,
-      allTransections: userTransections,
+      transections: userTransections,
       transectionLoading,
       createTransection,
       updateTransection,
       deleteTransection,
-      // transection time
-      transectionTime,
-      setTransectionTime,
     }),
-    [userTransections, transectionTime, transections, transectionLoading]
+    [userTransections, transectionLoading]
   );
 
   return (

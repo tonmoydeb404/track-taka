@@ -1,10 +1,13 @@
 import React from "react";
-import MonthFilter from "../../common/components/MonthFilter";
+import DateFilter from "../../common/components/DateFilter";
 import TransectionTable from "../../common/components/TransectionTable";
 import { useTransection } from "../../common/contexts/transectionContext";
+import useDateFilter from "../../common/hooks/useDateFilter";
 
 const Transections = () => {
   const { transections, transectionLoading } = useTransection();
+  const { filterDate, filterType, filteredData, setFilterDate, setFilterType } =
+    useDateFilter(transections);
 
   return (
     <>
@@ -14,13 +17,18 @@ const Transections = () => {
 
         {/* <!-- header actions --> */}
         <div className="flex items-center gap-2">
-          <MonthFilter />
+          <DateFilter
+            filterDate={filterDate}
+            filterType={filterType}
+            onFilterDateChange={setFilterDate}
+            onFilterTypeChange={setFilterType}
+          />
         </div>
       </div>
 
       <TransectionTable
         className="mt-10"
-        data={transections}
+        data={filteredData}
         isInteractive
         showStats
       />
