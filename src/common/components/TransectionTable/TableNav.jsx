@@ -7,13 +7,13 @@ const TransectionHeader = ({
   query = "",
   setQuery = () => {},
   handleDelete = () => {},
-  handleFilter = () => {},
-  loading = true,
+  showFilter = () => {},
+  isLoading = true,
 }) => {
   return (
-    <div className="transection_head">
+    <div className="table_nav mb-5">
       {/* <!-- table search --> */}
-      <div className="transection_head_search">
+      <div className="table_nav_search">
         <input
           type="search"
           placeholder="search.."
@@ -26,32 +26,26 @@ const TransectionHeader = ({
       </div>
 
       {/* <!-- table actions --> */}
-      <div
-        className={`transection_head_actions ${
-          loading ? "cursor-not-allowed" : ""
-        }`}
-      >
+      <div className={`table_nav_actions`}>
         <Link
           className={`btn btn-icon btn-success`}
           to={"/transections/create"}
+          disabled={isLoading}
         >
           <BsPlusLg />
         </Link>
         <button
-          className={`btn btn-icon btn-warning ${
-            loading ? "pointer-events-none" : ""
-          }`}
-          onClick={handleFilter}
+          disabled={isLoading}
+          className={`btn btn-icon btn-warning`}
+          onClick={showFilter}
         >
           <BsFunnel />
         </button>
 
         {deleteAble && (
           <button
-            disabled={loading}
-            className={`btn btn-icon btn-danger font-medium ${
-              loading ? "pointer-events-none" : ""
-            }`}
+            disabled={isLoading}
+            className={`btn btn-icon btn-danger font-medium`}
             onClick={handleDelete}
           >
             <BsTrash />

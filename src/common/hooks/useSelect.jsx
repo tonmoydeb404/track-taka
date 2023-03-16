@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const useSelect = (data = [], target) => {
   const [selected, setSelected] = useState([]);
+
+  const isAllSelected = useMemo(() => {
+    return (
+      selected.length &&
+      data.length &&
+      data?.every((item) => selected.includes(item[target]))
+    );
+  }, [data, selected]);
 
   const toggleSelect = (value) => {
     if (selected.includes(value)) {
@@ -18,6 +26,7 @@ const useSelect = (data = [], target) => {
   const removeMultiple = (valueArr = []) => {
     setSelected((prev) => prev.filter((item) => !valueArr.includes(item)));
   };
+
   const clearSelect = () => setSelected([]);
   const allSelect = () => {
     const allSelected = [...selected];
@@ -29,14 +38,17 @@ const useSelect = (data = [], target) => {
     });
     setSelected(allSelected);
   };
+  const toggleAllSelect = (isAll) => (isAll ? clearSelect() : allSelect());
 
   return {
     selected,
+    isAllSelected,
     removeMultiple,
     removeSelect,
     toggleSelect,
     clearSelect,
     allSelect,
+    toggleAllSelect,
   };
 };
 

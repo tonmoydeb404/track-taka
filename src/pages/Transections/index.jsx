@@ -18,7 +18,12 @@ const Transections = () => {
         </div>
       </div>
 
-      <TransectionTable className="mt-10" data={transections} control={true} />
+      <TransectionTable
+        className="mt-10"
+        data={transections}
+        isInteractive
+        showStats
+      />
     </>
   );
 };
