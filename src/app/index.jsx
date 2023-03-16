@@ -13,9 +13,9 @@ const App = () => {
       <GlobalProvider>
         <AuthProvider>
           <TransectionProvider>
+            <Preloader />
             <Toaster position="bottom-right" />
             <AppRoutes />
-            <Preloader />
             {/* <ServiceWorker /> */}
           </TransectionProvider>
         </AuthProvider>

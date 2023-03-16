@@ -68,62 +68,77 @@ const Dashboard = () => {
       <Stats transections={filteredData} />
 
       <div className="grid grid-cols-12 mt-5 gap-5">
-        <div className="col-span-12 pt-2 md:pt-4 pr-2 md:pr-4 bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
-          <ResponsiveContainer width={"99%"} minHeight={300}>
-            <AreaChart data={graphData.chart} className="w-full">
-              <Tooltip contentStyle={{ color: "black" }} />
-              <Area
-                type={"monotone"}
-                dataKey="expense"
-                stroke="#EF4444"
-                fill="#EF4444aa"
-              />
-              <Area
-                type={"monotone"}
-                dataKey="income"
-                stroke="#22c55e"
-                fill="#22c55eaa"
-              />
-              <CartesianGrid stroke="#ccc" />
-              <XAxis dataKey={"option"} fontSize={12} textAnchor="middle" />
-              <YAxis dataKey={"max"} fontSize={12} width={40} />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="col-span-12 ">
+          <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
+            statistics
+          </span>
+          <div className="bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded pt-3">
+            <ResponsiveContainer width={"99%"} minHeight={300}>
+              <AreaChart data={graphData.chart} className="w-full">
+                <Tooltip contentStyle={{ color: "black" }} />
+                <Area
+                  type={"monotone"}
+                  dataKey="expense"
+                  stroke="#EF4444"
+                  fill="#EF4444aa"
+                />
+                <Area
+                  type={"monotone"}
+                  dataKey="income"
+                  stroke="#22c55e"
+                  fill="#22c55eaa"
+                />
+                <CartesianGrid stroke="#ccc" />
+                <XAxis dataKey={"option"} fontSize={12} textAnchor="middle" />
+                <YAxis dataKey={"max"} fontSize={12} width={40} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-4 bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
-          <ResponsiveContainer width={"100%"} minHeight={400}>
-            <RadarChart
-              outerRadius={100}
-              width={730}
-              height={250}
-              data={graphData.categoryChart}
-            >
-              <Tooltip contentStyle={{ color: "black" }} />
-              <PolarGrid />
-              <PolarAngleAxis dataKey="category" fontSize={12} />
-              <PolarRadiusAxis fontSize={12} angle={30} domain={[0, 10000]} />
-              <Radar
-                name="Income"
-                dataKey="income"
-                stroke="#22c55e"
-                fill="#22c55eaa"
-                fillOpacity={0.6}
-              />
-              <Radar
-                name="Expense"
-                dataKey="expense"
-                stroke="#EF4444"
-                fill="#EF4444aa"
-                fillOpacity={0.6}
-              />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+        <div className=" col-span-12 md:col-span-6 lg:col-span-4">
+          <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
+            transection on categories
+          </span>
+          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
+            <ResponsiveContainer width={"100%"} minHeight={400}>
+              <RadarChart
+                outerRadius={100}
+                width={730}
+                height={250}
+                data={graphData.categoryChart}
+              >
+                <Tooltip contentStyle={{ color: "black" }} />
+                <PolarGrid />
+                <PolarAngleAxis dataKey="category" fontSize={12} />
+                <PolarRadiusAxis fontSize={12} angle={30} domain={[0, 10000]} />
+                <Radar
+                  name="Income"
+                  dataKey="income"
+                  stroke="#22c55e"
+                  fill="#22c55eaa"
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Expense"
+                  dataKey="expense"
+                  stroke="#EF4444"
+                  fill="#EF4444aa"
+                  fillOpacity={0.6}
+                />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-8 bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded ">
-          <TransectionTable data={filteredData} />
+        <div className="col-span-12 md:col-span-6 lg:col-span-8">
+          <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
+            recent transections
+          </span>
+          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded ">
+            <TransectionTable data={filteredData} />
+          </div>
         </div>
       </div>
     </>
@@ -131,3 +146,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// TODO: make charts modular and fix recent transection
