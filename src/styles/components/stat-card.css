@@ -7,3 +7,7 @@
 .savings .icon {
   @apply bg-blue-600;
 }
+
+.transections .icon {
+  @apply bg-yellow-400;
+}

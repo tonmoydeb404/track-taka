@@ -1,5 +1,10 @@
 import React from "react";
-import { BsGraphDown, BsGraphUp, BsWallet } from "react-icons/bs";
+import {
+  BsCurrencyDollar,
+  BsGraphDown,
+  BsGraphUp,
+  BsWallet,
+} from "react-icons/bs";
 import { useTransection } from "../contexts/transectionContext";
 import StatCard from "./StatCard";
 
@@ -24,7 +29,13 @@ const StatCards = () => {
       return prev;
     }, 0) || 0;
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5 mt-10">
+      <StatCard
+        type="transections"
+        title="transections"
+        amount={incomes + expenses}
+        icon={BsCurrencyDollar}
+      />
       <StatCard
         type="savings"
         title="wallet"
