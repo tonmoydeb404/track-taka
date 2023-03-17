@@ -1,12 +1,9 @@
 import { useEffect } from "react";
-import { useAuth } from "../contexts/authContext";
 
 const Preloader = () => {
-  const { status } = useAuth();
   useEffect(() => {
-    // show preloader until the authorization is completed
-    document.body.dataset.preloader = !status || status === "INITIAL";
-  }, [status]);
+    document.body.dataset.preloader = false;
+  }, []);
 
   return null;
 };

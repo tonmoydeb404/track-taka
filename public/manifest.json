@@ -1,7 +1,7 @@
 {
   "name": "Track Taka",
   "short_name": "Track Taka",
-  "start_url": "/",
+  "start_url": "/dashboard",
   "description": "an expense tracker app",
   "icons": [
     {

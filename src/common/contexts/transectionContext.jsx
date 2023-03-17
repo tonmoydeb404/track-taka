@@ -1,11 +1,9 @@
 import { createContext, useContext, useMemo } from "react";
-import useUserTransections from "../hooks/useUserTransections";
-import { useAuth } from "./authContext";
+import useTransections from "../hooks/useTransections";
 
 // transection context
 export const TransectionContext = createContext({
   transections: [],
-  transectionLoading: true,
   createTransection: async () => {},
   updateTransection: async () => {},
   deleteTransection: async () => {},
@@ -16,28 +14,24 @@ export const useTransection = () => useContext(TransectionContext);
 
 // transection context provider
 export const TransectionProvider = ({ children }) => {
-  // auth contexts
-  const { user } = useAuth();
   // transection state
   const {
-    userTransections,
+    transections,
     createTransection,
     updateTransection,
     deleteTransection,
-    transectionLoading,
-  } = useUserTransections(user?.uid);
+  } = useTransections();
 
   // context value with memorization
   const value = useMemo(
     () => ({
       // main transection
-      transections: userTransections,
-      transectionLoading,
+      transections,
       createTransection,
       updateTransection,
       deleteTransection,
     }),
-    [userTransections, transectionLoading]
+    [transections]
   );
 
   return (

@@ -1,5 +1,10 @@
 {
   "defaultTheme": "dark",
   "themeKey": "TRACK_TAKA_THEME",
-  "defaultSidebar": false
+  "defaultSidebar": false,
+
+  "DBNAME": "TRACK_TAKA_DB",
+  "DBVERSION": 5,
+  "DBSTORE": "alltransections",
+  "DBOLDSTORE": "transections"
 }

@@ -5,7 +5,7 @@ import { useTransection } from "../../common/contexts/transectionContext";
 import useDateFilter from "../../common/hooks/useDateFilter";
 
 const Transections = () => {
-  const { transections, transectionLoading } = useTransection();
+  const { transections } = useTransection();
   const { filterDate, filterType, filteredData, setFilterDate, setFilterType } =
     useDateFilter(transections);
 

@@ -1,18 +1,19 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import {
-  getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import app from "../../firebase";
+import { auth } from "../../firebase";
+
+self.addEventListener("fetch", (e) => {
+  console.log(e);
+});
 
 // auth context
 const AuthContext = createContext();
-
-const auth = getAuth(app);
 
 // use auth context
 export const useAuth = () => useContext(AuthContext);
