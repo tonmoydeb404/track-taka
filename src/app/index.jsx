@@ -5,6 +5,7 @@ import { AuthProvider } from "../common/contexts/authContext";
 import { GlobalProvider } from "../common/contexts/globalContext";
 import { ThemeProvider } from "../common/contexts/themeContext";
 import { TransectionProvider } from "../common/contexts/transectionContext";
+import ServiceWorker from "../pwa/serviceWorker";
 import AppRoutes from "./AppRoutes";
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
             <Preloader />
             <Toaster position="bottom-right" />
             <AppRoutes />
-            {/* <ServiceWorker /> */}
+            <ServiceWorker />
           </TransectionProvider>
         </AuthProvider>
       </GlobalProvider>

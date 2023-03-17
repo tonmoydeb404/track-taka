@@ -5,6 +5,8 @@ import uuid from "react-uuid";
 import TransectionForm from "../../common/components/Transection/TransectionForm";
 import { useTransection } from "../../common/contexts/transectionContext";
 
+const TOAST = "CREATE_TOAST";
+
 const CreateTransection = () => {
   // router hooks
   const navigate = useNavigate();
@@ -14,16 +16,13 @@ const CreateTransection = () => {
   // handle submit
   const handleSubmit = async (values) => {
     try {
-      const promise = createTransection(values);
-      await toast.promise(promise, {
-        loading: "creating transection...",
-        success: "transection created successfully",
-        error: "error: transection not created",
-      });
-
+      toast.loading("creating new transection...", { id: TOAST });
+      await createTransection(values);
       navigate("/transections");
+      toast.success("transection created successfully.", { id: TOAST });
     } catch (error) {
-      console.error(error);
+      toast.error("something wents to wrong", { id: TOAST });
+      // console.error(error);
     }
   };
   return (

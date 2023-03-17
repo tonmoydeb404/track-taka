@@ -1,12 +1,16 @@
+import { disableNetwork, enableNetwork } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
+import { db } from "../../firebase";
 import {
   createDocument,
   deleteDocument,
   readCollectionRealtime,
   updateDocument,
 } from "../../lib/database";
+import { useGlobal } from "../contexts/globalContext";
 
 const useUserTransections = (uid) => {
+  const { isOnline } = useGlobal();
   // transection state
   const [userTransections, setUserTransections] = useState(null);
   const [transectionLoading, setTransectionLoading] = useState(true);
@@ -27,9 +31,9 @@ const useUserTransections = (uid) => {
         newTransection
       );
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
-      console.error(error);
+      console.error("error");
     }
   };
   const updateTransection = async (id, transection = {}) => {
@@ -76,6 +80,15 @@ const useUserTransections = (uid) => {
   useEffect(() => {
     if (userTransections !== null) setTransectionLoading(false);
   }, [userTransections]);
+
+  // network
+  useEffect(() => {
+    if (isOnline) {
+      enableNetwork(db);
+    } else {
+      disableNetwork(db);
+    }
+  }, [isOnline]);
 
   return {
     userTransections,

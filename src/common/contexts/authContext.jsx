@@ -1,11 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "../../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase";
 import { logOut, signInWith } from "../../lib/auth";
-
-// firebase auth
-const auth = getAuth(app);
 
 // auth context
 const AuthContext = createContext();
@@ -22,19 +19,19 @@ export const AuthProvider = ({ children }) => {
   // handle user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
       if (currentUser) {
         setStatus("AUTHORIZED");
         setUser(currentUser);
       } else {
         setStatus("UNAUTHORIZED");
-        setUser(null);
       }
     });
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [auth]);
 
   // handle sign in
   const handleSignInWith = (provider) => async () => {

@@ -1,14 +1,12 @@
 import {
   FacebookAuthProvider,
-  getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import app from "../firebase";
+import { auth } from "../firebase";
 
-const auth = getAuth(app);
 const providers = {
   google: GoogleAuthProvider,
   facebook: FacebookAuthProvider,

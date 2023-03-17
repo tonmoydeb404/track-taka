@@ -9,19 +9,15 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      includeAssets: [
-        "/icons/apple-touch-icon.png",
-        "/icons/favicon-32x32.png",
-        "/icons/favicon-16x16.png",
-      ],
       devOptions: {
-        enabled: false,
+        enabled: true,
+        type: "module",
       },
-
-      manifest,
       workbox: {
-        globPatterns: ["**/*.{js,css,html,woff,woff2}"],
+        globPatterns: ["**/*"],
       },
+      includeAssets: ["**/*"],
+      manifest,
     }),
   ],
 });
