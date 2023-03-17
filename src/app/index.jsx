@@ -10,18 +10,18 @@ import AppRoutes from "./AppRoutes";
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <GlobalProvider>
-        <AuthProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <GlobalProvider>
           <TransectionProvider>
             <Preloader />
             <Toaster position="bottom-right" />
             <AppRoutes />
             <ServiceWorker />
           </TransectionProvider>
-        </AuthProvider>
-      </GlobalProvider>
-    </ThemeProvider>
+        </GlobalProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 };
 

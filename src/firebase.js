@@ -1,12 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {
-  browserLocalPersistence,
-  browserPopupRedirectResolver,
-  browserSessionPersistence,
-  indexedDBLocalPersistence,
-  initializeAuth,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import {
   enableMultiTabIndexedDbPersistence,
   getFirestore,
@@ -27,17 +21,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+export const auth = getAuth(app);
 
 // offline capabilities
 enableMultiTabIndexedDbPersistence(db);
-
-export const auth = initializeAuth(app, {
-  persistence: [
-    indexedDBLocalPersistence,
-    browserLocalPersistence,
-    browserSessionPersistence,
-  ],
-  popupRedirectResolver: browserPopupRedirectResolver,
-});
 
 export default app;

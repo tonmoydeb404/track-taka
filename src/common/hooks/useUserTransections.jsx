@@ -1,6 +1,4 @@
-import { disableNetwork, enableNetwork } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
-import { db } from "../../firebase";
 import {
   createDocument,
   deleteDocument,
@@ -81,14 +79,14 @@ const useUserTransections = (uid) => {
     if (userTransections !== null) setTransectionLoading(false);
   }, [userTransections]);
 
-  // network
-  useEffect(() => {
-    if (isOnline) {
-      enableNetwork(db);
-    } else {
-      disableNetwork(db);
-    }
-  }, [isOnline]);
+  // // network
+  // useEffect(() => {
+  //   if (isOnline) {
+  //     enableNetwork(db);
+  //   } else {
+  //     disableNetwork(db);
+  //   }
+  // }, [isOnline]);
 
   return {
     userTransections,

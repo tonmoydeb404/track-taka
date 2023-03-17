@@ -1,28 +1,35 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase";
-import { logOut, signInWith } from "../../lib/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import app from "../../firebase";
 
 // auth context
 const AuthContext = createContext();
+
+const auth = getAuth(app);
 
 // use auth context
 export const useAuth = () => useContext(AuthContext);
 
 // use auth context provider
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
   const [status, setStatus] = useState("INITIAL"); // INITIAL, AUTHORIZED, UNAUTHORIZED, LOADING
   const [error, setError] = useState(null);
 
   // handle user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
+      setUser(currentUser);
+
       if (currentUser) {
         setStatus("AUTHORIZED");
-        setUser(currentUser);
       } else {
         setStatus("UNAUTHORIZED");
       }
@@ -31,16 +38,16 @@ export const AuthProvider = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [auth]);
+  }, []);
 
-  // handle sign in
-  const handleSignInWith = (provider) => async () => {
+  console.log(user);
+
+  // handle Google Sign In
+  const handleGoogleSignIn = async () => {
     try {
       setStatus("LOADING");
-      const response = await signInWith(provider);
-      // set user
-      setUser(response);
-      setStatus("AUTHORIZED");
+      const provider = new GoogleAuthProvider();
+      const response = await signInWithPopup(auth, provider);
       return response;
     } catch (err) {
       setStatus("UNAUTHORIZED");
@@ -48,25 +55,19 @@ export const AuthProvider = ({ children }) => {
       return err;
     }
   };
-
-  // handle Google Sign In
-  const handleGoogleSignIn = handleSignInWith("google");
   // handle Facebook Sign In
-  const handleFacebookSignIn = handleSignInWith("facebook");
+  const handleFacebookSignIn = () => {};
   // handle Github Sign In
-  const handleGithubSignIn = handleSignInWith("github");
+  const handleGithubSignIn = () => {};
 
   // handle log out
   const handleLogOut = async () => {
     try {
-      const response = await logOut();
-      setStatus("UNAUTHORIZED");
-      setUser(null);
+      const response = await signOut(auth);
       return response;
-    } catch (err) {
-      setStatus("UNAUTHORIZED");
-      setError(err);
-      return err;
+    } catch (error) {
+      console.log(error);
+      return { error };
     }
   };
 

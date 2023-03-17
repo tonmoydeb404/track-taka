@@ -6,7 +6,7 @@ const PrivateOutlet = () => {
   const location = useLocation();
   const { user, status } = useAuth();
 
-  if (status === "UNAUTHORIZED")
+  if (status === "UNAUTHORIZED" && user === null)
     return <Navigate to="/signin" state={{ path: location.pathname }} />;
 
   return <Outlet context={{ user, status }} />;

@@ -6,7 +6,7 @@ const PublicOutlet = () => {
   const location = useLocation();
   const { user, status } = useAuth();
 
-  if (status === "AUTHORIZED")
+  if (status === "AUTHORIZED" && user !== null)
     return <Navigate to={location.state?.path || "/dashboard"} />;
 
   return <Outlet context={{ user, status }} />;

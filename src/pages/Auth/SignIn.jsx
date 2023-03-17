@@ -1,19 +1,12 @@
 import React from "react";
 import { BiError } from "react-icons/bi";
-import { BsFacebook, BsGithub } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { FcGoogle } from "react-icons/fc";
 import { useAuth } from "../../common/contexts/authContext";
 import authErrorMessage from "../../utilities/authErrorMessage";
 
 const SignIn = () => {
-  const {
-    handleGoogleSignIn,
-    handleFacebookSignIn,
-    handleGithubSignIn,
-    error,
-    status,
-  } = useAuth();
+  const { handleGoogleSignIn, error, status } = useAuth();
 
   return (
     <div className="container mx-auto min-h-screen flex items-start sm:items-center justify-center flex-col">
@@ -42,7 +35,7 @@ const SignIn = () => {
             >
               Google <FcGoogle className="text-2xl" />
             </button>
-            <button
+            {/* <button
               className="btn bg-[#1877f2] justify-between text-white"
               onClick={handleFacebookSignIn}
             >
@@ -53,7 +46,7 @@ const SignIn = () => {
               onClick={handleGithubSignIn}
             >
               Github <BsGithub className="text-xl" />
-            </button>
+            </button> */}
           </>
         )}
       </div>

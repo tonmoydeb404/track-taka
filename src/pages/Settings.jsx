@@ -15,7 +15,7 @@ const Settings = () => {
 
       <div className="mt-10">
         <div className="w-full lg:w-[500px] flex flex-col gap-2.5">
-          {user?.uid && isOnline ? (
+          {isOnline ? (
             <>
               <AuthItem user={user} />
             </>
