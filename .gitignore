@@ -25,3 +25,5 @@ demo-db.json
 *.njsproj
 *.sln
 *.sw?
+
+todo.md
