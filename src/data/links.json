@@ -16,6 +16,5 @@
     "title": "New transection",
     "icon": "add",
     "link": "/transections/create"
-  },
-  { "id": "#4", "title": "Settings", "icon": "settings", "link": "/settings" }
+  }
 ]

@@ -1,51 +1,33 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import uuid from "react-uuid";
 import TransectionForm from "../../common/components/Transection/TransectionForm";
 import { useTransection } from "../../common/contexts/transectionContext";
 
-const EditTransection = ({ mode }) => {
+const EditTransection = () => {
   // router hooks
   const navigate = useNavigate();
   const { id } = useParams();
   // transection context
-  const { transections, createTransection, updateTransection } =
-    useTransection();
+  const { transections, updateTransection } = useTransection();
   // app states
-  const [defState, setDefState] = useState({
-    id: uuid(),
-    title: "",
-    amount: 0,
-    type: "",
-    category: "",
-    date: "",
-  });
+  const [defState, setDefState] = useState();
 
   // handle default data
   useEffect(() => {
-    if (id) {
+    if (id && transections) {
       const targetedState = transections.find((item) => item.id == id);
-      if (targetedState !== undefined) {
+      if (targetedState) {
         setDefState({ ...targetedState });
       }
     }
-
-    return () => {
-      setDefState({
-        title: "",
-        amount: 0,
-        type: "",
-        category: "",
-        date: "",
-      });
-    };
-  }, [mode, id, transections]);
+  }, [id, transections]);
 
   // handle submit
   const handleSubmit = async (values) => {
     try {
-      const promise = updateTransection(defState.id, values);
+      const updated = { ...defState, ...values };
+      const promise = updateTransection(updated);
       await toast.promise(promise, {
         loading: "editing transection...",
         success: "transection edited successfully",
@@ -66,7 +48,7 @@ const EditTransection = ({ mode }) => {
 
       <div className="mt-10">
         <TransectionForm
-          mode={"EDIT"}
+          mode={"UPDATE"}
           initialValues={defState}
           handleSubmit={handleSubmit}
         />

@@ -1,5 +1,4 @@
 import React from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 import TransectionForm from "../../common/components/Transection/TransectionForm";
@@ -16,14 +15,14 @@ const CreateTransection = () => {
   // handle submit
   const handleSubmit = async (values) => {
     try {
-      toast.loading("creating new transection...", { id: TOAST });
-      await createTransection(values);
+      const t = {
+        ...values,
+        id: uuid(),
+        createdAt: Date.now(),
+      };
+      await createTransection(t, t.id);
       navigate("/transections");
-      toast.success("transection created successfully.", { id: TOAST });
-    } catch (error) {
-      toast.error("something wents to wrong", { id: TOAST });
-      // console.error(error);
-    }
+    } catch (error) {}
   };
   return (
     <>
@@ -32,18 +31,7 @@ const CreateTransection = () => {
       </div>
 
       <div className="mt-10">
-        <TransectionForm
-          mode={"CREATE"}
-          initialValues={{
-            id: uuid(),
-            title: "",
-            amount: 0,
-            type: "",
-            category: "",
-            date: "",
-          }}
-          handleSubmit={handleSubmit}
-        />
+        <TransectionForm mode={"CREATE"} handleSubmit={handleSubmit} />
       </div>
     </>
   );

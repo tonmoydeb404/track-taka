@@ -6,12 +6,15 @@ const idb =
   window.shimIndexedDB;
 
 class IndexedDB {
-  constructor(DBNAME, VERSION = null) {
+  constructor(DBNAME, VERSION, STORE, KEY_PATH, OLD_STORE = null) {
     this.DBNAME = DBNAME;
     this.VERSION = VERSION;
+    this.STORE = STORE;
+    this.KEY_PATH = KEY_PATH;
+    this.OLD_STORE = OLD_STORE;
   }
 
-  init(STORES = [], DELETE_STORES = [], KEY_PATH = null) {
+  init() {
     return new Promise((resolve, reject) => {
       // check for browser support
       if (!idb) {
@@ -28,25 +31,21 @@ class IndexedDB {
         const db = databaseReq.result;
         const response = {};
 
-        // handle every stores
-        STORES.forEach((store) => {
-          if (!db.objectStoreNames.contains(store)) {
-            db.createObjectStore(store, {
-              keyPath: KEY_PATH,
-            });
-            response[store] = `created successfull`;
-          } else {
-            response[store] = `allready created`;
-          }
-        });
+        // handle stores
+        if (!db.objectStoreNames.contains(this.STORE)) {
+          db.createObjectStore(this.STORE, {
+            keyPath: this.KEY_PATH,
+          });
+          response[this.STORE] = `created successfull`;
+        } else {
+          response[this.STORE] = `allready created`;
+        }
 
-        // handle delete stores
-        DELETE_STORES.forEach((store) => {
-          if (db.objectStoreNames.contains(store)) {
-            db.deleteObjectStore(store);
-            response[store] = `deleted successfull`;
-          }
-        });
+        // handle old store
+        if (this.OLD_STORE && db.objectStoreNames.contains(this.OLD_STORE)) {
+          db.deleteObjectStore(this.OLD_STORE);
+          response[this.OLD_STORE] = `deleted successfull`;
+        }
 
         resolve(response);
       };
@@ -57,7 +56,7 @@ class IndexedDB {
     });
   }
 
-  getCollection(STORE = null) {
+  getCollection() {
     return new Promise((resolve, reject) => {
       // open database
       const databaseReq = idb.open(this.DBNAME, this.VERSION);
@@ -70,10 +69,10 @@ class IndexedDB {
         const db = databaseReq.result;
 
         // check collection contains or not
-        if (db.objectStoreNames.contains(STORE)) {
+        if (db.objectStoreNames.contains(this.STORE)) {
           // collection transection
-          const tx = db.transaction(STORE, "readonly");
-          const txStore = tx.objectStore(STORE);
+          const tx = db.transaction(this.STORE, "readonly");
+          const txStore = tx.objectStore(this.STORE);
           // collection data
           const data = txStore.getAll();
 
@@ -94,7 +93,7 @@ class IndexedDB {
     });
   }
 
-  create(STORE = null, DATA = null) {
+  create(DATA = null) {
     return new Promise((resolve, reject) => {
       // open database
       const databaseReq = idb.open(this.DBNAME, this.VERSION);
@@ -106,8 +105,8 @@ class IndexedDB {
       databaseReq.onsuccess = (event) => {
         const db = databaseReq.result;
         // collection transection
-        const tx = db.transaction(STORE, "readwrite");
-        const txStore = tx.objectStore(STORE);
+        const tx = db.transaction(this.STORE, "readwrite");
+        const txStore = tx.objectStore(this.STORE);
         // collection data
         const data = txStore.add(DATA);
 
@@ -125,7 +124,7 @@ class IndexedDB {
     });
   }
 
-  update(STORE = null, DATA = null) {
+  update(DATA = null) {
     return new Promise((resolve, reject) => {
       // open database
       const databaseReq = idb.open(this.DBNAME, this.VERSION);
@@ -137,8 +136,8 @@ class IndexedDB {
       databaseReq.onsuccess = (event) => {
         const db = databaseReq.result;
         // collection transection
-        const tx = db.transaction(STORE, "readwrite");
-        const txStore = tx.objectStore(STORE);
+        const tx = db.transaction(this.STORE, "readwrite");
+        const txStore = tx.objectStore(this.STORE);
         // put to collection data
         const data = txStore.put(DATA);
 
@@ -156,7 +155,7 @@ class IndexedDB {
     });
   }
 
-  delete(STORE = null, KEY = null) {
+  delete(KEY = null) {
     return new Promise((resolve, reject) => {
       // open database
       const databaseReq = idb.open(this.DBNAME, this.VERSION);
@@ -168,8 +167,8 @@ class IndexedDB {
       databaseReq.onsuccess = (event) => {
         const db = databaseReq.result;
         // collection transection
-        const tx = db.transaction(STORE, "readwrite");
-        const txStore = tx.objectStore(STORE);
+        const tx = db.transaction(this.STORE, "readwrite");
+        const txStore = tx.objectStore(this.STORE);
         // delete collection from data
         const data = txStore.delete(KEY);
 
@@ -187,7 +186,7 @@ class IndexedDB {
     });
   }
 
-  clear(STORE = null) {
+  clear() {
     return new Promise((resolve, reject) => {
       // open database
       const databaseReq = idb.open(this.DBNAME, this.VERSION);
@@ -199,8 +198,8 @@ class IndexedDB {
       databaseReq.onsuccess = (event) => {
         const db = databaseReq.result;
         // collection transection
-        const tx = db.transaction(STORE, "readwrite");
-        const txStore = tx.objectStore(STORE);
+        const tx = db.transaction(this.STORE, "readwrite");
+        const txStore = tx.objectStore(this.STORE);
         // delete collection from data
         const data = txStore.clear();
 

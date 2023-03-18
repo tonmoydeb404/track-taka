@@ -3,8 +3,9 @@
   "themeKey": "TRACK_TAKA_THEME",
   "defaultSidebar": false,
 
-  "DBNAME": "TRACK_TAKA_DB",
-  "DBVERSION": 5,
-  "DBSTORE": "alltransections",
-  "DBOLDSTORE": "transections"
+  "DB_NAME": "TRACK_TAKA_DB",
+  "DB_VERSION": 2,
+  "DB_STORE": "transections",
+  "DB_OLD_STORE": "",
+  "DB_KEY_PATH": "id"
 }

@@ -15,7 +15,7 @@ const TransectionTable = ({
   isInteractive = false,
 }) => {
   // transection context
-  const { deleteTransection } = useTransection();
+  const { deleteTransection, deleteTransections } = useTransection();
 
   // filter states
   const {
@@ -47,7 +47,7 @@ const TransectionTable = ({
   // delete selected rows
   const deleteSelectedRows = async () => {
     setIsLoading(true);
-    await deleteTransection(selectedRows);
+    await deleteTransections(selectedRows);
 
     // reset states
     clearSelect();
@@ -57,7 +57,7 @@ const TransectionTable = ({
   // delete specific row
   const deleteRow = async (id) => {
     setIsLoading(true);
-    await deleteTransection([id]);
+    await deleteTransection(id);
 
     // reset states
     removeSelect(id);

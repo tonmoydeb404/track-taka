@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactSelect from "react-select";
 import * as Yup from "yup";
@@ -16,12 +16,32 @@ const transectionSchema = Yup.object({
 const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
   // router navigate
   const navigate = useNavigate();
+  const [formValues, setFormValues] = useState({
+    title: "",
+    amount: 0,
+    type: "",
+    category: "",
+    date: "",
+  });
+
+  useEffect(() => {
+    if (mode === "UPDATE") {
+      const state = {};
+      if (initialValues?.title) state.title = initialValues.title;
+      if (initialValues?.amount) state.amount = initialValues.amount;
+      if (initialValues?.type) state.type = initialValues.type;
+      if (initialValues?.category) state.category = initialValues.category;
+      if (initialValues?.date) state.date = initialValues.date;
+
+      setFormValues((p) => ({ ...p, ...state }));
+    }
+  }, [mode, initialValues]);
 
   const categoryOptions = Object.values(categories);
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={formValues}
       onSubmit={handleSubmit}
       validationSchema={transectionSchema}
       enableReinitialize={true}
