@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 const months = [
   "January",
   "February",
@@ -109,7 +110,7 @@ export const dateData = (data = [], filter, target = null) => {
                 return prev;
               }
             },
-            { option: date, income: 0, expense: 0 }
+            { option: format(date, "dd/MM/yy"), income: 0, expense: 0 }
           );
 
           cObj.max = cObj.income > cObj.expense ? cObj.income : cObj.expense;

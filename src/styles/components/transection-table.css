@@ -30,8 +30,12 @@
   @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 dark:border-r-gray-500 text-base last:border-r-0;
 }
 .table_header_item input[type="checkbox"] {
-  @apply outline-none
+  @apply rounded form-checkbox outline-none
     focus:outline-none ring-0 focus:ring-0;
+}
+
+.table-sm .table_header_item {
+  @apply px-3 py-1.5;
 }
 
 /* table body row */
@@ -39,18 +43,19 @@
 .table_body_row {
   @apply bg-white border-t border-t-gray-200 dark:bg-slate-800 dark:border-t-gray-700;
 }
-.table_body_row > td {
+.table_body_item {
   @apply px-2.5 py-1.5 p-3 border-r sm:text-base border-r-gray-200 dark:border-r-gray-700 whitespace-nowrap;
 }
 
-.table_body_row > td input[type="checkbox"] {
-  @apply outline-none
-  focus:outline-none ring-0 focus:ring-0;
+.table_body_item input[type="checkbox"] {
+  @apply rounded form-checkbox outline-none
+    focus:outline-none ring-0 focus:ring-0;
 }
-.table_body_row.income > td input[type="checkbox"] {
+
+.table_body_row.income input[type="checkbox"] {
   @apply text-green-500;
 }
-.table_body_row.expense > td input[type="checkbox"] {
+.table_body_row.expense input[type="checkbox"] {
   @apply text-red-500;
 }
 

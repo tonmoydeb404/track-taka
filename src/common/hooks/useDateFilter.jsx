@@ -19,7 +19,7 @@ const useDateFilter = (transections) => {
           break;
         case "MONTH":
           setData(
-            transections.filter((t) => {
+            transections?.filter((t) => {
               const tDate = new Date(t.date);
               return (
                 tDate.getMonth() === filterDate.getMonth() &&

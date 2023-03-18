@@ -1,10 +1,10 @@
 import { createContext, useContext, useMemo } from "react";
-import config from "../../data/config.json";
+import siteConfig from "../../config/site.config";
 import useOnline from "../hooks/useOnline";
 import useSidebar from "../hooks/useSidebar";
 
 export const GlobalContext = createContext({
-  sidebar: config.defaultSidebar,
+  sidebar: siteConfig.defaultSidebar,
   toggleSidebar: () => {},
   showSidebar: () => {},
   hideSidebar: () => {},
@@ -18,7 +18,7 @@ export const useGlobal = () => useContext(GlobalContext);
 export const GlobalProvider = ({ children }) => {
   // sidebar states
   const { sidebar, toggleSidebar, showSidebar, hideSidebar } = useSidebar(
-    config.defaultSidebar
+    siteConfig.defaultSidebar
   );
   // user online sates
   const { isOnline } = useOnline();

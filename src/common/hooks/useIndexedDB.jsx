@@ -5,50 +5,51 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
   const DB = new IndexedDB(NAME, VERSION, STORE, KEY_PATH, OLD_STORE);
 
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  const asyncWrapper =
+  const wrapper =
     (callback) =>
-    async (...props) => {
-      try {
-        setError(false);
-        setLoading(true);
-        await callback(...props);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        setError(err);
-      }
-    };
+    (...props) =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const response = await callback(...props);
+          resolve(response);
+        } catch (error) {
+          reject(error);
+        }
+      });
 
-  const getData = asyncWrapper(async () => {
+  const getData = wrapper(async () => {
     const response = await DB.getCollection();
     setData(response);
+    return response;
   });
 
-  const createData = asyncWrapper(async (data) => {
-    await DB.create(data);
+  const createData = wrapper(async (data) => {
+    const response = await DB.create(data);
     // update local db
     await getData();
+    return response;
   });
-  const updateData = asyncWrapper(async (data) => {
-    await DB.update(data);
+  const updateData = wrapper(async (data) => {
+    const response = await DB.update(data);
     // update local db
     await getData();
+    return response;
   });
-  const deleteData = asyncWrapper(async (id) => {
+  const deleteData = wrapper(async (id) => {
     // delete data to database
-    await DB.delete(id);
+    const response = await DB.delete(id);
     // update local db
     await getData();
+    return response;
   });
-  const deleteMultipleData = asyncWrapper(async (keyList = []) => {
+  const deleteMultipleData = wrapper(async (keyList = []) => {
     // delete data to database
     const promises = keyList.map(async (id) => await DB.delete(id));
-    await Promise.all(promises);
+    const response = await Promise.all(promises);
     // update local db
     await getData();
+    return response;
   });
 
   // initiate database
@@ -65,8 +66,6 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
 
   return {
     data,
-    loading,
-    error,
     createData,
     updateData,
     deleteData,

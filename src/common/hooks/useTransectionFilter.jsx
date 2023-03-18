@@ -35,6 +35,9 @@ const useTransectionFilter = (transections) => {
           filteredData = filteredData.sort((a, b) => b.amount - a.amount);
           break;
         default:
+          filteredData = filteredData.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
           break;
       }
 

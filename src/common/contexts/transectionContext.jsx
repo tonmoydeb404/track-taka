@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
-import config from "../../data/config.json";
+import dbConfig from "../../config/db.config";
 import useIndexedDB from "../hooks/useIndexedDB";
 
 // transection context
@@ -20,16 +20,14 @@ export const TransectionProvider = ({ children }) => {
     data: transections,
     deleteData: deleteTransection,
     deleteMultipleData: deleteTransections,
-    loading: transectionsLoading,
-    error: transectionsError,
     createData: createTransection,
     updateData: updateTransection,
   } = useIndexedDB(
-    config.DB_NAME,
-    config.DB_VERSION,
-    config.DB_STORE,
-    config.DB_KEY_PATH,
-    config.DB_OLD_STORE
+    dbConfig.NAME,
+    dbConfig.VERSION,
+    dbConfig.STORE,
+    dbConfig.KEY_PATH,
+    dbConfig.OLD_STORE
   );
 
   // context value with memorization
@@ -41,10 +39,8 @@ export const TransectionProvider = ({ children }) => {
       updateTransection,
       deleteTransection,
       deleteTransections,
-      transectionsLoading,
-      transectionsError,
     }),
-    [transections, transectionsLoading, transectionsError]
+    [transections]
   );
 
   return (

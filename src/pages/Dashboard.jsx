@@ -136,8 +136,8 @@ const Dashboard = () => {
           <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
             recent transections
           </span>
-          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded ">
-            <TransectionTable data={filteredData} />
+          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
+            <TransectionTable data={transections?.slice(0, 10)} small />
           </div>
         </div>
       </div>

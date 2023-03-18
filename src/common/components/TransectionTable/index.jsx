@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useTransection } from "../../contexts/transectionContext";
 import useSelect from "../../hooks/useSelect";
 import useTransectionFilter from "../../hooks/useTransectionFilter";
@@ -13,6 +14,7 @@ const TransectionTable = ({
   data = [],
   showStats = false,
   isInteractive = false,
+  small = false,
 }) => {
   // transection context
   const { deleteTransection, deleteTransections } = useTransection();
@@ -46,22 +48,39 @@ const TransectionTable = ({
 
   // delete selected rows
   const deleteSelectedRows = async () => {
-    setIsLoading(true);
-    await deleteTransections(selectedRows);
-
-    // reset states
-    clearSelect();
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const promise = deleteTransections(selectedRows);
+      await toast.promise(promise, {
+        loading: "deleting selected transection...",
+        success: "selected transections deleted",
+        error: "something wents to wrong!",
+      });
+      // reset states
+      clearSelect();
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // delete specific row
   const deleteRow = async (id) => {
-    setIsLoading(true);
-    await deleteTransection(id);
+    try {
+      setIsLoading(true);
+      const promise = deleteTransection(id);
+      await toast.promise(promise, {
+        loading: "deleting transection...",
+        success: "transection deleted",
+        error: "something wents to wrong!",
+      });
 
-    // reset states
-    removeSelect(id);
-    setIsLoading(false);
+      // reset states
+      removeSelect(id);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -89,7 +108,11 @@ const TransectionTable = ({
       ) : null}
 
       <div className={`overflow-x-auto py-0`}>
-        <table className="w-full dark:border-gray-700 border-b">
+        <table
+          className={`w-full dark:border-gray-700 border ${
+            small ? "table-sm" : ""
+          }`}
+        >
           <TableHeader
             toggleAllSelect={toggleAllSelect}
             isAllSelected={isAllSelected}

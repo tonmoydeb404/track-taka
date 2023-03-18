@@ -9,7 +9,7 @@ const TableHeader = ({
     <thead className="table_header">
       <tr className="table_header_row">
         {isInteractive ? (
-          <th className="table_header_item text-center">
+          <th className="table_header_item text-center px-1">
             <input
               type="checkbox"
               checked={isAllSelected}

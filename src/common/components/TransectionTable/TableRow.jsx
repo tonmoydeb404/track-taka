@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import React from "react";
 import { BsPen, BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -18,20 +19,20 @@ const TableRow = ({
   return (
     <tr className={`table_body_row ${type}`}>
       {isInteractive ? (
-        <td className="text-center">
+        <td className="table_body_item text-center px-1">
           <input type="checkbox" checked={isSelected} onChange={handleSelect} />
         </td>
       ) : null}
-      <td>{title}</td>
-      <td>{amount}</td>
-      <td>{category}</td>
-      <td>
+      <td className="table_body_item">{title}</td>
+      <td className="table_body_item">{amount}</td>
+      <td className="table_body_item">{category}</td>
+      <td className="table_body_item">
         <span className="transection_type">{type}</span>
       </td>
-      <td>{date}</td>
+      <td className="table_body_item">{format(date, "dd/MM/yyyy")}</td>
       {isInteractive ? (
         <td
-          className={`flex items-center gap-1 justify-center ${
+          className={`table_body_item flex items-center gap-1 justify-center ${
             isLoading ? "cursor-not-allowed pointer-events-none" : ""
           }`}
         >

@@ -26,12 +26,14 @@ const EditTransection = () => {
   // handle submit
   const handleSubmit = async (values) => {
     try {
-      const updated = { ...defState, ...values };
+      // modify date to time number
+      const date = new Date(values.date).getTime();
+      const updated = { ...defState, ...values, date };
       const promise = updateTransection(updated);
       await toast.promise(promise, {
-        loading: "editing transection...",
-        success: "transection edited successfully",
-        error: "error: transection not edited",
+        loading: "updating transection...",
+        success: "transection updated successfully",
+        error: "something wents to wrong",
       });
 
       navigate("/transections");

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ReactSelect from "react-select";
 import * as Yup from "yup";
 import categories from "../../../data/categories.json";
+import FormDatePicker from "./FormDatePicker";
 
 const transectionSchema = Yup.object({
   title: Yup.string().max(30).required(),
@@ -21,7 +22,7 @@ const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
     amount: 0,
     type: "",
     category: "",
-    date: "",
+    date: new Date(),
   });
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
       if (initialValues?.amount) state.amount = initialValues.amount;
       if (initialValues?.type) state.type = initialValues.type;
       if (initialValues?.category) state.category = initialValues.category;
-      if (initialValues?.date) state.date = initialValues.date;
+      if (initialValues?.date) state.date = new Date(initialValues.date);
 
       setFormValues((p) => ({ ...p, ...state }));
     }
@@ -116,12 +117,9 @@ const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
 
             <div className="input_group" data-invalid={!!errors.date}>
               <label htmlFor="date">Transection Date</label>
-              <Field
-                type="date"
-                name="date"
-                id="date"
-                className="form-input input"
-                value={values.date}
+              <FormDatePicker
+                date={values.date}
+                setDate={(d) => setFieldValue("date", d)}
               />
               <p className="input_error">{errors.date}</p>
             </div>

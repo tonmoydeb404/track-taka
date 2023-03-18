@@ -6,10 +6,10 @@ import {
   useMemo,
   useState,
 } from "react";
-import config from "../../data/config.json";
+import siteConfig from "../../config/site.config";
 
 const ThemeContext = createContext({
-  theme: config.defaultTheme,
+  theme: siteConfig.defaultTheme,
   toggleTheme: () => {},
 });
 
@@ -18,12 +18,12 @@ export const useTheme = () => useContext(ThemeContext);
 
 // theme provider
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(config.defaultTheme);
+  const [theme, setTheme] = useState(siteConfig.defaultTheme);
 
   // get theme from localstorage
   useLayoutEffect(() => {
     // theme
-    const localTheme = localStorage.getItem(config.themeKey);
+    const localTheme = localStorage.getItem(siteConfig.themeKey);
     if (localTheme != null && ["light", "dark"].includes(localTheme)) {
       setTheme(localTheme);
     }
@@ -32,7 +32,7 @@ export const ThemeProvider = ({ children }) => {
   // update layout and localstorage on theme change
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme == "dark");
-    localStorage.setItem(config.themeKey, theme);
+    localStorage.setItem(siteConfig.themeKey, theme);
   }, [theme]);
 
   // toggle theme
