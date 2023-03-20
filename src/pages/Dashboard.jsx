@@ -137,7 +137,7 @@ const Dashboard = () => {
             recent transections
           </span>
           <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
-            <TransectionTable data={transections?.slice(0, 10)} small />
+            <TransectionTable data={transections ? transections : []} small />
           </div>
         </div>
       </div>

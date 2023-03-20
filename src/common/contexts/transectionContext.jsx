@@ -26,6 +26,7 @@ export const TransectionProvider = ({ children }) => {
     deleteMultipleData: deleteTransections,
     createData: createTransection,
     updateData: updateTransection,
+    insertData: insertTransections,
   } = useIndexedDB(
     dbConfig.NAME,
     dbConfig.VERSION,

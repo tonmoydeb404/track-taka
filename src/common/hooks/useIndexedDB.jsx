@@ -19,13 +19,19 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
       });
 
   const getData = wrapper(async () => {
-    const response = await DB.getCollection();
+    const response = await DB.get();
     setData(response);
     return response;
   });
 
   const createData = wrapper(async (data) => {
     const response = await DB.create(data);
+    // update local db
+    await getData();
+    return response;
+  });
+  const insertData = wrapper(async (data = []) => {
+    const response = await DB.insert(data);
     // update local db
     await getData();
     return response;
@@ -67,6 +73,7 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
   return {
     data,
     createData,
+    insertData,
     updateData,
     deleteData,
     deleteMultipleData,

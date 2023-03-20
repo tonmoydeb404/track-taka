@@ -1,21 +1,13 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../firebase";
+import { FirebaseError } from "firebase/app";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { firestore } from "../firebase";
 
 // create a single document
 export const createDocument = (collectionName, documentId, data) =>
   new Promise(async (resolve, reject) => {
     try {
       // document reference
-      const docRef = doc(db, ...collectionName, documentId);
+      const docRef = doc(firestore, collectionName, documentId);
       await setDoc(docRef, data);
       resolve(true);
     } catch (error) {
@@ -23,53 +15,17 @@ export const createDocument = (collectionName, documentId, data) =>
     }
   });
 
-// read collection data in realtime
-export const readCollectionRealtime =
-  (collectionName, orders) =>
-  (callback = (data) => {}) => {
-    // sort data
-    const ordersBy =
-      orders && orders instanceof Array && orders.length
-        ? orders.map((order) => orderBy(order[0], order[1] || "asc"))
-        : [];
-    // collection reference
-    const collectionRef = collection(db, ...collectionName);
-    const unsubscribe = onSnapshot(
-      query(collectionRef, ...ordersBy),
-      (snapshot) => {
-        let data = [];
-        data = snapshot.docs.map((docRef) => docRef.data());
-
-        callback(data);
-      }
-    );
-
-    return unsubscribe;
-  };
-
-// update any single document
-export const updateDocument = (collectionName, documentId, updates) =>
+// read a single document
+export const readDocument = (collectionName, documentId) =>
   new Promise(async (resolve, reject) => {
     try {
-      if (!Object.keys(updates).length) throw Error("updates not provided");
-      const docRef = doc(db, ...collectionName, documentId);
-      await updateDoc(docRef, updates);
-
-      resolve(updates);
+      // document reference
+      const docRef = doc(firestore, collectionName, documentId);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) reject(new FirebaseError("document not found"));
+      const data = docSnap.data();
+      resolve(data);
     } catch (error) {
       return reject(error);
-    }
-  });
-
-// delete a single document
-export const deleteDocument = (collectionName, documentId) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const docRef = doc(db, ...collectionName, documentId);
-      await deleteDoc(docRef);
-
-      resolve(true);
-    } catch (error) {
-      reject(error);
     }
   });
