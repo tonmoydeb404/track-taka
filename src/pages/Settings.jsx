@@ -1,6 +1,8 @@
 import React from "react";
+import DownloadData from "../common/components/Settings/DownloadData";
 import Profile from "../common/components/Settings/Profile";
 import SignIn from "../common/components/Settings/SignIn";
+import UploadData from "../common/components/Settings/UploadData";
 import { useAuth } from "../common/contexts/authContext";
 
 const Settings = () => {
@@ -14,6 +16,8 @@ const Settings = () => {
         {status === "AUTHORIZED" ? (
           <>
             <Profile />
+            <DownloadData />
+            <UploadData />
           </>
         ) : (
           <>

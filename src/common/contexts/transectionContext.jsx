@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import dbConfig from "../../config/db.config";
 import useIndexedDB from "../hooks/useIndexedDB";
+import { useAuth } from "./authContext";
 
 // transection context
 export const TransectionContext = createContext({
@@ -8,6 +9,8 @@ export const TransectionContext = createContext({
   createTransection: async () => {},
   updateTransection: async () => {},
   deleteTransection: async () => {},
+  downloadTransection: async () => {},
+  uploadTransection: async () => {},
 });
 
 // use transection values
@@ -15,6 +18,7 @@ export const useTransection = () => useContext(TransectionContext);
 
 // transection context provider
 export const TransectionProvider = ({ children }) => {
+  const { user } = useAuth();
   // transection state
   const {
     data: transections,
@@ -30,6 +34,26 @@ export const TransectionProvider = ({ children }) => {
     dbConfig.OLD_STORE
   );
 
+  const downloadTransection = async () => {
+    try {
+      if (!user) throw Error("unauthorized request");
+
+      return { message: "successfully downloaded transections" };
+    } catch (error) {
+      return { message: error.message };
+    }
+  };
+
+  const uploadTransection = async () => {
+    try {
+      if (!user) throw Error("unauthorized request");
+
+      return { message: "successfully uploaded transections" };
+    } catch (error) {
+      return { message: error.message };
+    }
+  };
+
   // context value with memorization
   const value = useMemo(
     () => ({
@@ -39,6 +63,8 @@ export const TransectionProvider = ({ children }) => {
       updateTransection,
       deleteTransection,
       deleteTransections,
+      uploadTransection,
+      downloadTransection,
     }),
     [transections]
   );

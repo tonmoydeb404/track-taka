@@ -13,7 +13,7 @@ const Profile = () => {
         referrerPolicy="no-referrer"
       />
 
-      <h2>{user?.displayName}</h2>
+      <h2 className="settings_item_title">{user?.displayName}</h2>
 
       <button className="btn btn-icon btn-danger ml-auto" onClick={logout}>
         <BsBoxArrowRight />
