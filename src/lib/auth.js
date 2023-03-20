@@ -1,37 +1,24 @@
 import {
-  FacebookAuthProvider,
-  GithubAuthProvider,
   GoogleAuthProvider,
+  onAuthStateChanged,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
-const providers = {
-  google: GoogleAuthProvider,
-  facebook: FacebookAuthProvider,
-  github: GithubAuthProvider,
-};
-
-// sign with third party providers google
-export const signInWith = (provider) =>
+export const handleGoogleLogin = async () =>
   new Promise(async (resolve, reject) => {
-    if (!provider || !providers[provider])
-      throw Error("valid auth provider is required");
-    // select auth provider
-    const authProvider = new providers[provider]();
-
     try {
-      const result = await signInWithPopup(auth, authProvider);
+      const provider = new GoogleAuthProvider();
+      const response = await signInWithPopup(auth, provider);
 
-      resolve(result.user);
+      resolve(response.user);
     } catch (error) {
       reject(error);
     }
   });
 
-// sign out
-export const logOut = () =>
+export const handleLogout = async () =>
   new Promise(async (resolve, reject) => {
     try {
       await signOut(auth);
@@ -40,3 +27,6 @@ export const logOut = () =>
       reject(error);
     }
   });
+
+export const handleAuthChanged = (callback = () => {}) =>
+  onAuthStateChanged(auth, (user) => callback(user));
