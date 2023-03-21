@@ -106,7 +106,10 @@ const Dashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="category" fontSize={12} textAnchor="middle" />
                 <YAxis fontSize={12} width={40} />
-                <Tooltip cursor={{ fillOpacity: 0.3 }} />
+                <Tooltip
+                  cursor={{ fillOpacity: 0.3 }}
+                  contentStyle={{ color: "black" }}
+                />
                 <Bar dataKey="income" fill="#22c55eaa" />
                 <Bar dataKey="expense" fill="#EF4444aa" />
               </BarChart>
