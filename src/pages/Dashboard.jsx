@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Helmet } from "react-helmet";
 import { BsPlus } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import {
@@ -40,6 +41,10 @@ const Dashboard = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard - Track Taka</title>
+      </Helmet>
+
       {/* page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-10">
         <h2 className="text-2xl font-semibold">Dashboard</h2>

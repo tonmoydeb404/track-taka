@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
@@ -33,13 +34,16 @@ const CreateTransection = () => {
         success: "new transection created",
         error: "something wents to wrong",
       });
-      navigate("/transections");
     } catch (error) {
       console.error(error);
     }
+    navigate("/transections", { replace: true });
   };
   return (
     <>
+      <Helmet>
+        <title>Create Transection - Track Taka</title>
+      </Helmet>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold">Create Transection</h2>
       </div>

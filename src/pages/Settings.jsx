@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import ExportTransections from "../common/components/Settings/ExportTransections";
 import ImportTransections from "../common/components/Settings/ImportTransections";
 import Profile from "../common/components/Settings/Profile";
@@ -8,24 +9,29 @@ import { useAuth } from "../common/contexts/authContext";
 const Settings = () => {
   const { error, status } = useAuth();
   return (
-    <div>
-      <div className="mb-10">
-        <h2 className="text-2xl font-semibold">Settings</h2>
+    <>
+      <Helmet>
+        <title>Dashboard - Track Taka</title>
+      </Helmet>
+      <div>
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold">Settings</h2>
+        </div>
+        <div className="flex flex-col gap-2 max-w-[500px]">
+          {status === "AUTHORIZED" ? (
+            <>
+              <Profile />
+              <ImportTransections />
+              <ExportTransections />
+            </>
+          ) : (
+            <>
+              <SignIn />
+            </>
+          )}
+        </div>
       </div>
-      <div className="flex flex-col gap-2 max-w-[500px]">
-        {status === "AUTHORIZED" ? (
-          <>
-            <Profile />
-            <ImportTransections />
-            <ExportTransections />
-          </>
-        ) : (
-          <>
-            <SignIn />
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

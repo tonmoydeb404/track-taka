@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import TransectionForm from "../../common/components/Transection/TransectionForm";
@@ -35,15 +36,17 @@ const EditTransection = () => {
         success: "transection updated successfully",
         error: "something wents to wrong",
       });
-
-      navigate("/transections");
     } catch (error) {
       console.error(error);
     }
+    navigate("/transections", { replace: true });
   };
 
   return (
     <>
+      <Helmet>
+        <title>Edit Transections - Track Taka</title>
+      </Helmet>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold">Edit Transection</h2>
       </div>

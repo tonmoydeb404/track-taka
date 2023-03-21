@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import DateFilter from "../../common/components/DateFilter";
 import TransectionTable from "../../common/components/TransectionTable";
 import { useTransection } from "../../common/contexts/transectionContext";
@@ -11,6 +12,9 @@ const Transections = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Transections - Track Taka</title>
+      </Helmet>
       {/* page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold">Transections</h2>
