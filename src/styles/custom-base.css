@@ -1,0 +1,8 @@
+/* body style */
+body {
+  @apply bg-slate-100 text-slate-900 text-base dark:bg-slate-900 dark:text-slate-50;
+}
+
+.react-datepicker-wrapper {
+  @apply w-auto !important;
+}

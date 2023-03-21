@@ -1,0 +1,23 @@
+.mobile-menu {
+  @apply container mx-auto fixed bottom-0 left-0 py-2 bg-white dark:bg-slate-800 border-t border-t-gray-200 dark:border-t-gray-700 z-[1000] sm:hidden shadow;
+}
+
+.mobile-menu_wrapper {
+  @apply flex items-center justify-between w-full;
+}
+
+.mobile-menu_item {
+  @apply px-2 py-2 inline-block rounded;
+}
+
+.mobile-menu_item > .icon {
+  @apply text-2xl;
+}
+
+.mobile-menu_item:not(.active):hover {
+  @apply bg-slate-300 dark:bg-slate-700;
+}
+
+.mobile-menu_item.active {
+  @apply bg-slate-300 dark:bg-slate-700;
+}

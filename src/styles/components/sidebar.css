@@ -1,0 +1,76 @@
+/* sidebar css */
+
+.sidebar {
+  transition-property: background;
+  @apply h-screen duration-300 fixed
+    top-0 left-0 w-full bg-black/50 z-[1001]  lg:w-auto lg:bg-transparent hidden sm:block;
+}
+.sidebar_container {
+  width: var(--sidebar-width);
+  @apply h-full pl-4 duration-300
+    flex flex-col bg-white dark:bg-slate-900 dark:text-white py-4 border-r
+    border-r-gray-200 dark:border-r-gray-800 overflow-hidden;
+}
+
+.sidebar_links {
+  @apply w-full
+    justify-self-stretch h-fit overflow-x-hidden overflow-y-auto flex-1 flex
+    items-stretch flex-col gap-2;
+}
+
+/* sidebar item styles */
+.sidebar_item {
+  @apply px-3 py-2 flex w-full gap-3 rounded-l duration-300 items-center;
+}
+
+.sidebar_item .icon {
+  @apply text-xl;
+}
+
+.sidebar_links .sidebar_item.active {
+  @apply bg-slate-300 dark:bg-slate-800;
+}
+
+.sidebar_links .sidebar_item.active .title {
+  @apply font-medium tracking-normal;
+}
+.sidebar_links .sidebar_item:not(.active) {
+  @apply hover:bg-slate-900/10 dark:hover:bg-white/5;
+}
+.sidebar_item .title {
+  @apply whitespace-nowrap;
+}
+
+/* sidebar brand style */
+.sidebar_item.sidebar_brand {
+  @apply gap-1;
+}
+.sidebar_item.sidebar_brand .icon {
+  @apply text-3xl !important;
+}
+
+/* sidebar collaped */
+body:not([data-sidebar="true"]) .sidebar {
+  @apply w-auto;
+}
+body:not([data-sidebar="true"]) .sidebar_container {
+  @apply px-2;
+}
+body:not([data-sidebar="true"]) .sidebar_item,
+body:not([data-sidebar="true"]) .sidebar_item {
+  @apply justify-start rounded;
+}
+body:not([data-sidebar="true"]) .sidebar_item {
+  @apply p-2.5;
+}
+body:not([data-sidebar="true"]) .sidebar_item .title {
+  @apply hidden;
+}
+
+body:not([data-sidebar="true"]) .sidebar .sidebar_item.sidebar_brand {
+  @apply p-1;
+}
+
+body:not([data-sidebar="true"]) .sidebar_item .icon {
+  @apply text-2xl;
+}

@@ -1,0 +1,7 @@
+.settings_item {
+  @apply flex items-center gap-3 bg-white px-4 py-2 rounded border border-gray-200 dark:bg-slate-800 dark:border-gray-700;
+}
+
+.settings_item_title {
+  @apply font-medium;
+}

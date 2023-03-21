@@ -1,0 +1,25 @@
+/* main css */
+.main {
+  @apply w-full min-h-screen duration-300;
+}
+
+.main_content {
+  @apply w-full pt-10 lg:py-10 px-5 md:px-10 overflow-hidden;
+}
+
+@screen sm {
+  body:not([data-sidebar="true"]) {
+    --sidebar-width: 58px;
+  }
+  body[data-sidebar="true"] {
+    --sidebar-width: 250px;
+  }
+
+  body:not([data-sidebar="true"]) .main {
+    @apply ml-[var(--sidebar-width)];
+  }
+
+  body[data-sidebar="true"] .main {
+    @apply lg:ml-[var(--sidebar-width)];
+  }
+}

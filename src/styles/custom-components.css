@@ -1,0 +1,12 @@
+/* components */
+@import "./components/transection-table.css";
+@import "./components/button.css";
+@import "./components/input.css";
+@import "./components/select.css";
+@import "./components/stat-card.css";
+@import "./components/settings.css";
+@import "./components/mobile-menu.css";
+
+/* layout css */
+@import "./components/layout.css";
+@import "./components/sidebar.css";

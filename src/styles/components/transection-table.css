@@ -1,0 +1,68 @@
+/* table navbar */
+.table_nav {
+  @apply flex justify-between items-center gap-4;
+}
+/* search */
+.table_nav_search {
+  @apply relative;
+}
+.table_nav_search > input {
+  @apply w-full pl-10 dark:bg-slate-700;
+}
+.table_nav_search > .icon {
+  @apply pointer-events-none absolute left-3 top-2/4 -translate-y-2/4 text-gray-500;
+}
+/* actions */
+.table_nav_actions {
+  @apply flex items-center gap-1 md:gap-2;
+}
+
+/* table header */
+
+.table_header_row {
+  @apply bg-slate-200 dark:bg-slate-700;
+}
+.table_header_item {
+  @apply text-start px-3 py-1.5 sm:p-3 border-r border-r-gray-300 dark:border-r-gray-500 text-base last:border-r-0;
+}
+.table_header_item input[type="checkbox"] {
+  @apply rounded form-checkbox outline-none
+    focus:outline-none ring-0 focus:ring-0;
+}
+
+.table-sm .table_header_item {
+  @apply px-3 py-1.5;
+}
+
+/* table body row */
+
+.table_body_row {
+  @apply bg-white border-t border-t-gray-200 dark:bg-slate-800 dark:border-t-gray-700;
+}
+.table_body_item {
+  @apply px-2.5 py-1.5 p-3 border-r sm:text-base border-r-gray-200 dark:border-r-gray-700 whitespace-nowrap;
+}
+
+.table_body_item input[type="checkbox"] {
+  @apply rounded form-checkbox outline-none
+    focus:outline-none ring-0 focus:ring-0;
+}
+
+.table_body_row.income input[type="checkbox"] {
+  @apply text-green-500;
+}
+.table_body_row.expense input[type="checkbox"] {
+  @apply text-red-500;
+}
+
+.table_body_row .transection_type {
+  @apply px-2 py-1 text-xs sm:text-sm rounded-sm;
+}
+
+.table_body_row.income .transection_type {
+  @apply bg-green-500 font-medium text-white;
+}
+
+.table_body_row.expense .transection_type {
+  @apply bg-red-500 font-medium text-white;
+}

@@ -63,9 +63,66 @@
       name="twitter:image"
       content="https://repository-images.githubusercontent.com/551416622/3400b080-2ea0-436a-8ffa-ea2e324fab82"
     />
+
+    <!-- preloader css -->
+    <style>
+      .preloader {
+        display: grid;
+        width: 100%;
+        min-height: 100vh;
+        place-items: center;
+        background-color: #fff;
+        z-index: 1001;
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+
+      .preloader_content {
+        position: absolute;
+        border-radius: 100%;
+        overflow: hidden;
+      }
+
+      .preloader_ping {
+        background-color: rgb(37 99 235 / 0.5);
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        animation: preloader_ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes preloader_ping {
+        75%,
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+
+      [data-preloader="false"] .preloader {
+        display: none !important;
+      }
+
+      body:not([data-preloader="false"]) {
+        overflow: hidden;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <!-- preloader -->
+    <div class="dark:bg-slate-800 preloader">
+      <div class="preloader_ping"></div>
+
+      <img
+        src="/icons/android-chrome-512x512.png"
+        alt="Track Taka"
+        width="70px"
+        height="70px"
+        class="preloader_content"
+      />
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

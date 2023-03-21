@@ -1,0 +1,50 @@
+.input {
+  @apply rounded-sm dark:bg-slate-700;
+}
+
+.input_group {
+  @apply flex flex-col gap-1;
+}
+
+.input_group label {
+  @apply text-sm sm:text-base;
+}
+
+.input_error {
+  @apply text-xs text-red-500 hidden;
+}
+
+.input_group[data-invalid="true"] > .input {
+  @apply border-red-500;
+}
+
+.input_group[data-invalid="true"] > .input_error {
+  @apply block;
+}
+
+/* custom select */
+.custom-select__control {
+  @apply rounded-sm py-1 dark:bg-slate-700 border-gray-600 !important;
+}
+
+.custom-select__input-container {
+  @apply dark:text-white !important;
+}
+.input_group[data-invalid="true"] .custom-select__control {
+  @apply border-red-500 !important;
+}
+.custom-select__single-value {
+  @apply dark:text-white !important;
+}
+.custom-select__menu {
+  @apply dark:bg-slate-700 dark:text-white;
+}
+.custom-select__option--is-focused {
+  @apply text-slate-900 !important;
+}
+.custom-select__control--is-focused {
+  @apply border-transparent ring-2 !important;
+}
+.custom-select__menu-list {
+  @apply max-h-[200px] !important;
+}

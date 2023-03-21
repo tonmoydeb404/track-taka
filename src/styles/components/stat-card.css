@@ -1,0 +1,13 @@
+.income .icon {
+  @apply bg-green-500;
+}
+.expense .icon {
+  @apply bg-red-500;
+}
+.savings .icon {
+  @apply bg-blue-600;
+}
+
+.transections .icon {
+  @apply bg-yellow-400;
+}

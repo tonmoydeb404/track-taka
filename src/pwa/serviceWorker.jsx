@@ -12,9 +12,8 @@ const ServiceWorker = () => {
   } = useRegisterSW();
 
   useEffect(() => {
-    // console.log({ offlineReady, needRefresh });
-
     if (offlineReady) {
+      localStorage.setItem("TRACK_TAKA_INITIATED", JSON.stringify(true));
       console.log(
         "[📦 Track Taka] - Your app has been installed, it now works offline!"
       );

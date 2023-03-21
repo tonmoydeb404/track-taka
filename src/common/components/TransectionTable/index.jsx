@@ -1,185 +1,146 @@
-import React, { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { useTransection } from "../../contexts/TransectionContext";
-import TransectionFilter from "./TransectionFilter";
-import TransectionHeader from "./TransectionHeader";
-import TransectionTH from "./TransectionTH";
-import TransectionTR from "./TransectionTR";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useTransection } from "../../contexts/transectionContext";
+import useSelect from "../../hooks/useSelect";
+import useTransectionFilter from "../../hooks/useTransectionFilter";
+import Stats from "../Stats";
+import TableBody from "./TableBody";
+import TransectionFilter from "./TableFilter";
+import TableHeader from "./TableHeader";
+import TransectionHeader from "./TableNav";
 
-const TransectionTable = ({ className = "", data = [] }) => {
-  // app ref
-  const txRef = useRef(null);
-
-  // app states
-  const [tableData, setTableData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [query, setQuery] = useState("");
+const TransectionTable = ({
+  className = "",
+  data = [],
+  showStats = false,
+  isInteractive = false,
+  small = false,
+}) => {
+  // transection context
+  const { deleteTransection, deleteTransections } = useTransection();
 
   // filter states
-  const [viewFilter, setViewFilter] = useState(false);
-  const [sortByFilter, setSortByFilter] = useState("Default");
-  const [typeFilter, setTypeFilter] = useState("ALL");
-  const [cateFilter, setCateFilter] = useState([]);
+  const {
+    filteredData: tableData,
+    filterCategories,
+    filterSort,
+    filterType,
+    query,
+    setFilterSort,
+    setFilterType,
+    setQuery,
+    toggleFilterCategory,
+  } = useTransectionFilter(data);
+  const [showFilter, setShowFilter] = useState(false);
 
-  // transection context
-  const { deleteTransection } = useTransection();
+  // selected row states
+  const {
+    selected: selectedRows,
+    clearSelect,
+    removeSelect,
+    toggleSelect,
+    toggleAllSelect,
+    isAllSelected,
+  } = useSelect(tableData, "id");
 
   // transection loading
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // handle data filtering
-  useEffect(() => {
-    let filteredData = [...data];
-
-    // searchFilter
-    if (typeof query == "string" && query.length) {
-      filteredData = filteredData.filter((item) =>
-        item.title.toLowerCase().includes(query.toLowerCase())
-      );
+  // delete selected rows
+  const deleteSelectedRows = async () => {
+    try {
+      setIsLoading(true);
+      const promise = deleteTransections(selectedRows);
+      await toast.promise(promise, {
+        loading: "deleting selected transection...",
+        success: "selected transections deleted",
+        error: "something wents to wrong!",
+      });
+      // reset states
+      clearSelect();
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
     }
-
-    // category filter
-    if (cateFilter && cateFilter.length) {
-      filteredData = filteredData.filter((item) =>
-        cateFilter.includes(item.category.toLowerCase())
-      );
-    }
-
-    // sort filter
-    if (sortByFilter == "AMOUNT_LOW_TO_HIGH") {
-      filteredData = filteredData.sort((a, b) => a.amount - b.amount);
-    } else if (sortByFilter == "AMOUNT_HIGH_TO_LOW") {
-      filteredData = filteredData.sort((a, b) => b.amount - a.amount);
-    }
-
-    // type filter
-    if (typeFilter == "INCOME") {
-      filteredData = filteredData.filter((item) => item.type == "income");
-    } else if (typeFilter == "EXPENSE") {
-      filteredData = filteredData.filter((item) => item.type == "expense");
-    }
-
-    // update table data
-    setTableData([...filteredData]);
-  }, [query, data, sortByFilter, cateFilter, typeFilter]);
-
-  //   handle individual select
-  const handleSelect = (id, source = [], update = () => {}) => {
-    const selectedItems = [...source];
-
-    if (selectedItems.includes(id)) {
-      selectedItems.splice(selectedItems.indexOf(id), 1);
-    } else {
-      selectedItems.push(id);
-    }
-
-    update([...selectedItems]);
   };
 
-  // handle table row select
-  const handleRowSelect = (id) =>
-    handleSelect(id, selectedRows, setSelectedRows);
+  // delete specific row
+  const deleteRow = async (id) => {
+    try {
+      setIsLoading(true);
+      const promise = deleteTransection(id);
+      await toast.promise(promise, {
+        loading: "deleting transection...",
+        success: "transection deleted",
+        error: "something wents to wrong!",
+      });
 
-  // handle filter category select
-  const handleCateSelect = (id) => handleSelect(id, cateFilter, setCateFilter);
-
-  //   handle all select
-  const handleAllSelect = (isSelected) => {
-    let allIds = [];
-
-    if (isSelected) {
-      allIds = tableData.map((item) => item.id);
+      // reset states
+      removeSelect(id);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
     }
-
-    setSelectedRows([...allIds]);
-  };
-
-  // handle delete transection
-  const handleDelete = async (id = [], clear = () => {}) => {
-    // set loading true
-    setLoading(true);
-    const promise = deleteTransection(id);
-    await toast.promise(promise, {
-      loading: "deleting transection...",
-      error: "error: cannot delete transection",
-      success: "transection deleted successfully",
-    });
-    clear();
-    // set loading false
-    setLoading(false);
   };
 
   return (
-    <div ref={txRef} className={className}>
-      <TransectionHeader
-        deleteAble={!!selectedRows.length}
-        query={query}
-        setQuery={setQuery}
-        handleDelete={() =>
-          handleDelete(selectedRows, () => handleAllSelect(false))
-        }
-        handleFilter={() => setViewFilter(true)}
-        tableData={tableData}
-        loading={loading}
-        setLoading={setLoading}
-      />
+    <div className={`overflow-hidden ${className}`}>
+      {showStats ? (
+        <Stats
+          transections={tableData}
+          className="mb-10"
+          showWallet={filterType == "ALL"}
+          showTotal={filterType == "ALL"}
+          showExpenses={filterType !== "INCOME"}
+          showIncome={filterType !== "EXPENSE"}
+        />
+      ) : null}
 
-      <div className="overflow-x-auto mt-8">
-        <table className="w-full border border-gray-200 dark:border-gray-700">
-          <TransectionTH
-            callBack={handleAllSelect}
-            isAllSelected={
-              tableData &&
-              tableData.length &&
-              selectedRows.length == tableData.length
-            }
+      {isInteractive ? (
+        <TransectionHeader
+          query={query}
+          setQuery={setQuery}
+          handleDelete={deleteSelectedRows}
+          deleteAble={!!selectedRows.length}
+          showFilter={() => setShowFilter(true)}
+          isLoading={isLoading}
+        />
+      ) : null}
+
+      <div className={`overflow-x-auto py-0`}>
+        <table
+          className={`w-full dark:border-gray-700 border ${
+            small ? "table-sm" : ""
+          }`}
+        >
+          <TableHeader
+            toggleAllSelect={toggleAllSelect}
+            isAllSelected={isAllSelected}
+            isInteractive={isInteractive}
           />
-          <tbody>
-            {tableData && tableData.length ? (
-              tableData.map((item) => (
-                <TransectionTR
-                  title={item.title}
-                  type={item.type}
-                  amount={item.amount}
-                  category={item.category}
-                  date={item.date}
-                  id={item.id}
-                  key={item.id}
-                  handleSelect={() => handleRowSelect(item.id)}
-                  isSelected={selectedRows.includes(item.id)}
-                  handleDelete={() =>
-                    handleDelete(
-                      [item.id],
-                      selectedRows.includes(item.id)
-                        ? () => handleRowSelect(item.id)
-                        : () => {}
-                    )
-                  }
-                  loading={loading}
-                  setLoading={setLoading}
-                />
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center py-5">
-                  no transection to show <i className="bi bi-emoji-frown"></i>
-                </td>
-              </tr>
-            )}
-          </tbody>
+          <TableBody
+            tableData={small ? tableData.slice(0, 10) : tableData}
+            isInteractive={isInteractive}
+            selectedRows={selectedRows}
+            handleRowDelete={deleteRow}
+            handleRowSelect={toggleSelect}
+            isLoading={isLoading}
+          />
         </table>
       </div>
 
-      <TransectionFilter
-        viewFilter={viewFilter}
-        setViewFilter={setViewFilter}
-        cateFilter={cateFilter}
-        handleCateSelect={handleCateSelect}
-        sortByFilter={sortByFilter}
-        setSortByFilter={setSortByFilter}
-        typeFilter={typeFilter}
-        setTypeFilter={setTypeFilter}
-      />
+      {isInteractive ? (
+        <TransectionFilter
+          isOpen={showFilter}
+          close={() => setShowFilter(false)}
+          filterCategories={filterCategories}
+          filterSort={filterSort}
+          filterType={filterType}
+          setFilterSort={setFilterSort}
+          setFilterType={setFilterType}
+          toggleFilterCategory={toggleFilterCategory}
+        />
+      ) : null}
     </div>
   );
 };

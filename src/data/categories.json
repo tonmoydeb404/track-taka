@@ -1,0 +1,30 @@
+{
+  "food": {
+    "label": "Food",
+    "value": "food"
+  },
+  "rent": {
+    "label": "Rent",
+    "value": "rent"
+  },
+  "travel": {
+    "label": "Travel",
+    "value": "travel"
+  },
+  "bills": {
+    "label": "Bills",
+    "value": "bills"
+  },
+  "daily": {
+    "label": "Daily",
+    "value": "daily"
+  },
+  "health": {
+    "label": "Health",
+    "value": "health"
+  },
+  "others": {
+    "label": "Others",
+    "value": "others"
+  }
+}
