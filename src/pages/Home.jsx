@@ -10,10 +10,13 @@ const Home = () => {
     const isInitiated = localStorage.getItem("TRACK_TAKA_INITIATED");
     if (isInitiated && JSON.parse(isInitiated) === true) {
       navigate("/dashboard");
-    } else {
-      localStorage.setItem("TRACK_TAKA_INITIATED", JSON.stringify(true));
     }
   }, []);
+
+  const initApp = () => {
+    localStorage.setItem("TRACK_TAKA_INITIATED", JSON.stringify(true));
+    navigate("/dashboard", { replace: true });
+  };
 
   return (
     <>
@@ -33,9 +36,9 @@ const Home = () => {
         </p>
 
         <div className="flex flex-wrap items-center gap-2 mt-10">
-          <Link className="btn btn-primary gap-1" to="/dashboard">
+          <button className="btn btn-primary gap-1" onClick={initApp}>
             Go to Dashboard <BsArrowRight />
-          </Link>
+          </button>
           <Link className="btn btn-warning gap-1" to="/">
             Github <BsGithub />
           </Link>
