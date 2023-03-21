@@ -119,7 +119,7 @@ const TransectionTable = ({
             isInteractive={isInteractive}
           />
           <TableBody
-            tableData={tableData}
+            tableData={small ? tableData.slice(0, 10) : tableData}
             isInteractive={isInteractive}
             selectedRows={selectedRows}
             handleRowDelete={deleteRow}

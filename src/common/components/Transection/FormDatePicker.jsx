@@ -4,7 +4,12 @@ import { BsCalendar2Event } from "react-icons/bs";
 
 const FormDatePicker = ({ date, setDate }) => {
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button className="btn input" onClick={onClick} ref={ref} type={"button"}>
+    <button
+      className="btn input bg-white border border-slate-600 dark:border-slate-500"
+      onClick={onClick}
+      ref={ref}
+      type={"button"}
+    >
       <BsCalendar2Event />
       {value}
     </button>

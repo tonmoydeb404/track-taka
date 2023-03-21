@@ -32,7 +32,7 @@ const DateFilter = ({
 
       {/* dropdown menu */}
       <div
-        className={`flex flex-col p-3 bg-white border-gray-200 dark:border-gray-700  border dark:bg-slate-800 gap-3 rounded min-w-[250px] absolute right-0 top-full mt-2 z-[100] ${
+        className={`flex flex-col p-3 bg-white border-gray-200 dark:border-gray-700  border dark:bg-slate-800 gap-3 rounded min-w-[250px] absolute left-0 sm:right-0 sm:left-auto top-full mt-2 z-[100] ${
           !show ? "hidden" : ""
         }`}
       >

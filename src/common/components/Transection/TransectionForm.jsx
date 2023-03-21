@@ -99,14 +99,14 @@ const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
               <label htmlFor="category">Transection Category</label>
               <ReactSelect
                 name="category"
+                id="category"
                 value={
                   values.category && categories[values.category]
                     ? categories[values.category]
                     : ""
                 }
-                placeholder="select category"
+                placeholder="select or search category"
                 options={categoryOptions}
-                className
                 onChange={(cate) =>
                   setFieldValue("category", cate.value.toLowerCase())
                 }

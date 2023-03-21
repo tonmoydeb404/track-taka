@@ -45,3 +45,6 @@
 .custom-select__control--is-focused {
   @apply border-transparent ring-2 !important;
 }
+.custom-select__menu-list {
+  @apply max-h-[200px] !important;
+}

@@ -19,10 +19,6 @@
 
 /* table header */
 
-.table_header {
-  @apply sticky top-0 w-full;
-}
-
 .table_header_row {
   @apply bg-slate-200 dark:bg-slate-700;
 }

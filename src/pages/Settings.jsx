@@ -12,7 +12,7 @@ const Settings = () => {
       <div className="mb-10">
         <h2 className="text-2xl font-semibold">Settings</h2>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 max-w-[500px]">
         {status === "AUTHORIZED" ? (
           <>
             <Profile />
