@@ -1,5 +1,9 @@
 import { createContext, useContext, useMemo } from "react";
-import dbConfig from "../../config/db.config";
+import firestoreConfig from "../../config/firestore.config";
+import indexedDBConfig from "../../config/indexedDB.config";
+import categories from "../../data/categories.json";
+import { createDocument, getDocument } from "../../lib/firestore";
+import { arrayToObj } from "../../utilities/objArraySwap";
 import useIndexedDB from "../hooks/useIndexedDB";
 import { useAuth } from "./authContext";
 
@@ -9,8 +13,8 @@ export const TransectionContext = createContext({
   createTransection: async () => {},
   updateTransection: async () => {},
   deleteTransection: async () => {},
-  downloadTransection: async () => {},
-  uploadTransection: async () => {},
+  importTransections: async () => {},
+  exportTransections: async () => {},
 });
 
 // use transection values
@@ -28,29 +32,65 @@ export const TransectionProvider = ({ children }) => {
     updateData: updateTransection,
     insertData: insertTransections,
   } = useIndexedDB(
-    dbConfig.NAME,
-    dbConfig.VERSION,
-    dbConfig.STORE,
-    dbConfig.KEY_PATH,
-    dbConfig.OLD_STORE
+    indexedDBConfig.NAME,
+    indexedDBConfig.VERSION,
+    indexedDBConfig.STORE,
+    indexedDBConfig.KEY_PATH,
+    indexedDBConfig.OLD_STORE
   );
 
-  const downloadTransection = async () => {
+  const importTransections = async () => {
     try {
       if (!user) throw Error("unauthorized request");
+      // get data from server
+      const response = await getDocument(firestoreConfig.collection, user.uid);
+      if (!response) return { message: "nothing to import" };
+      const responseArr = Object.values(response);
+      // filter the valid data
+      const filteredResponse = responseArr
+        .filter((item) => {
+          const isExist = transections.findIndex((t) => t.id === item.id);
+          const hasAllProperties =
+            item?.id &&
+            item?.title &&
+            item?.date &&
+            ["income", "expense"].includes(item?.type) &&
+            item?.amount &&
+            item?.category &&
+            item?.createdAt;
+          return isExist < 0 && hasAllProperties;
+        })
+        .map((item) => {
+          const transection = item;
+          // change invalid categories value
+          transection.category = categories?.[transection.category]
+            ? transection.category
+            : "others";
 
-      return { message: "successfully downloaded transections" };
+          return transection;
+        });
+      // insert data to the local database
+      await insertTransections(filteredResponse);
+      return { message: "successfully imported transections" };
     } catch (error) {
       return { message: error.message };
     }
   };
 
-  const uploadTransection = async () => {
+  const exportTransections = async () => {
     try {
       if (!user) throw Error("unauthorized request");
+      if (!transections.length) throw Error("nothing to export");
 
-      return { message: "successfully uploaded transections" };
+      const transectionsObj = arrayToObj(transections, "id");
+      const response = await createDocument(
+        firestoreConfig.collection,
+        user.uid,
+        transectionsObj
+      );
+      return { message: "successfully exported transections" };
     } catch (error) {
+      console.log(error);
       return { message: error.message };
     }
   };
@@ -64,10 +104,10 @@ export const TransectionProvider = ({ children }) => {
       updateTransection,
       deleteTransection,
       deleteTransections,
-      uploadTransection,
-      downloadTransection,
+      exportTransections,
+      importTransections,
     }),
-    [transections]
+    [transections, user]
   );
 
   return (

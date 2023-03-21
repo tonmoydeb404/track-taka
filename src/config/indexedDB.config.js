@@ -1,4 +1,4 @@
-const dbConfig = {
+const indexedDBConfig = {
   NAME: import.meta.env.MODE === "production" ? "TRACK_TAKA" : "DEV-TRACK_TAKA",
   VERSION: 1,
   STORE: "transections",
@@ -6,4 +6,4 @@ const dbConfig = {
   KEY_PATH: "id",
 };
 
-export default dbConfig;
+export default indexedDBConfig;
