@@ -67,6 +67,21 @@ export const TransectionProvider = ({ children }) => {
             ? transection.category
             : "others";
 
+          // change old invalid date value
+          if (isNaN(Date.parse(transection.date))) {
+            transection.date = transections.createdAt;
+          } else if (typeof transections.date !== "number") {
+            const date = new Date(transection.date);
+            const createdAt = new Date(transection.createdAt);
+
+            date.setHours(createdAt.getHours());
+            date.setMinutes(createdAt.getMinutes());
+            date.setSeconds(createdAt.getSeconds());
+            date.setMilliseconds(createdAt.getMilliseconds());
+
+            transection.date = date;
+          }
+
           return transection;
         });
       // insert data to the local database
