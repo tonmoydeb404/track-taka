@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 const months = [
   "January",
   "February",
@@ -35,7 +34,7 @@ export const dateData = (data = [], filter, target = null) => {
         }
         break;
       default:
-        return false;
+        break;
     }
 
     return true;
@@ -89,19 +88,20 @@ export const dateData = (data = [], filter, target = null) => {
     default: {
       const dateOptions = [];
       data.forEach((item) => {
-        if (!dateOptions.includes(item.date)) {
-          dateOptions.push(item.date);
+        const year = new Date(item.date).getFullYear();
+        if (!dateOptions.includes(year)) {
+          dateOptions.push(year);
         }
       });
 
       cData = dateOptions
         .sort((a, b) => {
-          return new Date(a) - new Date(b);
+          return a - b;
         })
-        .map((date) => {
-          const cObj = data.reduce(
+        .map((year) => {
+          const cObj = filteredData.reduce(
             (prev, curr) => {
-              if (curr.date === date) {
+              if (new Date(curr.date).getFullYear() === year) {
                 return {
                   ...prev,
                   [curr.type]: prev[curr.type] + curr.amount,
@@ -110,13 +110,15 @@ export const dateData = (data = [], filter, target = null) => {
                 return prev;
               }
             },
-            { option: format(date, "dd/MM/yy"), income: 0, expense: 0 }
+            { option: year, income: 0, expense: 0 }
           );
 
           cObj.max = cObj.income > cObj.expense ? cObj.income : cObj.expense;
 
           return cObj;
         });
+
+      console.log({ cData, filteredData });
 
       break;
     }
@@ -149,7 +151,7 @@ export const categoryData = (
         }
         break;
       default:
-        return TrustedHTML;
+        break;
     }
 
     return true;

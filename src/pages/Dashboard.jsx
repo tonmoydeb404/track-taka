@@ -4,13 +4,9 @@ import { Link } from "react-router-dom";
 import {
   Area,
   AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
-  Legend,
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  Radar,
-  RadarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -18,7 +14,6 @@ import {
 } from "recharts";
 import DateFilter from "../common/components/DateFilter";
 import Stats from "../common/components/Stats";
-import TransectionTable from "../common/components/TransectionTable";
 import { useTransection } from "../common/contexts/transectionContext";
 import useDateFilter from "../common/hooks/useDateFilter";
 import categories from "../data/categories.json";
@@ -72,7 +67,7 @@ const Dashboard = () => {
           <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
             statistics
           </span>
-          <div className="bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded pt-3">
+          <div className="bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded pt-4">
             <ResponsiveContainer width={"99%"} minHeight={300}>
               <AreaChart data={graphData.chart} className="w-full">
                 <Tooltip contentStyle={{ color: "black" }} />
@@ -96,48 +91,21 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className=" col-span-12 md:col-span-6 lg:col-span-4">
+        <div className="col-span-12">
           <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
             transection on categories
           </span>
-          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
-            <ResponsiveContainer width={"100%"} minHeight={400}>
-              <RadarChart
-                outerRadius={100}
-                width={730}
-                height={250}
-                data={graphData.categoryChart}
-              >
-                <Tooltip contentStyle={{ color: "black" }} />
-                <PolarGrid />
-                <PolarAngleAxis dataKey="category" fontSize={12} />
-                <PolarRadiusAxis fontSize={12} angle={30} domain={[0, 10000]} />
-                <Radar
-                  name="Income"
-                  dataKey="income"
-                  stroke="#22c55e"
-                  fill="#22c55eaa"
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Expense"
-                  dataKey="expense"
-                  stroke="#EF4444"
-                  fill="#EF4444aa"
-                  fillOpacity={0.6}
-                />
-                <Legend />
-              </RadarChart>
+          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded pt-4">
+            <ResponsiveContainer width={"99%"} minHeight={300}>
+              <BarChart data={graphData.categoryChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" fontSize={12} textAnchor="middle" />
+                <YAxis fontSize={12} width={40} />
+                <Tooltip cursor={{ fillOpacity: 0.3 }} />
+                <Bar dataKey="income" fill="#22c55eaa" />
+                <Bar dataKey="expense" fill="#EF4444aa" />
+              </BarChart>
             </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="col-span-12 md:col-span-6 lg:col-span-8">
-          <span className="uppercase tracking-wider font-medium text-sm inline-block mb-1">
-            recent transections
-          </span>
-          <div className=" bg-white border border-gray-200  dark:bg-slate-800 dark:border-slate-700 rounded">
-            <TransectionTable data={transections ? transections : []} small />
           </div>
         </div>
       </div>
