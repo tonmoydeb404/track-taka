@@ -1,7 +1,6 @@
 import { createContext, useContext, useMemo } from "react";
 import firestoreConfig from "../../config/firestore.config";
 import indexedDBConfig from "../../config/indexedDB.config";
-import categories from "../../data/categories.json";
 import { createDocument, getDocument } from "../../lib/firestore";
 import { arrayToObj } from "../../utilities/objArraySwap";
 import useIndexedDB from "../hooks/useIndexedDB";
@@ -54,41 +53,19 @@ export const TransectionProvider = ({ children }) => {
         if (!response) resolve({ message: "nothing to import" });
         const responseArr = Object.values(response);
         // filter the valid data
-        const filteredResponse = responseArr
-          .filter((item) => {
-            const isExist = transections.findIndex((t) => t.id === item.id);
-            const hasAllProperties =
-              item?.id &&
-              item?.title &&
-              item?.date &&
-              ["income", "expense"].includes(item?.type) &&
-              item?.amount &&
-              item?.category &&
-              item?.createdAt;
-            return isExist < 0 && hasAllProperties;
-          })
-          .map((item) => {
-            const transection = item;
-            // change invalid categories value
-            transection.category = categories?.[transection.category]
-              ? transection.category
-              : "others";
+        const filteredResponse = responseArr.filter((item) => {
+          const isExist = transections.findIndex((t) => t.id === item.id);
+          const hasAllProperties =
+            item?.id &&
+            item?.title &&
+            item?.date &&
+            ["income", "expense"].includes(item?.type) &&
+            item?.amount &&
+            item?.category &&
+            item?.createdAt;
+          return isExist < 0 && hasAllProperties;
+        });
 
-            // change old invalid date value
-            if (typeof transections.date === "string") {
-              const date = new Date(transection.date);
-              const createdAt = new Date(transection.createdAt);
-
-              date.setHours(createdAt.getHours());
-              date.setMinutes(createdAt.getMinutes());
-              date.setSeconds(createdAt.getSeconds());
-              date.setMilliseconds(createdAt.getMilliseconds());
-
-              transection.date = date.getTime();
-            }
-
-            return transection;
-          });
         // insert data to the local database
         await insertTransections(filteredResponse);
         resolve({ message: "successfully imported transections" });
@@ -131,7 +108,6 @@ export const TransectionProvider = ({ children }) => {
     }),
     [transections, user]
   );
-
   return (
     <TransectionContext.Provider value={value}>
       {children}
