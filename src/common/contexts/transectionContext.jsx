@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
+import { number } from "yup";
 import firestoreConfig from "../../config/firestore.config";
 import indexedDBConfig from "../../config/indexedDB.config";
 import { createDocument, getDocument } from "../../lib/firestore";
@@ -81,7 +82,20 @@ export const TransectionProvider = ({ children }) => {
         if (!myUser) throw Error("unauthorized request");
         if (!transections.length) throw Error("nothing to export");
 
-        const transectionsObj = arrayToObj(transections, "id");
+        // sanitize transections
+        const filteredTransections = transections.filter((item) => {
+          const hasAllProperties =
+            item?.id &&
+            item?.title &&
+            typeof item.date === number &&
+            ["income", "expense"].includes(item?.type) &&
+            item?.amount &&
+            item?.category &&
+            typeof item.createdAt === number;
+          return hasAllProperties;
+        });
+
+        const transectionsObj = arrayToObj(filteredTransections, "id");
         const response = await createDocument(
           firestoreConfig.collection,
           myUser.uid,
