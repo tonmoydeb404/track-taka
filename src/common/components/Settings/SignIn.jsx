@@ -15,7 +15,6 @@ const SignIn = () => {
       // if successfully logged in then import existing data
       if (response) {
         const promise = importTransections(response);
-        // TODO: make a valid promise
         await toast.promise(promise, {
           loading: "importing existing transections...",
           success: "successfully imported transections",
@@ -26,6 +25,7 @@ const SignIn = () => {
       console.log(error);
     }
   };
+
   return (
     <>
       {status === "UNAUTHORIZED" ? (
