@@ -53,3 +53,5 @@ const ServiceWorker = () => {
 };
 
 export default ServiceWorker;
+
+// TODO: Make update app mandatory

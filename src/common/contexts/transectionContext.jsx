@@ -58,7 +58,7 @@ export const TransectionProvider = ({ children }) => {
           const hasAllProperties =
             item?.id &&
             item?.title &&
-            item?.date &&
+            typeof item.date === "number" &&
             ["income", "expense"].includes(item?.type) &&
             item?.amount &&
             item?.category &&
