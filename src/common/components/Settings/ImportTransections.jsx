@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "react-hot-toast";
 import { BsCloudDownload } from "react-icons/bs";
 import { useTransection } from "../../contexts/transectionContext";
 
 const ImportTransections = () => {
-  const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState("");
   const { importTransections } = useTransection();
 
   const handleImport = async () => {
@@ -30,7 +28,6 @@ const ImportTransections = () => {
           <BsCloudDownload />
         </button>
       </div>
-      {showMessage ? <p className="text-xs">{message}</p> : null}
     </div>
   );
 };
