@@ -45,10 +45,10 @@ const SettingsModal = ({
                 </Dialog.Description>
 
                 <div className="flex items-center justify-end gap-2 mt-5">
-                  <button className="btn btn-primary" onClick={onDisagree}>
+                  <button className="btn btn-danger" onClick={onDisagree}>
                     {disagreeText}
                   </button>
-                  <button className="btn btn-danger" onClick={onAgree}>
+                  <button className="btn btn-success" onClick={onAgree}>
                     {agreeText}
                   </button>
                 </div>

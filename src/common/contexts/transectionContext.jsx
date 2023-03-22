@@ -75,9 +75,7 @@ export const TransectionProvider = ({ children }) => {
               : "others";
 
             // change old invalid date value
-            if (isNaN(Date.parse(transection.date))) {
-              transection.date = transections.createdAt;
-            } else if (typeof transections.date !== "number") {
+            if (typeof transections.date === "string") {
               const date = new Date(transection.date);
               const createdAt = new Date(transection.createdAt);
 
@@ -86,7 +84,7 @@ export const TransectionProvider = ({ children }) => {
               date.setSeconds(createdAt.getSeconds());
               date.setMilliseconds(createdAt.getMilliseconds());
 
-              transection.date = date;
+              transection.date = date.getTime();
             }
 
             return transection;

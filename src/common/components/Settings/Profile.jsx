@@ -7,13 +7,23 @@ import SettingsModal from "./SettingsModal";
 
 const Profile = () => {
   const { user, logout } = useAuth();
-  const { clearTransections } = useTransection();
+  const { clearTransections, exportTransections, transections } =
+    useTransection();
   const [showModal, setShowModal] = useState(false);
 
   // handle log out
-  const handleLogout = async () => {
+  const handleLogout = async (backup = false) => {
     try {
       setShowModal(false);
+      // make a backup
+      if (backup) {
+        const backupPromise = exportTransections();
+        await toast.promise(backupPromise, {
+          loading: "backing up...",
+          success: "successfully backed up.",
+          error: "cannot backup transections",
+        });
+      }
       const promise = Promise.all([await logout(), await clearTransections()]);
       await toast.promise(promise, {
         loading: "logging out...",
@@ -22,6 +32,15 @@ const Profile = () => {
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  // handle click
+  const handleClick = async () => {
+    if (transections.length) {
+      setShowModal(true);
+    } else {
+      await handleLogout(false);
     }
   };
 
@@ -39,20 +58,22 @@ const Profile = () => {
 
         <button
           className="btn btn-icon btn-danger ml-auto"
-          onClick={() => setShowModal(true)}
+          onClick={handleClick}
         >
           <BsBoxArrowRight />
         </button>
       </div>
       <SettingsModal
         isOpen={showModal}
-        onAgree={handleLogout}
-        onDisagree={() => setShowModal(false)}
+        onAgree={async () => await handleLogout(true)}
+        onDisagree={async () => await handleLogout(false)}
         onClose={() => setShowModal(false)}
-        title="Want to logout?"
+        title="Make a backup!"
         description={
-          "This action will remove all of your transections from this app and this action cannot be undone."
+          "By signing out all existing transections will be removed & this task cannot be undone. if you don't want to loose your transections then make a backup!"
         }
+        agreeText="Backup"
+        disagreeText="Avoid"
       />
     </>
   );
