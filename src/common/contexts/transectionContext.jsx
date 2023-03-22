@@ -1,5 +1,4 @@
 import { createContext, useContext, useMemo } from "react";
-import { number } from "yup";
 import firestoreConfig from "../../config/firestore.config";
 import indexedDBConfig from "../../config/indexedDB.config";
 import { createDocument, getDocument } from "../../lib/firestore";
@@ -87,11 +86,11 @@ export const TransectionProvider = ({ children }) => {
           const hasAllProperties =
             item?.id &&
             item?.title &&
-            typeof item.date === number &&
+            typeof item.date === "number" &&
             ["income", "expense"].includes(item?.type) &&
-            item?.amount &&
             item?.category &&
-            typeof item.createdAt === number;
+            item?.createdAt;
+
           return hasAllProperties;
         });
 
