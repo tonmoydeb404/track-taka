@@ -118,8 +118,6 @@ export const dateData = (data = [], filter, target = null) => {
           return cObj;
         });
 
-      console.log({ cData, filteredData });
-
       break;
     }
   }

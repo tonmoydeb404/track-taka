@@ -36,14 +36,6 @@ const Stats = ({
     <div
       className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5 ${className}`}
     >
-      {showTotal ? (
-        <StatCard
-          type="transections"
-          title="transections"
-          amount={incomes + expenses}
-          icon={BsCurrencyDollar}
-        />
-      ) : null}
       {showWallet ? (
         <StatCard
           type="savings"
@@ -68,6 +60,14 @@ const Stats = ({
           title="expense"
           amount={expenses}
           icon={BsGraphDown}
+        />
+      ) : null}
+      {showTotal ? (
+        <StatCard
+          type="transections"
+          title="transections"
+          amount={incomes + expenses}
+          icon={BsCurrencyDollar}
         />
       ) : null}
     </div>
