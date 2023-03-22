@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setStatus("LOADING");
       const response = await handleGoogleLogin();
+      setUser(response);
       setStatus("AUTHORIZED");
       return response;
     } catch (err) {

@@ -15,6 +15,7 @@ export const TransectionContext = createContext({
   deleteTransection: async () => {},
   importTransections: async () => {},
   exportTransections: async () => {},
+  clearTransections: async () => {},
 });
 
 // use transection values
@@ -31,6 +32,7 @@ export const TransectionProvider = ({ children }) => {
     createData: createTransection,
     updateData: updateTransection,
     insertData: insertTransections,
+    clearData: clearTransections,
   } = useIndexedDB(
     indexedDBConfig.NAME,
     indexedDBConfig.VERSION,
@@ -39,11 +41,15 @@ export const TransectionProvider = ({ children }) => {
     indexedDBConfig.OLD_STORE
   );
 
-  const importTransections = async () => {
+  const importTransections = async (authUser) => {
     try {
-      if (!user) throw Error("unauthorized request");
+      const myUser = authUser || user;
+      if (!myUser) throw Error("unauthorized request");
       // get data from server
-      const response = await getDocument(firestoreConfig.collection, user.uid);
+      const response = await getDocument(
+        firestoreConfig.collection,
+        myUser.uid
+      );
       if (!response) return { message: "nothing to import" };
       const responseArr = Object.values(response);
       // filter the valid data
@@ -121,6 +127,7 @@ export const TransectionProvider = ({ children }) => {
       deleteTransections,
       exportTransections,
       importTransections,
+      clearTransections,
     }),
     [transections, user]
   );

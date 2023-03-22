@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.13",
     "firebase": "^9.12.1",
     "formik": "^2.2.9",
     "react": "^18.2.0",

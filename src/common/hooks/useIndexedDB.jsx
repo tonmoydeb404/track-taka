@@ -58,6 +58,11 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
     return response;
   });
 
+  const clearData = wrapper(async () => {
+    await DB.clear();
+    await getData();
+  });
+
   // initiate database
   useEffect(() => {
     (async () => {
@@ -77,6 +82,7 @@ const useIndexedDB = (NAME, VERSION, STORE, KEY_PATH, OLD_STORE) => {
     updateData,
     deleteData,
     deleteMultipleData,
+    clearData,
   };
 };
 
