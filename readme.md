@@ -2,17 +2,17 @@
 
 # Track Taka - Expense Tracker
 
-a expense tracker application to help you in daily life money management. basically it helps you to track your regular expenses & incomes. so at the end of the month you can easily get summry of your monthly expense.
-**track taka** app builds with React JS & IndexedDB database. also there is a firebase intregation for making backups of your data but this is optional.
-PWA - Progressive Web App feature also enabled so you can use this app in offline mode too and install this web application to your device like any other native apps.
+An expense tracker application to help you in daily life money management. It allows you to track your regular expenses & income. so at the end of the month, you can quickly get a summary of your monthly expense. Track Taka app builds with React JS & IndexedDB database. also, there is a firebase integration for making backups of your data but this is optional. PWA - Progressive Web App feature also enabled so you can use this app in offline mode too and install this web application to your device like any other native app.
 
 **live link:** [https://track-taka.netlify.app](https://track-taka.netlify.app)
 
 ### Features
 
-- Manage Transections
-- Offline Support
-- Backup & Restore Option
+- Manage your daily transactions
+- Transactions dashboard to get a quick overview.
+- Install like any other app on any platform
+- Offline support
+- Backup or Import transactions
 
 ### Tech Stacks
 
