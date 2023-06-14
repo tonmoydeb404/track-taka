@@ -4,7 +4,7 @@
 }
 
 .main_content {
-  @apply w-full pt-10 lg:py-10 px-5 md:px-10 overflow-hidden;
+  @apply w-full pt-10 lg:py-10 px-5 md:px-10 overflow-x-hidden;
 }
 
 @screen sm {

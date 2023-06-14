@@ -23,6 +23,30 @@
     "label": "Health",
     "value": "health"
   },
+  "bkash": {
+    "label": "Bkash",
+    "value": "bkash"
+  },
+  "nagad": {
+    "label": "Nagad",
+    "value": "nagad"
+  },
+  "stationary": {
+    "label": "Stationary",
+    "value": "stationary"
+  },
+  "shopping": {
+    "label": "Shopping",
+    "value": "shopping"
+  },
+  "freelance": {
+    "label": "Freelance",
+    "value": "freelance"
+  },
+  "medicine": {
+    "label": "Medicine",
+    "value": "medicine"
+  },
   "others": {
     "label": "Others",
     "value": "others"

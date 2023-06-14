@@ -105,6 +105,8 @@ const TransectionForm = ({ mode = "CREATE", initialValues, handleSubmit }) => {
                     ? categories[values.category]
                     : ""
                 }
+                menuShouldScrollIntoView
+                menuPlacement="top"
                 placeholder="select or search category"
                 options={categoryOptions}
                 onChange={(cate) =>
