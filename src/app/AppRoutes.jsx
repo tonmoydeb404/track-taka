@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../common/layout";
 import Dashboard from "../pages/Dashboard";
+import Feedback from "../pages/Feedback";
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
 import Transections from "../pages/Transections";
@@ -12,6 +13,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/feedback" element={<Feedback />} />
 
       {/* app routes */}
       <Route element={<Layout />}>

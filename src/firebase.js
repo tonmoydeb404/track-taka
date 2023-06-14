@@ -1,9 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+
 import {
-  enableMultiTabIndexedDbPersistence,
-  getFirestore,
+  collection,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
 } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,10 +23,35 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const firestore = getFirestore(app);
+export const firestore = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
 export const auth = getAuth(app);
 
-// offline capabilities
-enableMultiTabIndexedDbPersistence(firestore);
+// collections
+const feedbackConverter = {
+  fromFirestore(snapshot, options) {
+    const data = snapshot.data(options);
+    return {
+      id: snapshot.id,
+      name: data.name,
+      text: data.text,
+    };
+  },
+  toFirestore(data) {
+    return {
+      name: data.name,
+      text: data.text,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
+  },
+};
+export const feedbacksCollection = collection(
+  firestore,
+  "feedbacks"
+).withConverter(feedbackConverter);
 
 export default app;

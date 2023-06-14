@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { BsArrowRight, BsGithub } from "react-icons/bs";
+import { BsArrowRight, BsChatLeftQuoteFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -25,8 +25,8 @@ const Home = () => {
           <Link to={"/dashboard"} className="btn btn-primary gap-1">
             Go to Dashboard <BsArrowRight />
           </Link>
-          <Link className="btn btn-warning gap-1" to="/">
-            Github <BsGithub />
+          <Link className="btn btn-warning gap-1" to="/feedback">
+            User Feedbacks <BsChatLeftQuoteFill />
           </Link>
         </div>
       </div>
