@@ -22,7 +22,7 @@ const Home = () => {
         </p>
 
         <div className="flex flex-wrap items-center gap-2 mt-10">
-          <button className="btn btn-primary gap-1" onClick={initApp}>
+          <button className="btn btn-primary gap-1">
             Go to Dashboard <BsArrowRight />
           </button>
           <Link className="btn btn-warning gap-1" to="/">
