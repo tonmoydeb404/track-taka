@@ -1,23 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import { BsArrowRight, BsGithub } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const isInitiated = localStorage.getItem("TRACK_TAKA_INITIATED");
-    if (isInitiated && JSON.parse(isInitiated) === true) {
-      navigate("/dashboard");
-    }
-  }, []);
-
-  const initApp = () => {
-    localStorage.setItem("TRACK_TAKA_INITIATED", JSON.stringify(true));
-    navigate("/dashboard", { replace: true });
-  };
-
   return (
     <>
       <Helmet>
