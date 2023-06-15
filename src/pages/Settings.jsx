@@ -1,5 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
+import { BsChatLeftQuoteFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import ExportTransections from "../common/components/Settings/ExportTransections";
 import ImportTransections from "../common/components/Settings/ImportTransections";
 import Profile from "../common/components/Settings/Profile";
@@ -29,6 +31,13 @@ const Settings = () => {
               <SignIn />
             </>
           )}
+          <Link to={"/feedback"} className="settings_item">
+            <h3 className="settings_item_title">Share Your Feedback</h3>
+
+            <button className="btn btn-icon btn-primary ml-auto">
+              <BsChatLeftQuoteFill />
+            </button>
+          </Link>
         </div>
       </div>
     </>
