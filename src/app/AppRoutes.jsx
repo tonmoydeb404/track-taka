@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../common/layout";
 import Dashboard from "../pages/Dashboard";
+import NotFound from "../pages/Error/NotFound";
 import Feedback from "../pages/Feedback";
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
@@ -23,6 +24,9 @@ const AppRoutes = () => {
         <Route path="/transections/edit/:id" element={<EditTransection />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
+
+      {/* not found page */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
