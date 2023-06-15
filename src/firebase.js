@@ -38,6 +38,8 @@ const feedbackConverter = {
       id: snapshot.id,
       name: data.name,
       text: data.text,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   },
   toFirestore(data) {

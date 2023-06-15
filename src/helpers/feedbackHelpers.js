@@ -12,7 +12,6 @@ export const createFeedback = async (feedback = {}) =>
       const response = await addDoc(feedbacksCollection, {
         ...data,
       });
-      console.log(response);
       resolve(response);
     } catch (error) {
       return reject(error);

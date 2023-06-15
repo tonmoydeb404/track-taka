@@ -11,16 +11,16 @@ const transectionSchema = Yup.object({
 
 const FeedbackCreateForm = ({
   className = "",
-  afterFormSubmit = () => {},
+  onFormSubmit = () => {},
   onFormCancel = () => {},
 }) => {
   const handleSubmit = async (feedback) => {
+    onFormSubmit();
     await toast.promise(createFeedback(feedback), {
       loading: "Submitting feedback",
       error: "Cannot submit feedback",
       success: "Feedback submitted!",
     });
-    afterFormSubmit();
   };
 
   const handleCancel = () => {
