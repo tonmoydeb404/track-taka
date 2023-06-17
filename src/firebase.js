@@ -38,6 +38,7 @@ const feedbackConverter = {
       id: snapshot.id,
       name: data.name,
       text: data.text,
+      email: data.email,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
     };
@@ -46,6 +47,7 @@ const feedbackConverter = {
     return {
       name: data.name,
       text: data.text,
+      email: data.email,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
     };

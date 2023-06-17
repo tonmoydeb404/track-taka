@@ -7,6 +7,7 @@ import { createFeedback } from "../../../helpers/feedbackHelpers";
 const transectionSchema = Yup.object({
   name: Yup.string().max(30).required(),
   text: Yup.string().min(3).required(),
+  email: Yup.string().email().required(),
 });
 
 const FeedbackCreateForm = ({
@@ -32,6 +33,7 @@ const FeedbackCreateForm = ({
       initialValues={{
         name: "",
         text: "",
+        email: "",
       }}
       onSubmit={async (values) => await handleSubmit(values)}
       onReset={handleCancel}
@@ -53,6 +55,18 @@ const FeedbackCreateForm = ({
                 className="form-input input"
               />
               <p className="input_error">{errors.name}</p>
+            </div>
+
+            <div className="input_group" data-invalid={!!errors.email}>
+              <label htmlFor="email">Your Email</label>
+              <Field
+                type="text"
+                name="email"
+                id="email"
+                value={values.email}
+                className="form-input input"
+              />
+              <p className="input_error">{errors.email}</p>
             </div>
 
             <div className="input_group" data-invalid={!!errors.text}>
