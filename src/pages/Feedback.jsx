@@ -29,7 +29,7 @@ const Feedback = () => {
             <BsArrowLeft className="text-xl" />
           </Link>
           <h2 className="text-2xl font-bold mr-auto">Our users feedback</h2>
-          <button className="btn btn-warning" onClick={viewCreateFrom}>
+          <button className="btn btn-warning hidden">
             <BsPlusLg />
             Submit Feedback
           </button>
