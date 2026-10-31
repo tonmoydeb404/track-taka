@@ -28,6 +28,10 @@
 .pt-safe {
   padding-top: max(env(safe-area-inset-top), 0px);
 }
+/* Bottom tab bar: iOS home-indicator inset, or a minimum gap where the inset is 0 (Android) */
+.pb-bottomnav-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+}
 
 /* Tabular numbers for financial figures */
 .tnum {
