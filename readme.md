@@ -38,6 +38,9 @@ src/
     quick-entry/  # amount input, category/account pickers, sheets
     transactions/ # rows, type badge, detail sheet
   views/          # one module per screen: index + components/ + utils
+    landing/      # public landing page at /, shared chrome for /privacy and the 404
+    whats-new/    # release history from lib/release-notes.ts
+    screenshots/  # frames for the PWA install prompt screenshots
     overview/  transactions/  budgets/  analytics/
     accounts/  imports/  reconciliation/  settings/
   lib/

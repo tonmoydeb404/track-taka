@@ -49,7 +49,11 @@ and its `packages/ui`).
 src/
 ├── app/                          # Next.js App Router (real routes)
 │   ├── layout.tsx                # root layout
-│   ├── page.tsx                  # thin redirect → /dashboard
+│   ├── page.tsx                  # public landing page (views/landing, Framer Motion)
+│   ├── privacy/ not-found.tsx    # privacy and terms page, branded 404
+│   ├── opengraph-image.tsx       # generated social image
+│   ├── whats-new/                # release history (src/lib/release-notes.ts)
+│   ├── screenshots/              # install prompt frames + /screenshots/[id] bare capture route
 │   ├── manifest.ts               # PWA manifest (explains manifest.webmanifest reqs)
 │   └── dashboard/                # one route per view + settings sub-pages
 │       ├── layout.tsx            # app shell (header, nav, quick-entry, save status)
@@ -190,8 +194,8 @@ Earlier confusion about port 3000 is resolved:
   **this app all along** — the app has real routes (`src/app/dashboard/*`) and a PWA
   manifest (`src/app/manifest.ts`). The old "different project's server" hypothesis was
   wrong.
-- `curl http://localhost:3000` → `307` is the intentional redirect `/` → `/dashboard`;
-  following it returns `200`.
+- `curl http://localhost:3000` → `200`: `/` is the public landing page (it used to
+  be a `307` redirect to `/dashboard`). The PWA `start_url` still points at `/dashboard`.
 - All 11 dashboard routes verified `200`: transactions, budgets, analytics, accounts,
   imports, reconciliation, settings (+ `general`, `categories`, `presets`, `data`).
 
@@ -211,7 +215,7 @@ Earlier confusion about port 3000 is resolved:
 ## 6. Open items / next steps
 
 1. **Merge PR #12** (see §5), then continue on follow-up branches.
-2. **PWA offline shell**: data works offline, but a full page reload offline needs a service
+2. **PWA offline shell** (install prompt screenshots are done, see `public/screenshots/README.md`): data works offline, but a full page reload offline needs a service
    worker to cache the app shell.
 3. **Cloud sync (later)**: Firebase Auth + RxDB `replicateFirestore` per collection under
    `users/{uid}/…`, security rules, real sync status. Keep documents plain JSON.
