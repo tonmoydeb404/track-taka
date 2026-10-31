@@ -5,6 +5,8 @@ import { List, X } from "@phosphor-icons/react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { useEffect, useState } from "react"
 
+import { BrandMark } from "@/components/common"
+
 import { GITHUB_URL, NAV_ITEMS } from "../content"
 import { LANDING_EASE } from "./reveal"
 
@@ -46,12 +48,7 @@ export function LandingNav() {
             aria-current="page"
             className="flex items-center gap-2 rounded-full pr-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
-            <span
-              aria-hidden="true"
-              className="flex size-8 items-center justify-center rounded-full bg-primary text-base leading-none font-semibold text-primary-foreground"
-            >
-              ৳
-            </span>
+            <BrandMark className="size-8 shrink-0" label="" />
             <span className="title-3">Track Taka</span>
           </Link>
 

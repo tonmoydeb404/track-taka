@@ -10,6 +10,8 @@ import {
 } from "lucide-react"
 import type { ReactNode } from "react"
 
+import { LATEST_VERSION } from "@/lib/release-notes"
+
 import { useSettings } from "@/hooks"
 import { ROUTES, SETTINGS_ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
@@ -103,7 +105,7 @@ export function SettingsNav({ className }: { className?: string }) {
         })}
       </ul>
       <p className="px-1 pt-4 text-sm text-muted-foreground lg:px-3">
-        Track Taka · version 0.1
+        Track Taka · version {LATEST_VERSION}
       </p>
     </nav>
   )

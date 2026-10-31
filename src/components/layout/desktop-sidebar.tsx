@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Plus } from "lucide-react"
+import { Download, Plus } from "lucide-react"
 
+import { BrandMark } from "@/components/common"
 import { SidebarMonthPicker } from "@/components/layout/month-picker"
 
 import {
@@ -12,6 +13,7 @@ import {
   type NavItem,
 } from "@/components/layout/nav-config"
 import { SyncStatus } from "@/components/layout/sync-status"
+import { showInstallGuide, useInstallPrompt } from "@/components/pwa"
 import { useUIStore } from "@/lib/ui-store"
 import { isRouteActive, ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
@@ -23,6 +25,7 @@ const focusRing =
 export function DesktopSidebar() {
   const pathname = usePathname()
   const openQuickEntry = useUIStore((s) => s.openQuickEntry)
+  const { installed } = useInstallPrompt()
 
   const renderItem = ({ view: v, label, icon: Icon }: NavItem) => {
     const active = isRouteActive(pathname, v)
@@ -53,12 +56,7 @@ export function DesktopSidebar() {
     >
       {/* Brand: the taka sign is the mark */}
       <div className="flex h-16 shrink-0 items-center gap-3 px-5">
-        <div
-          className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-sidebar-primary text-xl leading-none font-bold text-sidebar-primary-foreground"
-          aria-hidden="true"
-        >
-          ৳
-        </div>
+        <BrandMark className="size-9 shrink-0" label="" />
         <span className="text-base font-bold tracking-tight">Track Taka</span>
       </div>
 
@@ -92,7 +90,29 @@ export function DesktopSidebar() {
         </nav>
 
         <div className="mt-3 border-t border-sidebar-border pt-3">
-          <ul>{renderItem(SETTINGS)}</ul>
+          <ul>
+            {renderItem(SETTINGS)}
+            {/* Always offered; only an already-installed session hides it. */}
+            {!installed && (
+              <li>
+                <button
+                  type="button"
+                  onClick={() => void showInstallGuide()}
+                  className={cn(
+                    "flex h-10 w-full items-center gap-3 rounded-lg px-3 text-sm transition-colors",
+                    focusRing,
+                    "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
+                  )}
+                >
+                  <Download
+                    className="size-[18px] shrink-0"
+                    aria-hidden="true"
+                  />
+                  Install app
+                </button>
+              </li>
+            )}
+          </ul>
 
           <div className="mt-3 px-3">
             <SyncStatus className="text-sidebar-foreground/70 [&_svg]:text-sidebar-foreground/70" />

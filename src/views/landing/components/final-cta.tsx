@@ -1,4 +1,7 @@
 import { HERO } from "../content"
+
+import { InstallButton } from "@/components/pwa"
+
 import { CtaButton } from "./cta-button"
 import { Reveal } from "./reveal"
 
@@ -21,9 +24,10 @@ export function FinalCta() {
             account, and your data stays yours. Export it any time and leave
             whenever you like.
           </p>
-          <CtaButton onBrand className="mt-8">
-            {HERO.cta}
-          </CtaButton>
+          <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
+            <CtaButton onBrand>{HERO.cta}</CtaButton>
+            <InstallButton />
+          </div>
         </div>
       </Reveal>
     </section>

@@ -14,6 +14,7 @@ import { toast } from "sonner"
 import { useSettings, useSettingsActions } from "@/hooks"
 import type { DateFormat, WeekStart } from "@/lib/db"
 
+import { InstallAppGroup } from "../components/install-app"
 import {
   SettingsDetailHeader,
   SettingsGroup,
@@ -110,6 +111,8 @@ export function GeneralSection() {
             </Select>
           </SettingsRow>
         </SettingsGroup>
+
+        <InstallAppGroup />
       </div>
     </div>
   )

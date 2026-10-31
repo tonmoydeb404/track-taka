@@ -1,4 +1,5 @@
 export { AccountIcon, ACCOUNT_ICONS } from "./account-icon"
+export { BrandMark } from "./brand-mark"
 export {
   CategoryIcon,
   CATEGORY_ICONS,

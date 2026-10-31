@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Download } from "lucide-react"
 
 import { MORE_ITEMS } from "@/components/layout/nav-config"
+import { showInstallGuide, useInstallPrompt } from "@/components/pwa"
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -24,6 +25,13 @@ interface MoreSheetProps {
 /** Bottom sheet listing secondary destinations on mobile. */
 export function MoreSheet({ open, onOpenChange }: MoreSheetProps) {
   const pathname = usePathname()
+  const { installed } = useInstallPrompt()
+
+  function handleInstall() {
+    // The dialog draws over everything; close the sheet first.
+    onOpenChange(false)
+    void showInstallGuide()
+  }
 
   return (
     <ResponsiveDialog
@@ -79,6 +87,28 @@ export function MoreSheet({ open, onOpenChange }: MoreSheetProps) {
               )
             })}
           </nav>
+          {/* Always offered; only an already-installed session hides it. */}
+          {!installed && (
+            <div className="mt-2 border-t pt-2 pb-3">
+              <button
+                type="button"
+                onClick={handleInstall}
+                className={cn(
+                  "flex h-14 w-full items-center gap-3 rounded-xl px-2 text-base transition-colors",
+                  "focus-visible:outline-2 focus-visible:outline-ring",
+                  "font-medium text-foreground active:bg-muted"
+                )}
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                  <Download className="size-5" aria-hidden="true" />
+                </span>
+                <span className="flex-1 text-left">Install app</span>
+                <span className="text-sm text-muted-foreground">
+                  Add to home screen
+                </span>
+              </button>
+            </div>
+          )}
         </ResponsiveDialogBody>
       </ResponsiveDialogContent>
     </ResponsiveDialog>

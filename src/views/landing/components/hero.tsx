@@ -3,8 +3,10 @@
 import { CheckCircle } from "@phosphor-icons/react"
 import { motion, useReducedMotion } from "motion/react"
 
+import { InstallButton } from "@/components/pwa"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { HERO } from "../content"
-import { CtaButton } from "./cta-button"
 import { KhataLedger } from "./khata-ledger"
 import { LANDING_EASE } from "./reveal"
 
@@ -44,7 +46,12 @@ export function Hero() {
           transition={transition}
           className="mt-8 flex flex-col items-center gap-4"
         >
-          <CtaButton>{HERO.cta}</CtaButton>
+          <div className="flex flex-row flex-wrap items-center gap-3">
+            <Button asChild size="lg">
+              <Link href="/dashboard">{HERO.cta}</Link>
+            </Button>
+            <InstallButton />
+          </div>
           <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 caption-1 text-muted-foreground">
             {HERO.proof.map((p) => (
               <li key={p} className="flex items-center gap-1">

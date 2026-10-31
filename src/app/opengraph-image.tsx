@@ -23,14 +23,17 @@ export default function Image() {
       <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
         <svg width="88" height="88" viewBox="0 0 512 512">
           <rect width="512" height="512" rx="112" fill="#ffffff" />
-          <path
-            d="M168 150h176M168 214h176M200 150c80 0 112 40 112 82s-32 82-112 82l120 100"
+          <g
             fill="none"
             stroke="#0069a8"
-            strokeWidth="40"
+            strokeWidth="46"
             strokeLinecap="round"
             strokeLinejoin="round"
-          />
+            transform="translate(10 -14)"
+          >
+            <path d="M138 172 A40 40 0 0 1 218 172 L218 330 C218 408 296 436 350 396 C392 364 384 306 338 306 C312 306 304 328 318 342" />
+            <path d="M120 246 H302" />
+          </g>
         </svg>
         <div style={{ fontSize: 40, fontWeight: 600 }}>Track Taka</div>
       </div>

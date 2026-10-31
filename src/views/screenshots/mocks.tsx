@@ -12,6 +12,7 @@ import {
 import type { ReactNode } from "react"
 
 import { AccountIcon } from "@/components/common/account-icon"
+import { BrandMark } from "@/components/common/brand-mark"
 import { BudgetBar } from "@/components/common/budget-bar"
 import { CategoryIcon } from "@/components/common/category-icon"
 import { formatMoney, getCategory } from "@/lib/domain"
@@ -458,9 +459,7 @@ export function MockSidebar({ active = "Overview" }: { active?: string }) {
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 items-center gap-3 px-5">
-        <span className="flex size-9 items-center justify-center rounded-xl bg-sidebar-primary text-xl leading-none font-bold text-sidebar-primary-foreground">
-          ৳
-        </span>
+        <BrandMark className="size-9 shrink-0" label="" />
         <span className="title-3 font-bold">Track Taka</span>
       </div>
       <div className="flex flex-1 flex-col px-3 pb-3">

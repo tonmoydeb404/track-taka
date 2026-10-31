@@ -2,6 +2,11 @@ import type { Metadata, Viewport } from "next"
 import { Manrope, Noto_Sans_Bengali } from "next/font/google"
 
 import { Toaster } from "@/components/ui/sonner"
+// Mounted in the root layout so the module loads on every route: it must be
+// listening before the browser fires `beforeinstallprompt` (see the module
+// comment in use-install-prompt.ts).
+import { PwaInstallDialog, ServiceWorkerRegistrar } from "@/components/pwa"
+import "@/components/pwa/use-install-prompt"
 import "./globals.css"
 
 const manrope = Manrope({
@@ -30,6 +35,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Track Taka",
   },
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
 }
 
 export const viewport: Viewport = {
@@ -54,6 +62,8 @@ export default function RootLayout({
       >
         {children}
         <Toaster position="top-center" />
+        <PwaInstallDialog />
+        <ServiceWorkerRegistrar />
       </body>
     </html>
   )
