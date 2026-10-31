@@ -29,7 +29,7 @@ export function Hero() {
         <motion.h1
           variants={item}
           transition={transition}
-          className="hero-heading max-w-[680px] heading-3 text-balance sm:heading-2"
+          className="hero-heading max-w-[680px] heading-3 text-balance sm:heading-2 leading-[1.2] pb-2"
         >
           {HERO.headlineA}
           <br className="hidden sm:block" /> {HERO.headlineB}

@@ -2,7 +2,8 @@ import { HERO } from "../content"
 
 import { InstallButton } from "@/components/pwa"
 
-import { CtaButton } from "./cta-button"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { Reveal } from "./reveal"
 
 export function FinalCta() {
@@ -25,7 +26,9 @@ export function FinalCta() {
             whenever you like.
           </p>
           <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
-            <CtaButton onBrand>{HERO.cta}</CtaButton>
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/dashboard">{HERO.cta}</Link>
+            </Button>
             <InstallButton />
           </div>
         </div>

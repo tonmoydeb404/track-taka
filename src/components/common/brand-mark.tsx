@@ -1,10 +1,11 @@
-import { useId } from "react"
+import { BRAND_AMBER, BRAND_BLUE } from "@/lib/brand"
 
 /**
- * The brand mark: a drawn Bangladeshi taka sign (৳) on the brand blue tile,
- * identical to src/app/icon.svg, the generated PWA icons (public/icons) and
- * the lockups in public/brand. Colours are the brand's own, not theme tokens,
- * so it reads the same on every surface; size it with className.
+ * The brand mark ("Daily Track"): a 3x3 field of entries with a bold route
+ * stepping up through them and an amber marker on today, on the brand blue
+ * tile. Identical to src/app/icon.svg, the generated PWA icons (public/icons)
+ * and the lockups in public/brand. Colours are the brand's own, not theme
+ * tokens, so it reads the same on every surface; size it with className.
  */
 export function BrandMark({
   className,
@@ -14,7 +15,6 @@ export function BrandMark({
   /** Accessible name; pass an empty string when a visible label sits next to it. */
   label?: string
 }) {
-  const gradientId = useId()
   return (
     <svg
       viewBox="0 0 512 512"
@@ -23,24 +23,27 @@ export function BrandMark({
       aria-hidden={label ? undefined : true}
       className={className}
     >
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#0a7fc4" />
-          <stop offset="1" stopColor="#004f82" />
-        </linearGradient>
-      </defs>
-      <rect width="512" height="512" rx="112" fill={`url(#${gradientId})`} />
-      <g
+      <rect width="512" height="512" rx="112" fill={BRAND_BLUE} />
+      <g>
+        <circle cx="136" cy="136" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="256" cy="136" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="376" cy="136" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="136" cy="256" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="256" cy="256" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="376" cy="256" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="136" cy="376" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="256" cy="376" r="30" fill="#fff" fillOpacity="0.35" />
+        <circle cx="376" cy="376" r="30" fill="#fff" fillOpacity="0.35" />
+      </g>
+      <path
+        d="M136 376H256V256H376V136"
         fill="none"
         stroke="#fff"
-        strokeWidth="46"
+        strokeWidth="60"
         strokeLinecap="round"
         strokeLinejoin="round"
-        transform="translate(10 -14)"
-      >
-        <path d="M138 172 A40 40 0 0 1 218 172 L218 330 C218 408 296 436 350 396 C392 364 384 306 338 306 C312 306 304 328 318 342" />
-        <path d="M120 246 H302" />
-      </g>
+      />
+      <circle cx="376" cy="136" r="30" fill={BRAND_AMBER} />
     </svg>
   )
 }

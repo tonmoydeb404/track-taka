@@ -1,11 +1,12 @@
 "use client"
 
-import Link from "next/link"
 import { List, X } from "@phosphor-icons/react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
 import { BrandMark } from "@/components/common"
+import { Button } from "@/components/ui/button"
 
 import { GITHUB_URL, NAV_ITEMS } from "../content"
 import { LANDING_EASE } from "./reveal"
@@ -41,31 +42,30 @@ export function LandingNav() {
       >
         <nav
           aria-label="Site"
-          className="flex items-center gap-2 rounded-full border bg-background/70 p-2 pl-3 shadow-sm backdrop-blur-xl"
+          className="flex w-full max-w-2xl items-center gap-2 rounded-xl border bg-background/70 p-2 pl-3 shadow-sm backdrop-blur-xl"
         >
           <Link
             href="/"
             aria-current="page"
-            className="flex items-center gap-2 rounded-full pr-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            className="mr-auto flex items-center gap-2 rounded-full pr-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
             <BrandMark className="size-8 shrink-0" label="" />
             <span className="title-3">Track Taka</span>
           </Link>
 
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden rounded-full px-3 py-2 button-sm text-muted-foreground transition-colors duration-300 ease-landing hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring active:scale-[0.98] sm:inline-flex"
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hidden sm:inline-flex"
           >
-            GitHub
-          </a>
-          <Link
-            href="/dashboard"
-            className="hidden rounded-full bg-primary px-3 py-2 button-sm text-primary-foreground transition-[background-color,transform] duration-300 ease-landing hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.98] sm:inline-flex"
-          >
-            Open the app
-          </Link>
+            <Link href={GITHUB_URL} target="_blank" rel="noreferrer">
+              GitHub
+            </Link>
+          </Button>
+          <Button asChild size="sm" className="hidden sm:inline-flex">
+            <Link href="/dashboard">Open the app</Link>
+          </Button>
 
           <button
             type="button"
@@ -136,23 +136,32 @@ export function LandingNav() {
                   transition={base}
                 >
                   {"external" in item ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="block rounded-lg py-3 heading-5 focus-visible:outline-2 focus-visible:outline-ring"
-                      onClick={() => setOpen(false)}
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="lg"
+                      className="w-full justify-start"
                     >
-                      {item.label}
-                    </a>
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => setOpen(false)}
+                      >
+                        {item.label}
+                      </a>
+                    </Button>
                   ) : (
-                    <Link
-                      href={item.href}
-                      className="block rounded-lg py-3 heading-5 focus-visible:outline-2 focus-visible:outline-ring"
-                      onClick={() => setOpen(false)}
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="lg"
+                      className="w-full justify-start"
                     >
-                      {item.label}
-                    </Link>
+                      <Link href={item.href} onClick={() => setOpen(false)}>
+                        {item.label}
+                      </Link>
+                    </Button>
                   )}
                 </motion.li>
               ))}

@@ -11,11 +11,12 @@ import { useDeleteTransaction } from "@/components/transactions"
 import {
   useAccountLookup,
   useAccounts,
+  useDateRange,
   useSelectedMonth,
   useTransactions,
 } from "@/hooks"
 import { Button } from "@/components/ui/button"
-import { CATEGORIES, formatMoney, monthKey, monthLabel } from "@/lib/domain"
+import { CATEGORIES, formatMoney, monthKey } from "@/lib/domain"
 import { useUIStore } from "@/lib/ui-store"
 import { cn } from "@/lib/utils"
 
@@ -98,14 +99,22 @@ export function TransactionsPage() {
   }
 
   const allTime = filters.month === "all"
-  const txQuery = useTransactions(allTime ? "all" : sharedMonth)
-  const transactions = txQuery.data
+  // Days picked in the header's range picker replace the month
+  const dr = useDateRange()
+  const ranged = dr.custom && !allTime
+  const txQuery = useTransactions(allTime || ranged ? "all" : sharedMonth)
+  const transactions = useMemo(
+    () =>
+      ranged ? txQuery.data.filter((t) => dr.inRange(t.date)) : txQuery.data,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [txQuery.data, ranged, dr.from, dr.to]
+  )
   const accountsQuery = useAccounts({ includeArchived: true })
   const accounts = accountsQuery.data
   const accountById = useAccountLookup()
   const view: TransactionFilters = {
     ...filters,
-    month: allTime ? "all" : sharedMonth,
+    month: allTime || ranged ? "all" : sharedMonth,
   }
   const narrowed =
     filters.search.trim() !== "" ||
@@ -118,7 +127,7 @@ export function TransactionsPage() {
   const filtered = useMemo(
     () => filterTransactions(transactions, view, categoryById, accountById),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [transactions, filters, sharedMonth, categoryById, accountById]
+    [transactions, filters, sharedMonth, ranged, categoryById, accountById]
   )
   const sorted = useMemo(
     () => sortTransactions(filtered, filters.sort),
@@ -157,7 +166,7 @@ export function TransactionsPage() {
     if (tx) void requestDelete(tx)
   }
 
-  const subtitle = `${filtered.length} ${filtered.length === 1 ? "transaction" : "transactions"} · ${allTime ? "all time" : monthLabel(sharedMonth)}`
+  const subtitle = `${filtered.length} ${filtered.length === 1 ? "transaction" : "transactions"} · ${allTime ? "all time" : dr.label}`
 
   const header = (
     <PageHeader
@@ -249,8 +258,8 @@ export function TransactionsPage() {
         ) : (
           <EmptyState
             icon={Inbox}
-            title={`Nothing in ${monthLabel(sharedMonth)}`}
-            description="No transactions were recorded this month."
+            title={`Nothing in ${dr.label}`}
+            description="No transactions were recorded in this period."
             action={
               <div className="flex flex-wrap justify-center gap-2">
                 <Button onClick={() => openQuickEntry("expense")}>

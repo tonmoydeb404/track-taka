@@ -9,6 +9,9 @@ interface UIState {
   /** The month every month-based screen shows; null means the current month. */
   month: string | null
   setMonth: (month: string | null) => void
+  /** A custom span as inclusive day keys; null means "the selected month". */
+  range: { from: string; to: string } | null
+  setRange: (range: { from: string; to: string } | null) => void
 
   quickEntryOpen: boolean
   quickEntryType: TransactionType
@@ -30,7 +33,10 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   month: null,
-  setMonth: (month) => set({ month }),
+  // Choosing a month leaves any custom range behind
+  setMonth: (month) => set({ month, range: null }),
+  range: null,
+  setRange: (range) => set({ range }),
 
   quickEntryOpen: false,
   quickEntryType: "expense",

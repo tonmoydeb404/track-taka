@@ -102,7 +102,16 @@ export function categoryTotals(
     .sort((a, b) => b.total - a.total)
 }
 
-export type DailyPoint = { day: number; expense: number; cumulative: number }
+export type DailyPoint = {
+  day: number
+  /** "Oct 3" — what charts show on the axis and in tooltips. */
+  label: string
+  expense: number
+  cumulative: number
+}
+
+const shortDay = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
 
 /**
  * Expense per day of a month, with a running total. For the current month the
@@ -128,7 +137,44 @@ export function dailyExpenseSeries(
     if (key > todayKey) break
     const expense = byDay.get(key) ?? 0
     cumulative += expense
-    series.push({ day, expense, cumulative })
+    series.push({
+      day,
+      label: shortDay(new Date(`${key}T12:00:00`)),
+      expense,
+      cumulative,
+    })
+  }
+  return series
+}
+
+/**
+ * Expense per day between two day keys (inclusive), with a running total.
+ * Like the monthly series it stops at `today`. `day` counts from 1.
+ */
+export function dailyExpenseRange(
+  txs: Tx[],
+  from: string,
+  to: string,
+  today: Date = new Date()
+): DailyPoint[] {
+  const byDay = new Map<string, number>()
+  for (const tx of txs) {
+    if (tx.type !== "expense") continue
+    const key = dayKey(tx.date)
+    byDay.set(key, (byDay.get(key) ?? 0) + tx.amount)
+  }
+
+  const todayKey = dayKey(today)
+  const series: DailyPoint[] = []
+  let cumulative = 0
+  const cursor = new Date(`${from}T12:00:00`)
+  for (let day = 1; ; day++) {
+    const key = dayKey(cursor)
+    if (key > to || key > todayKey) break
+    const expense = byDay.get(key) ?? 0
+    cumulative += expense
+    series.push({ day, label: shortDay(cursor), expense, cumulative })
+    cursor.setDate(cursor.getDate() + 1)
   }
   return series
 }

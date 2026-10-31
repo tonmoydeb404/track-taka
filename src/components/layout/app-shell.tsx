@@ -4,8 +4,8 @@ import type { ReactNode } from "react"
 
 import { DesktopSidebar } from "@/components/layout/desktop-sidebar"
 import { ConfirmProvider } from "@/components/common/confirm-dialog"
+import { PageTransition } from "@/components/layout/page-transition"
 import { PageSkeleton } from "@/components/layout/page-skeleton"
-import { MobileMonthBar } from "@/components/layout/month-picker"
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav"
 import { MobileStatusBanner } from "@/components/layout/mobile-status-banner"
 import { ThemeSync } from "@/components/layout/theme-sync"
@@ -34,8 +34,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <MobileStatusBanner />
           <main className="app-gutter flex-1 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(var(--spacing-bottomnav)+env(safe-area-inset-bottom)+1.5rem)] lg:pt-8 lg:pb-8">
             <div className="mx-auto w-full max-w-content">
-              <MobileMonthBar />
-              {mounted ? children : <PageSkeleton />}
+              {mounted ? (
+                <PageTransition>{children}</PageTransition>
+              ) : (
+                <PageSkeleton />
+              )}
             </div>
           </main>
         </div>

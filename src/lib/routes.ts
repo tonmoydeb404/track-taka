@@ -26,6 +26,11 @@ export function isMonthRoute(pathname: string): boolean {
   )
 }
 
+/** Screens that follow the app-wide date range. Budgets is monthly, so it has its own month picker. */
+export function isRangeRoute(pathname: string): boolean {
+  return isMonthRoute(pathname) && !pathname.startsWith(ROUTES.budgets)
+}
+
 /** How many months past today the picker may go on this screen (budgets can plan one ahead). */
 export function monthsAhead(pathname: string): number {
   return pathname === ROUTES.budgets ? 1 : 0

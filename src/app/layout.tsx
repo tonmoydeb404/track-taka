@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Noto_Sans_Bengali } from "next/font/google"
+import NextTopLoader from "nextjs-toploader"
 
+import { ThemeProvider } from "@/components/layout/theme-provider"
+import { BRAND_BLUE } from "@/lib/brand"
 import { Toaster } from "@/components/ui/sonner"
 // Mounted in the root layout so the module loads on every route: it must be
 // listening before the browser fires `beforeinstallprompt` (see the module
 // comment in use-install-prompt.ts).
-import { PwaInstallDialog, ServiceWorkerRegistrar } from "@/components/pwa"
+import {
+  PwaInstallDialog,
+  ServiceWorkerRegistrar,
+  UnsupportedInstallDialog,
+} from "@/components/pwa"
 import "@/components/pwa/use-install-prompt"
 import "./globals.css"
 
@@ -44,10 +51,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f7fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b121a" },
-  ],
+  // The browser chrome, status bar and installed-app title bar take the
+  // mark's own blue in both themes, so the product reads the same everywhere.
+  themeColor: BRAND_BLUE,
 }
 
 export default function RootLayout({
@@ -60,10 +66,20 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${bengali.variable} bg-background font-sans text-foreground antialiased`}
       >
-        {children}
-        <Toaster position="top-center" />
-        <PwaInstallDialog />
-        <ServiceWorkerRegistrar />
+        <NextTopLoader
+          color={BRAND_BLUE}
+          height={2}
+          showSpinner={false}
+          shadow={false}
+        />
+        <ThemeProvider>
+          {children}
+          <Toaster position="top-center" />
+          <PwaInstallDialog />
+          {/* Manual install steps for browsers with no install support. */}
+          <UnsupportedInstallDialog />
+          <ServiceWorkerRegistrar />
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og"
 
+import { BRAND_AMBER, BRAND_BLUE } from "@/lib/brand"
+
 export const alt =
   "Track Taka: free expense tracker that keeps your data on your phone"
 export const size = { width: 1200, height: 630 }
@@ -15,7 +17,7 @@ export default function Image() {
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 80,
-        background: "#0069a8",
+        background: BRAND_BLUE,
         color: "#ffffff",
         fontFamily: "sans-serif",
       }}
@@ -23,17 +25,24 @@ export default function Image() {
       <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
         <svg width="88" height="88" viewBox="0 0 512 512">
           <rect width="512" height="512" rx="112" fill="#ffffff" />
-          <g
+          <circle cx="136" cy="136" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="256" cy="136" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="376" cy="136" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="136" cy="256" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="256" cy="256" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="376" cy="256" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="136" cy="376" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="256" cy="376" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <circle cx="376" cy="376" r="30" fill={BRAND_BLUE} fillOpacity="0.25" />
+          <path
+            d="M136 376H256V256H376V136"
             fill="none"
-            stroke="#0069a8"
-            strokeWidth="46"
+            stroke={BRAND_BLUE}
+            strokeWidth="60"
             strokeLinecap="round"
             strokeLinejoin="round"
-            transform="translate(10 -14)"
-          >
-            <path d="M138 172 A40 40 0 0 1 218 172 L218 330 C218 408 296 436 350 396 C392 364 384 306 338 306 C312 306 304 328 318 342" />
-            <path d="M120 246 H302" />
-          </g>
+          />
+          <circle cx="376" cy="136" r="30" fill={BRAND_AMBER} />
         </svg>
         <div style={{ fontSize: 40, fontWeight: 600 }}>Track Taka</div>
       </div>

@@ -5,6 +5,7 @@ import {
   balanceEffects,
   budgetStatuses,
   categoryTotals,
+  dailyExpenseRange,
   dailyExpenseSeries,
   periodTotals,
   totalBalance,
@@ -103,10 +104,26 @@ describe("dailyExpenseSeries", () => {
       new Date(2026, 9, 4, 9)
     )
     expect(series).toEqual([
-      { day: 1, expense: 0, cumulative: 0 },
-      { day: 2, expense: 100, cumulative: 100 },
-      { day: 3, expense: 50, cumulative: 150 },
-      { day: 4, expense: 0, cumulative: 150 },
+      { day: 1, label: "Oct 1", expense: 0, cumulative: 0 },
+      { day: 2, label: "Oct 2", expense: 100, cumulative: 100 },
+      { day: 3, label: "Oct 3", expense: 50, cumulative: 150 },
+      { day: 4, label: "Oct 4", expense: 0, cumulative: 150 },
+    ])
+  })
+})
+
+describe("dailyExpenseRange", () => {
+  it("covers the days between two keys, across months, and stops at today", () => {
+    const series = dailyExpenseRange(
+      [tx({ date: new Date(2026, 9, 31, 12).toISOString(), amount: 70 })],
+      "2026-10-30",
+      "2026-11-05",
+      new Date(2026, 10, 1, 9)
+    )
+    expect(series).toEqual([
+      { day: 1, label: "Oct 30", expense: 0, cumulative: 0 },
+      { day: 2, label: "Oct 31", expense: 70, cumulative: 70 },
+      { day: 3, label: "Nov 1", expense: 0, cumulative: 70 },
     ])
   })
 })

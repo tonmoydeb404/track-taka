@@ -10,9 +10,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import { formatMoney, monthLabel } from "@/lib/domain"
+import { formatMoney } from "@/lib/domain"
 
-import { shortMonth } from "../utils"
 import { Section } from "./section"
 
 // Expenses are coral everywhere in the app, never the brand blue.
@@ -21,24 +20,20 @@ const CONFIG = {
 } satisfies ChartConfig
 
 interface SpendingTrendProps {
-  month: string
-  series: { day: number; expense: number }[]
+  label: string
+  series: { label: string; expense: number }[]
   className?: string
 }
 
 export function SpendingTrend({
-  month,
+  label,
   series,
   className,
 }: SpendingTrendProps) {
   const hasData = series.some((d) => d.expense > 0)
 
   return (
-    <Section
-      title="Daily spending"
-      description={monthLabel(month)}
-      className={className}
-    >
+    <Section title="Daily spending" description={label} className={className}>
       {hasData ? (
         <ChartContainer
           config={CONFIG}
@@ -54,8 +49,7 @@ export function SpendingTrend({
               strokeDasharray="3 3"
             />
             <XAxis
-              dataKey="day"
-              tickFormatter={(day: number) => `${shortMonth(month)} ${day}`}
+              dataKey="label"
               tick={{ fontSize: 12 }}
               tickLine={false}
               axisLine={false}
@@ -66,9 +60,7 @@ export function SpendingTrend({
               content={
                 <ChartTooltipContent
                   labelFormatter={(_, payload) =>
-                    payload?.[0]
-                      ? `${shortMonth(month)} ${payload[0].payload.day}`
-                      : ""
+                    payload?.[0] ? payload[0].payload.label : ""
                   }
                   formatter={(value) => (
                     <span className="tnum font-medium">

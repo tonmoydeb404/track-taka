@@ -2,26 +2,26 @@ import { PieChart } from "lucide-react"
 
 import { CategoryIcon } from "@/components/common/category-icon"
 import { EmptyState } from "@/components/common/empty-state"
-import { formatMoney, getCategory, monthLabel } from "@/lib/domain"
+import { formatMoney, getCategory } from "@/lib/domain"
 import { ROUTES } from "@/lib/routes"
 
 import { Section } from "./section"
 
 interface CategoryBreakdownProps {
-  month: string
+  label: string
   rows: { categoryId: string; total: number; share: number }[]
   className?: string
 }
 
 export function CategoryBreakdown({
-  month,
+  label,
   rows,
   className,
 }: CategoryBreakdownProps) {
   return (
     <Section
       title="Where money went"
-      description={monthLabel(month)}
+      description={label}
       action={{ label: "Analytics", href: ROUTES.analytics }}
       className={className}
     >

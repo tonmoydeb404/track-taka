@@ -2,15 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState, type ReactNode } from "react"
+import type { ReactNode } from "react"
 
 import { PageHeader } from "@/components/common/page-header"
-import { SegmentedControl } from "@/components/common/segmented-control"
-import { useSelectedMonth } from "@/hooks"
+import { useDateRange } from "@/hooks"
 import { cn } from "@/lib/utils"
-
-import { usePeriod } from "../use-period"
-import { RANGE_OPTIONS, resolvePeriod } from "../utils"
 
 const TABS = [
   { href: "/dashboard/analytics", label: "Summary" },
@@ -22,24 +18,11 @@ const TABS = [
 /** Frame for the four analytics tabs: one period control above all of them. */
 export function AnalyticsShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-  const range = usePeriod((s) => s.range)
-  const setRange = usePeriod((s) => s.setRange)
-  const { month: endMonth } = useSelectedMonth()
-  const [now] = useState(() => new Date())
-
-  const label = resolvePeriod(range, endMonth, null, now).label
+  const { label } = useDateRange()
 
   return (
     <div className="page-stack">
       <PageHeader title="Analytics" subtitle={label} />
-
-      <SegmentedControl
-        aria-label="Period length"
-        value={range}
-        onChange={setRange}
-        options={RANGE_OPTIONS}
-        className="max-w-md"
-      />
 
       <nav
         aria-label="Analytics sections"

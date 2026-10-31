@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { useConfirm } from "@/components/common/confirm-dialog"
 import { EmptyState } from "@/components/common/empty-state"
+import { MonthPicker } from "@/components/common/month-picker"
 import { PageHeader } from "@/components/common/page-header"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -13,6 +14,7 @@ import {
   useBudgetActions,
   useBudgetProgress,
   useBudgets,
+  useDateRange,
   useSelectedMonth,
   useTransactions,
 } from "@/hooks"
@@ -40,7 +42,10 @@ export function BudgetsPage() {
   const budgetActions = useBudgetActions()
   const confirm = useConfirm()
 
-  const { month } = useSelectedMonth()
+  const { setMonth, maxAhead } = useSelectedMonth()
+  // Follows the app-wide date range: a range picked elsewhere lands on the
+  // month it ends in. Choosing a month here resets the range to that month.
+  const { month } = useDateRange()
   const [now] = useState(() => new Date())
   const prevMonth = addMonths(month, -1)
 
@@ -183,6 +188,11 @@ export function BudgetsPage() {
         subtitle={subtitle}
         actions={
           <>
+            <MonthPicker
+              month={month}
+              onChange={setMonth}
+              maxAhead={maxAhead}
+            />
             <Button
               className="max-md:hidden"
               onClick={() => openSheet(null)}

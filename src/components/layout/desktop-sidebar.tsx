@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { Download, Plus } from "lucide-react"
 
 import { BrandMark } from "@/components/common"
-import { SidebarMonthPicker } from "@/components/layout/month-picker"
 
 import {
   NAV_GROUPS,
@@ -72,8 +71,6 @@ export function DesktopSidebar() {
           <Plus className="size-4" aria-hidden="true" />
           Add expense
         </button>
-
-        <SidebarMonthPicker />
 
         <nav
           aria-label="Main navigation"

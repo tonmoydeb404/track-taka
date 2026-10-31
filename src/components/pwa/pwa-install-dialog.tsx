@@ -6,6 +6,8 @@ import type { PWAInstallElement } from "@khmyznikov/pwa-install"
 import {
   getCapturedPromptEvent,
   installWithFeedback,
+  registerInstallGuideOpener,
+  setUnsupportedInstallDialogOpen,
 } from "./use-install-prompt"
 
 let loader: Promise<unknown> | null = null
@@ -30,13 +32,13 @@ async function ensureElement(): Promise<PWAInstallElement | null> {
 }
 
 /**
- * Opens the install dialog from @khmyznikov/pwa-install: the native
- * install flow on Chromium (Web Install API, or the beforeinstallprompt it
- * intercepts itself), a screenshot walkthrough on iOS/iPadOS, and written
- * instructions in browsers without any install support. Falls back to the
- * bare native prompt if the web component never became ready.
+ * Opens the shared <pwa-install> dialog: the native install flow on
+ * Chromium (Web Install API, or the beforeinstallprompt it intercepts
+ * itself) and a screenshot walkthrough on iOS/iPadOS. If the web component
+ * never became ready (the lazy chunk failed to load), fall back to the
+ * manual-instructions modal — its steps are valid in every browser.
  */
-export async function showInstallGuide(): Promise<void> {
+async function openInstallDialog(): Promise<void> {
   try {
     const element = await ensureElement()
     if (element && typeof element.showDialog === "function") {
@@ -44,9 +46,23 @@ export async function showInstallGuide(): Promise<void> {
       return
     }
   } catch {
-    // fall through to the native prompt
+    // fall through to the manual instructions
   }
-  void installWithFeedback()
+  setUnsupportedInstallDialogOpen(true)
+}
+
+// installWithFeedback() (use-install-prompt.ts) opens the guide through this
+// registration instead of importing this module, which would create a
+// circular import.
+registerInstallGuideOpener(openInstallDialog)
+
+/**
+ * The install action every surface calls. The path decision (native prompt
+ * → guide dialog → unsupported-browser modal) lives in
+ * installWithFeedback(); this stays a stable name at the boundary.
+ */
+export async function showInstallGuide(): Promise<void> {
+  await installWithFeedback()
 }
 
 /**

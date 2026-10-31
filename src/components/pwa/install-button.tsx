@@ -23,7 +23,7 @@ export function InstallButton({ className }: { className?: string }) {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="secondary"
       onClick={() => void showInstallGuide()}
       className={cn(className)}
       size={"lg"}

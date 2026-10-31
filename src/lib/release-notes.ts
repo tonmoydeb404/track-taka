@@ -13,6 +13,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: "3.3.0",
+    date: "2026-10-31",
+    title: "An install path for every browser",
+    highlights: [
+      "Install app now picks the best path for your browser: the browser's own install dialog when there is one, the guided install dialog otherwise.",
+      "Browsers with no install support, such as Firefox and in-app browsers, get a short guide pointing to the browser menu instead of a dead-end error.",
+      "If the install guide fails to load, the same guide opens in its place, so an install attempt never ends in nothing.",
+    ],
+  },
+  {
     version: "3.2.0",
     date: "2026-10-31",
     title: "Branding and release tooling",
