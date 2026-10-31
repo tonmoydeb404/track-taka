@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Noto_Sans_Bengali } from "next/font/google"
 
+import { BRAND_BLUE } from "@/lib/brand"
 import { Toaster } from "@/components/ui/sonner"
 // Mounted in the root layout so the module loads on every route: it must be
 // listening before the browser fires `beforeinstallprompt` (see the module
@@ -44,10 +45,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f7fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b121a" },
-  ],
+  // The browser chrome, status bar and installed-app title bar take the
+  // mark's own blue in both themes, so the product reads the same everywhere.
+  themeColor: BRAND_BLUE,
 }
 
 export default function RootLayout({

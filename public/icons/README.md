@@ -20,5 +20,5 @@ rsvg-convert -w 180 -h 180 public/icons/icon-maskable.svg > public/icons/apple-t
 `public/brand/` holds the horizontal logo (`logo.svg` for light surfaces,
 `logo-dark.svg` for dark ones) and the standalone tile `mark.svg`. The
 wordmark is "Track Taka" set in Manrope Bold, converted to outlines so the
-files need no font. The mark is a monoline Bangladeshi taka sign (৳) on the
-brand blue.
+files need no font. The mark is a 3×3 field of entries with a route stepping up through them
+and an amber marker on today, on the brand blue `#0a7fc4` (`src/lib/brand.ts`).

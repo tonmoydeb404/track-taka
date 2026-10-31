@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next"
 
+import { BRAND_BLUE, BRAND_SPLASH } from "@/lib/brand"
+
 // Screenshots power the richer install prompt on Android and desktop. They
 // are generated from /screenshots (see src/views/screenshots) and must keep
 // one aspect ratio per form factor.
@@ -53,8 +55,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#f3f7fb",
-    theme_color: "#0069a8",
+    background_color: BRAND_SPLASH,
+    theme_color: BRAND_BLUE,
     lang: "en",
     dir: "ltr",
     categories: ["finance", "productivity"],
