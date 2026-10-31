@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Noto_Sans_Bengali } from "next/font/google"
+import NextTopLoader from "nextjs-toploader"
 
 import { ThemeProvider } from "@/components/layout/theme-provider"
 import { BRAND_BLUE } from "@/lib/brand"
@@ -61,6 +62,12 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${bengali.variable} bg-background font-sans text-foreground antialiased`}
       >
+        <NextTopLoader
+          color={BRAND_BLUE}
+          height={2}
+          showSpinner={false}
+          shadow={false}
+        />
         <ThemeProvider>
           {children}
           <Toaster position="top-center" />
