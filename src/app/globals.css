@@ -305,3 +305,182 @@
     grid-area: budgets;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Landing page text styles. One name per role, built from the type   */
+/* scale, so no element carries loose size and weight utilities.       */
+/* ------------------------------------------------------------------ */
+@utility heading-1 {
+  font-size: var(--text-6xl);
+  line-height: var(--text-6xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility heading-2 {
+  font-size: var(--text-5xl);
+  line-height: var(--text-5xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility heading-3 {
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility heading-4 {
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@utility heading-5 {
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility heading-6 {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 600;
+}
+@utility title-1 {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 500;
+}
+@utility title-2 {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 500;
+}
+@utility title-3 {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 500;
+}
+@utility body-1 {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+@utility body-2 {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 500;
+}
+@utility body-3 {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 400;
+}
+@utility body-4 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 600;
+}
+@utility body-5 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 500;
+}
+@utility body-6 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 400;
+}
+@utility button-md {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+@utility button-sm {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 600;
+}
+@utility caption-1 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 500;
+}
+@utility caption-2 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 400;
+}
+@utility caption-5 {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 400;
+}
+
+/* Weighted motion: decelerates into place. */
+@utility ease-landing {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The hero heading is the one place a gradient is used, and only on text. */
+.hero-heading {
+  background-image: linear-gradient(to right, #000000, #666666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .hero-heading {
+  background-image: linear-gradient(to right, #ffffff, #9b9b9b);
+}
+
+/* Flat dark surfaces for the public pages. */
+.dark .landing {
+  --background: #181818;
+  --card: #1f1f1f;
+  --popover: #1f1f1f;
+  --muted: #272727;
+  --secondary: #272727;
+  --accent: #272727;
+  --accent-foreground: oklch(0.88 0.07 243);
+  --border: #313131;
+  --input: #313131;
+}
+
+/* Screenshot frames: pin the light theme regardless of the page theme. */
+.force-light {
+  color-scheme: light;
+  --radius: 0.625rem;
+  --primary: oklch(0.5 0.134 242.749);
+  --primary-foreground: oklch(0.985 0.005 243);
+  --background: oklch(0.975 0.006 243);
+  --foreground: oklch(0.2 0.025 250);
+  --card: oklch(0.995 0.002 243);
+  --card-foreground: oklch(0.2 0.025 250);
+  --popover: oklch(0.995 0.002 243);
+  --popover-foreground: oklch(0.2 0.025 250);
+  --secondary: oklch(0.945 0.012 243);
+  --secondary-foreground: oklch(0.28 0.03 250);
+  --muted: oklch(0.955 0.01 243);
+  --muted-foreground: oklch(0.5 0.03 250);
+  --accent: oklch(0.93 0.032 243);
+  --accent-foreground: oklch(0.38 0.11 243);
+  --border: oklch(0.91 0.014 243);
+  --input: oklch(0.88 0.016 243);
+  --ring: oklch(0.62 0.12 243);
+  --income: oklch(0.52 0.125 160);
+  --expense: oklch(0.57 0.18 25);
+  --destructive: oklch(0.55 0.21 27);
+  --warning: oklch(0.55 0.13 62);
+  --chart-1: oklch(0.5 0.134 242.749);
+  --chart-2: oklch(0.74 0.14 72);
+  --chart-3: oklch(0.6 0.13 160);
+  --chart-4: oklch(0.62 0.18 12);
+  --chart-5: oklch(0.58 0.14 295);
+  --sidebar: oklch(0.29 0.07 243);
+  --sidebar-foreground: oklch(0.96 0.01 243);
+  --sidebar-primary: oklch(0.97 0.012 243);
+  --sidebar-primary-foreground: oklch(0.29 0.07 243);
+  --sidebar-accent: oklch(1 0 0 / 13%);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.82 0.1 243);
+}
