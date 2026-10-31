@@ -4,7 +4,7 @@
 > `design/` as a production-quality Next.js app. This document captures the full state
 > of the work: architecture, migrations, fixes, verification results, and open items.
 >
-> Last updated: 2026-10-31 · All work is **uncommitted** in git.
+> Last updated: 2026-10-31 · Committed on branch `feat/rxdb-local-first-rebuild`; open as PR #12.
 
 ---
 
@@ -124,8 +124,8 @@ Every UI surface now uses shadcn default components. Custom card/panel markup
 | Analytics       | All six sections on Cards with ChartContainer bar/line charts.                            |
 | Accounts        | Account tiles use `Card`/`CardHeader`/`CardAction` (dropdown)/`CardContent`/`CardFooter`. |
 | Budgets         | Overview card and per-budget cards restructured onto Card sections with `Progress`.       |
-| Reconciliation  | Summary, per-account groups, and reminders panels are Cards.                              |
-| Imports         | Receipt, statement, and history panels are Cards with `CardHeader`/`CardDescription`.     |
+| Reconciliation  | Summary, per-account groups, and reminders panels are Cards. *(Removed from the product in §3.6.)* |
+| Imports         | Receipt, statement, and history panels are Cards with `CardHeader`/`CardDescription`. *(Removed in §3.6.)* |
 
 ### 3.4 Fixes discovered during browser verification
 
@@ -164,6 +164,8 @@ transactions (never stored, so they cannot drift and need no cross-device merge)
   `useAccountLookup`, `useAccountBalances`, `useBudgets`, `useBudgetProgress`, `useSettings`.
 - Writes: `useTransactionActions` (create/update/remove/restore, validates transfer rules),
   `useAccountActions`, `useBudgetActions`, `useSettingsActions`. They throw user-safe errors.
+- Archived accounts can be the source of a transfer (to empty them) but never the
+  destination; they are hidden from pickers by default.
 - Settings has General and Data only; Data does JSON backup export/import and delete-all.
 - All screens migrated; old `lib/finance` store, mock data and prototype sync removed.
 - **Schema changes need a version bump** plus a migration strategy (RxDB error DB6
@@ -197,18 +199,18 @@ Earlier confusion about port 3000 is resolved:
 
 ## 5. Git state
 
-- Everything is **uncommitted**. `git status` shows the old Vite scaffold deleted
-  (`index.html`, `postcss.config.cjs`, `public/_redirects`), `.gitignore` and
-  `package.json` modified, plus the entire new `src/` tree.
-- Suggested first commit: the full port + shadcn/TanStack migration as one (or split:
-  ① prototype port, ② ResponsiveDialog migration, ③ shadcn/TanStack migration — the
-  history is interleaved, so a single squashed commit is simplest).
+- Branch `feat/rxdb-local-first-rebuild` (12 commits on `main`), open as
+  [PR #12](https://github.com/tonmoydeb404/track-taka/pull/12). Not merged yet.
+- One commit per piece, in dependency order: legacy removal and scaffold, `lib/db`,
+  `lib/domain`, hooks, app shell, then each screen (transactions, accounts, budgets,
+  overview and analytics, settings), docs, and the agent skills (separate, easy to drop).
+- Intermediate commits do not build on their own; the final state does.
 
 ---
 
 ## 6. Open items / next steps
 
-1. **Commit the work** (see §5).
+1. **Merge PR #12** (see §5), then continue on follow-up branches.
 2. **PWA offline shell**: data works offline, but a full page reload offline needs a service
    worker to cache the app shell.
 3. **Cloud sync (later)**: Firebase Auth + RxDB `replicateFirestore` per collection under
