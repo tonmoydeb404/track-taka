@@ -1,11 +1,14 @@
 {
   "appName": "Track Taka",
   "slug": "track-taka",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": {
     "short": "Track your money, simply.",
     "long": "Track Taka is a personal finance tracker."
   },
   "repository": "https://github.com/tonmoydeb404/track-taka",
-  "developer": { "name": "Tonmoy Deb", "website": "https://tonmoydeb.com" }
+  "developer": {
+    "name": "Tonmoy Deb",
+    "website": "https://tonmoydeb.com"
+  }
 }
