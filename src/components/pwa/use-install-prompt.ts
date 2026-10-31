@@ -131,15 +131,24 @@ export function useInstallPrompt(): InstallState {
 /** `promptInstall` plus user feedback, shared by every install surface
  * (sidebar footer, More sheet, Settings, landing). Dismissing stays silent. */
 export async function installWithFeedback(): Promise<InstallOutcome> {
-  const outcome = await promptInstall()
-  if (outcome === "accepted") {
-    toast.success("Track Taka is installed", {
-      description: "Find it on your home screen or in your apps.",
-    })
-  } else if (outcome === "unavailable") {
-    toast.error("Couldn't start the install", {
-      description: "Try again, or use your browser's install option.",
-    })
+  // If the native prompt is available, trigger it directly.
+  if (deferredEvent) {
+    const outcome = await promptInstall()
+    if (outcome === "accepted") {
+      toast.success("Track Taka is installed", {
+        description: "Find it on your home screen or in your apps.",
+      })
+    } else if (outcome === "unavailable") {
+      toast.error("Couldn't start the install", {
+        description: "Try again, or use your browser's install option.",
+      })
+    }
+    return outcome
   }
-  return outcome
+
+  // No native prompt: fall back to the guide dialog (manual instructions,
+  // including browsers that don't support installation at all).
+  const { showInstallGuide } = await import("./pwa-install-dialog")
+  await showInstallGuide()
+  return "unavailable"
 }
