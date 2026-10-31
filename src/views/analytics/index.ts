@@ -1,0 +1,5 @@
+export { AnalyticsShell } from "./components/analytics-shell"
+export { SummaryTab } from "./sections/summary"
+export { SpendingTab } from "./sections/spending"
+export { PatternsTab } from "./sections/patterns"
+export { AccountsTab } from "./sections/accounts"
