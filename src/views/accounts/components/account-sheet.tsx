@@ -21,11 +21,16 @@ import { formatBalance, formatMoney } from "@/lib/domain"
 
 interface AccountSheetProps {
   account: AccountDoc | null
+  open: boolean
   onOpenChange: (open: boolean) => void
 }
 
 /** Every transaction touching the given account: drawer on phones, side panel or modal on desktop. */
-export function AccountSheet({ account, onOpenChange }: AccountSheetProps) {
+export function AccountSheet({
+  account,
+  open,
+  onOpenChange,
+}: AccountSheetProps) {
   const { data: transactions, isLoading } = useTransactions("all")
   const { balances } = useAccountBalances()
 
@@ -52,7 +57,7 @@ export function AccountSheet({ account, onOpenChange }: AccountSheetProps) {
   }, [accountTxs, account])
 
   return (
-    <ResponsiveDialog open={!!account} onOpenChange={onOpenChange}>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent
         dialogClassName="sm:max-w-lg"
         sheetClassName="sm:max-w-md"

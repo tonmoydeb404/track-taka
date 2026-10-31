@@ -38,7 +38,6 @@ interface TransferDialogProps {
   open: boolean
   presetFromId: string | null
   onOpenChange: (open: boolean) => void
-  onClose: () => void
 }
 
 /** Move money between the user's own accounts. The parent remounts it per
@@ -47,7 +46,6 @@ export function TransferDialog({
   open,
   presetFromId,
   onOpenChange,
-  onClose,
 }: TransferDialogProps) {
   // Money can be moved OUT of an archived account (to empty it), but never
   // into one: archived accounts are closed to new activity.
@@ -108,7 +106,7 @@ export function TransferDialog({
           },
         },
       })
-      onClose()
+      onOpenChange(false)
     } catch (e) {
       const message =
         e instanceof Error ? e.message : "Could not save the transfer"
@@ -234,7 +232,7 @@ export function TransferDialog({
           <Button
             variant="outline"
             className="flex-1 sm:flex-none"
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>

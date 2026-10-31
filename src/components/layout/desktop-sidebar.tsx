@@ -13,7 +13,7 @@ import {
 } from "@/components/layout/nav-config"
 import { SyncStatus } from "@/components/layout/sync-status"
 import { showInstallGuide, useInstallPrompt } from "@/components/pwa"
-import { useUIStore } from "@/lib/ui-store"
+import { useQuickEntryParams } from "@/hooks"
 import { isRouteActive, ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
@@ -23,7 +23,7 @@ const focusRing =
 /** Fixed left rail (lg+): brand, primary action, navigation, account. */
 export function DesktopSidebar() {
   const pathname = usePathname()
-  const openQuickEntry = useUIStore((s) => s.openQuickEntry)
+  const quickEntry = useQuickEntryParams()
   const { installed } = useInstallPrompt()
 
   const renderItem = ({ view: v, label, icon: Icon }: NavItem) => {
@@ -62,7 +62,7 @@ export function DesktopSidebar() {
       <div className="flex min-h-0 flex-1 flex-col px-3 pb-3">
         <button
           type="button"
-          onClick={() => openQuickEntry("expense")}
+          onClick={() => quickEntry.openAdd("expense")}
           className={cn(
             "mt-1 mb-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-sidebar-primary px-3 text-sm font-semibold text-sidebar-primary-foreground transition-opacity hover:opacity-90",
             focusRing

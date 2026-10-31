@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { useUIStore } from "@/lib/ui-store"
+import { useModalParam, useQuickEntryParams } from "@/hooks"
 import { cn } from "@/lib/utils"
 
 interface Action {
@@ -29,8 +29,8 @@ interface Action {
  * sm and up: a row of labelled buttons, with Add expense as the primary.
  */
 export function QuickActions({ className }: { className?: string }) {
-  const openQuickEntry = useUIStore((s) => s.openQuickEntry)
-  const openVoice = useUIStore((s) => s.openVoice)
+  const quickEntry = useQuickEntryParams()
+  const voice = useModalParam("voice")
 
   const actions: Action[] = [
     {
@@ -38,28 +38,28 @@ export function QuickActions({ className }: { className?: string }) {
       shortLabel: "Expense",
       icon: Plus,
       tone: "bg-expense/12 text-expense",
-      onClick: () => openQuickEntry("expense"),
+      onClick: () => quickEntry.openAdd("expense"),
     },
     {
       label: "Add income",
       shortLabel: "Income",
       icon: ArrowDownLeft,
       tone: "bg-income/12 text-income",
-      onClick: () => openQuickEntry("income"),
+      onClick: () => quickEntry.openAdd("income"),
     },
     {
       label: "Transfer",
       shortLabel: "Transfer",
       icon: ArrowLeftRight,
       tone: "bg-accent text-accent-foreground",
-      onClick: () => openQuickEntry("transfer"),
+      onClick: () => quickEntry.openAdd("transfer"),
     },
     {
       label: "Voice",
       shortLabel: "Voice",
       icon: Mic,
       tone: "bg-accent text-accent-foreground",
-      onClick: openVoice,
+      onClick: () => voice.open(),
     },
   ]
 

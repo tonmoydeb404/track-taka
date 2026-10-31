@@ -1,7 +1,7 @@
 "use client"
 
 import { TransactionIcon } from "@/components/transactions/transaction-icon"
-import { useAccountLookup } from "@/hooks/data"
+import { useAccountLookup, useModalParam } from "@/hooks"
 import type { TransactionDoc } from "@/lib/db"
 import {
   formatMoney,
@@ -10,7 +10,6 @@ import {
   getCategory,
   signedMoney,
 } from "@/lib/domain"
-import { useUIStore } from "@/lib/ui-store"
 import { cn } from "@/lib/utils"
 
 interface TransactionRowProps {
@@ -30,7 +29,7 @@ export function TransactionRow({
   className,
 }: TransactionRowProps) {
   const accounts = useAccountLookup()
-  const openDetail = useUIStore((s) => s.openDetail)
+  const detail = useModalParam("tx")
 
   const category = getCategory(tx.categoryId)
   const account = accounts.get(tx.accountId)
@@ -55,7 +54,7 @@ export function TransactionRow({
   return (
     <button
       type="button"
-      onClick={() => openDetail(tx.id)}
+      onClick={() => detail.open(tx.id)}
       className={cn(
         "flex min-h-16 w-full touch-manipulation items-center gap-3 rounded-lg px-2 py-3 text-left transition-colors select-none hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring active:bg-muted",
         className

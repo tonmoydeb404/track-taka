@@ -31,6 +31,7 @@ import {
   useAccountActions,
   useAccountBalances,
   useAccounts,
+  useModalParam,
   useTransactions,
 } from "@/hooks"
 import type { AccountDoc } from "@/lib/db"
@@ -50,7 +51,23 @@ export function AccountsPage() {
   const { data: transactions } = useTransactions("all")
   const { remove, setArchived } = useAccountActions()
 
+  // Every sheet/dialog on this page lives in the URL, so the back button
+  // closes them and each one can be linked directly:
+  //   ?account=<id>       history for one account
+  //   ?new-account=new    create dialog
+  //   ?edit-account=<id>  edit dialog
+  //   ?transfer=<id|new>  transfer dialog, optionally preset to one account
+  const detail = useModalParam("account")
+  const createDialog = useModalParam("new-account")
+  const editDialog = useModalParam("edit-account")
+  const transfer = useModalParam("transfer")
+
   const [showArchived, setShowArchived] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<AccountDoc | null>(null)
+
+  const sheetAccount = allAccounts.find((a) => a.id === detail.value) ?? null
+  const editingAccount =
+    allAccounts.find((a) => a.id === editDialog.value) ?? null
   const activeAccounts = useMemo(
     () => allAccounts.filter((a) => !a.archived),
     [allAccounts]
@@ -69,17 +86,6 @@ export function AccountsPage() {
     return ids
   }, [transactions])
 
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [editing, setEditing] = useState<AccountDoc | null>(null)
-  const [transferOpen, setTransferOpen] = useState(false)
-  const [transferPresetFrom, setTransferPresetFrom] = useState<string | null>(
-    null
-  )
-  const [deleteTarget, setDeleteTarget] = useState<AccountDoc | null>(null)
-  const [sheetAccountId, setSheetAccountId] = useState<string | null>(null)
-
-  const sheetAccount = allAccounts.find((a) => a.id === sheetAccountId) ?? null
-
   const toggleArchived = async (account: AccountDoc, archived: boolean) => {
     try {
       await setArchived(account.id, archived)
@@ -89,18 +95,9 @@ export function AccountsPage() {
     }
   }
 
-  const openAdd = () => {
-    setEditing(null)
-    setDialogOpen(true)
-  }
-  const openEdit = (account: AccountDoc) => {
-    setEditing(account)
-    setDialogOpen(true)
-  }
-  const openTransfer = (fromId?: string) => {
-    setTransferPresetFrom(fromId ?? null)
-    setTransferOpen(true)
-  }
+  const openAdd = () => createDialog.open("new")
+  const openEdit = (account: AccountDoc) => editDialog.open(account.id)
+  const openTransfer = (fromId?: string) => transfer.open(fromId ?? "new")
 
   return (
     <div className="page-stack">
@@ -153,7 +150,7 @@ export function AccountsPage() {
               >
                 <button
                   type="button"
-                  onClick={() => setSheetAccountId(account.id)}
+                  onClick={() => detail.open(account.id)}
                   className="flex min-h-[4.5rem] min-w-0 flex-1 touch-manipulation items-center gap-3 py-3.5 pr-1 pl-5 text-left transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring active:bg-muted sm:min-h-0 sm:flex-col sm:items-start sm:gap-5 sm:rounded-xl sm:p-5"
                   aria-label={`${account.name}, ${ACCOUNT_TYPE_LABELS[account.type]}, balance ${formatBalance(balances.get(account.id) ?? 0)}. View history`}
                 >
@@ -267,26 +264,32 @@ export function AccountsPage() {
       ) : null}
 
       <AccountDialog
-        key={`account-dialog-${dialogOpen ? (editing?.id ?? "new") : "closed"}`}
-        open={dialogOpen}
-        editing={editing}
-        onOpenChange={setDialogOpen}
-        onClose={() => setDialogOpen(false)}
+        key={`account-dialog-${createDialog.session}-${editDialog.session}-${editingAccount?.id ?? "new"}`}
+        open={createDialog.isOpen || editDialog.isOpen}
+        editing={editingAccount}
+        onOpenChange={(open) => {
+          if (!open) {
+            if (createDialog.isOpen) createDialog.close()
+            else editDialog.close()
+          }
+        }}
       />
 
       <TransferDialog
-        key={`transfer-dialog-${transferOpen ? (transferPresetFrom ?? "any") : "closed"}`}
-        open={transferOpen}
-        presetFromId={transferPresetFrom}
-        onOpenChange={setTransferOpen}
-        onClose={() => setTransferOpen(false)}
+        key={`transfer-dialog-${transfer.session}`}
+        open={transfer.isOpen}
+        presetFromId={
+          transfer.isOpen && transfer.raw !== "new" ? transfer.raw : null
+        }
+        onOpenChange={(open) => !open && transfer.close()}
       />
 
+      {/* `open` follows the live param while the account lingers through the
+          close navigation, so the exit animation keeps its content. */}
       <AccountSheet
         account={sheetAccount}
-        onOpenChange={(open) => {
-          if (!open) setSheetAccountId(null)
-        }}
+        open={detail.isOpen}
+        onOpenChange={(open) => !open && detail.close()}
       />
 
       <ConfirmDialog

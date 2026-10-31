@@ -4,23 +4,23 @@ import { PenLine, Trash2 } from "lucide-react"
 
 import { SwipeActions } from "@/components/common/swipe-actions"
 import { TransactionRow, useDeleteTransaction } from "@/components/transactions"
+import { useQuickEntryParams } from "@/hooks"
 import type { TransactionDoc } from "@/lib/db"
 import { formatMoney } from "@/lib/domain"
-import { useUIStore } from "@/lib/ui-store"
 import { cn } from "@/lib/utils"
 
 import type { DayGroup } from "./../utils"
 
 /** Day-grouped list for phones and tablets (hidden from md up). Swipe a row for Edit / Delete. */
 export function TransactionsMobileList({ groups }: { groups: DayGroup[] }) {
-  const openQuickEntryForEdit = useUIStore((s) => s.openQuickEntryForEdit)
+  const quickEntry = useQuickEntryParams()
   const requestDelete = useDeleteTransaction()
 
   const actionsFor = (tx: TransactionDoc) => [
     {
       label: "Edit",
       icon: PenLine,
-      onSelect: () => openQuickEntryForEdit(tx.id),
+      onSelect: () => quickEntry.openEdit(tx.id),
       className: "bg-primary text-primary-foreground",
     },
     {
