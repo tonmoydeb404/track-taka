@@ -56,9 +56,11 @@ function Caption({ title, sub }: { title: string; sub: string }) {
 function Phone({
   children,
   className,
+  panelClassName,
 }: {
   children: ReactNode
   className?: string
+  panelClassName?: string
 }) {
   return (
     <div
@@ -67,7 +69,12 @@ function Phone({
         className
       )}
     >
-      <div className="tnum flex h-11 items-center justify-between px-7 caption-1">
+      <div
+        className={cn(
+          "tnum mt-4 flex h-11 items-center justify-between px-7 caption-1",
+          panelClassName
+        )}
+      >
         <span>9:41</span>
         <span className="flex gap-1">
           <span className="h-2.5 w-4 rounded-sm bg-foreground" />
@@ -110,7 +117,7 @@ export function QuickEntryNarrow() {
         title="Add an expense in seconds"
         sub="Type the amount, sums included, tap a category, save."
       />
-      <Phone className="justify-end bg-foreground/5">
+      <Phone className="justify-end bg-foreground/5" panelClassName="invisible">
         <div className="app-gutter mb-4 opacity-40">
           <MockBalance />
         </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { CircleNotch, DownloadSimple } from "@phosphor-icons/react"
+import { CircleNotchIcon, DownloadSimpleIcon } from "@phosphor-icons/react"
 import { useCallback, useRef, useState } from "react"
 
 import { cn } from "@/lib/utils"
@@ -123,12 +123,12 @@ export function ScreenshotsPage() {
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 button-sm text-primary-foreground transition-[background-color,transform] duration-300 ease-landing hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.98] disabled:opacity-60"
               >
                 {exporting ? (
-                  <CircleNotch
+                  <CircleNotchIcon
                     className="size-4 animate-spin"
                     aria-hidden="true"
                   />
                 ) : (
-                  <DownloadSimple className="size-4" aria-hidden="true" />
+                  <DownloadSimpleIcon className="size-4" aria-hidden="true" />
                 )}
                 {exporting ? `Exporting ${progress}` : "Download all"}
               </button>
