@@ -215,15 +215,16 @@ Earlier confusion about port 3000 is resolved:
 ## 6. Open items / next steps
 
 1. **Merge PR #12** (see §5), then continue on follow-up branches.
-2. **PWA offline shell** (install prompt screenshots are done, see `public/screenshots/README.md`): data works offline, but a full page reload offline needs a service
-   worker to cache the app shell.
-3. **Cloud sync (later)**: Firebase Auth + RxDB `replicateFirestore` per collection under
+2. **Cloud sync (later)**: Firebase Auth + RxDB `replicateFirestore` per collection under
    `users/{uid}/…`, security rules, real sync status. Keep documents plain JSON.
-4. **Migration of old Vite-app data (later)**: old store `transections` (title, category key,
+3. **Migration of old Vite-app data (later)**: old store `transections` (title, category key,
    ms date, no accounts) needs mapping into accounts/transactions.
-5. **Polish**: lint warning on the TanStack table (`useReactTable` vs React Compiler).
+4. **Polish**: lint warning on the TanStack table (`useReactTable` vs React Compiler).
    RxDB's Dexie "Open Core" console notice stays: it is a licensing message that only a
    premium flag removes.
+
+> 2026-10-31 update: the PWA offline shell shipped (§7), so the old open item
+> "PWA offline shell" is done and the list above was renumbered.
 
 ### Product invariants to preserve
 
@@ -231,3 +232,59 @@ Earlier confusion about port 3000 is resolved:
   movement between own accounts).
 - Type badges never rely on color alone (income/expense/transfer are labeled).
 - Mobile-first: every surface verified at 375×812 before desktop.
+
+---
+
+## 7. PWA offline shell (2026-10-31)
+
+The data layer was already offline-first (RxDB over IndexedDB); this change makes the
+**app shell** work offline too, so a cold reload with no connection opens the app.
+
+- **`public/sw.js`** — hand-written service worker, no new dependency (works with the
+  Turbopack build; `@serwist/next` needs webpack). Versioned caches
+  (`track-taka-{shell,static,runtime}-v1`); bump `VERSION` to invalidate. Strategies:
+  navigations network-first (7.5 s timeout) → shell cache → `/offline.html`;
+  `/_next/static/**` cache-first; full RSC payloads (`RSC: 1`, **not** `Next-Router-Prefetch`)
+  network-first so client-side navigation works offline; prefetch responses are never
+  cached (they are partial). Non-GET and cross-origin are never intercepted. Runtime
+  caches are capped (static 300, runtime 120, insertion-order trim).
+- **`public/offline.html`** — self-contained branded fallback (inline CSS, system fonts,
+  light/dark via `prefers-color-scheme`) for pages never visited offline.
+- **`src/components/pwa/service-worker-registrar.tsx`** — registers `/sw.js`
+  (`updateViaCache: "none"`), mounted in the root layout after `Toaster`. Skipped in dev
+  (would cache HMR responses). A waiting worker raises a single sonner toast with
+  **Reload**; the update applies only on tap (`SKIP_WAITING` message → `controllerchange`
+  → one guarded reload). Background deploys can never mix versions in an open session.
+- **`next.config.ts`** — `/sw.js` served with `Cache-Control: no-cache, no-store,
+  must-revalidate`.
+- **Icons** — `public/icons/` now has PNG 192/512, maskable 512 and apple-touch-icon 180,
+  generated from `src/app/icon.svg` with `rsvg-convert` (commands in
+  `public/icons/README.md`). Manifest gained `id`, `scope`, `lang`, `dir`, `categories`,
+  and the PNG/maskable icons; layout metadata gained the apple-touch-icon.
+- **Brand mark** — a drawn Bangladeshi taka sign (৳) on a blue gradient tile (the old
+  icon was the Rupee sign). One source of truth: `src/app/icon.svg`, mirrored by the
+  `BrandMark` component (`components/common/brand-mark.tsx`, used in the sidebar,
+  landing nav and screenshot mocks), the OG image, `public/offline.html`, `favicon.ico`
+  and the lockups in `public/brand/` (`logo.svg`, `logo-dark.svg`, Manrope Bold as
+  outlines). Change the glyph in all of them together.
+- **Install entry points + guide dialog** — the dialog is the
+  `@khmyznikov/pwa-install` web component (`pwa-install-dialog.tsx`), mounted once in
+  the root layout in manual mode (`manual-apple manual-chrome`,
+  `manifest-url="/manifest.webmanifest"`): it shows the native install on Chromium, a
+  screenshot walkthrough on iOS/iPadOS and written instructions elsewhere. All install
+  surfaces — desktop sidebar footer, mobile More sheet, Settings → General "App" group,
+  landing CTA (`InstallButton`) — are **always visible** (only an already-installed
+  standalone session hides them, and Settings then shows an "Already installed"
+  confirmation) and call `showInstallGuide()` → `showDialog()`, falling back to a bare
+  native prompt (`installWithFeedback`) if the web component never becomes ready.
+  Because the component module loads lazily, it can miss the browser's early
+  `beforeinstallprompt`; `use-install-prompt.ts` captures that event itself at module
+  load (the registrar imports it on every route) and `showInstallGuide()` hands the
+  captured event to the component's `externalPromptEvent` (the library's async mode).
+  Types come from `@types/dom-chromium-installation-events` + `@types/web-app-manifest`.
+- **Offline after one online visit** (a hand-rolled SW cannot know hashed asset names at
+  install time, so `/_next/static/**` fills during normal use).
+- Verified: `tsc`, `lint`, `next build`; prod server on :3100 — SW registered, caches
+  populated, then server stopped and reload still opened the app shell (both `/` and
+  `/dashboard`), and never-visited routes showed the offline page.
+- Release 3.1.0 in `src/lib/release-notes.ts` (package version bumped).

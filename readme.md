@@ -1,3 +1,5 @@
+<p align="center"><img src="public/brand/logo.svg" alt="Track Taka" width="320"></p>
+
 # Track Taka
 
 A calm, fast personal finance tracker — record expenses in seconds and understand

@@ -13,6 +13,18 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: "3.1.0",
+    date: "2026-10-31",
+    title: "Works with no connection, fully",
+    highlights: [
+      "The app now opens without a connection. After one visit online, the app shell is saved on the device and pages you have visited keep working offline.",
+      "A calm branded screen appears if you open a page that hasn't been saved yet, with a retry button.",
+      "When a new version ships you get a Reload prompt instead of a forced refresh, so an update never interrupts what you are doing.",
+      "An always-available Install app entry in the desktop sidebar, the phone's More menu and in Settings opens a proper install guide: the native install dialog on Android and desktop Chrome, a step-by-step walkthrough with screenshots on iPhone and iPad.",
+      "New app icons in the sizes Android and iPhone home screens expect, including a maskable icon for Android adaptive launchers.",
+    ],
+  },
+  {
     version: "3.0.0",
     date: "2026-10-31",
     title: "Rebuilt to keep everything on your phone",
