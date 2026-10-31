@@ -8,7 +8,11 @@ import { Toaster } from "@/components/ui/sonner"
 // Mounted in the root layout so the module loads on every route: it must be
 // listening before the browser fires `beforeinstallprompt` (see the module
 // comment in use-install-prompt.ts).
-import { PwaInstallDialog, ServiceWorkerRegistrar } from "@/components/pwa"
+import {
+  PwaInstallDialog,
+  ServiceWorkerRegistrar,
+  UnsupportedInstallDialog,
+} from "@/components/pwa"
 import "@/components/pwa/use-install-prompt"
 import "./globals.css"
 
@@ -72,6 +76,8 @@ export default function RootLayout({
           {children}
           <Toaster position="top-center" />
           <PwaInstallDialog />
+          {/* Manual install steps for browsers with no install support. */}
+          <UnsupportedInstallDialog />
           <ServiceWorkerRegistrar />
         </ThemeProvider>
       </body>
