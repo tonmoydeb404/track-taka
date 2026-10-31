@@ -84,5 +84,27 @@ export default function manifest(): MetadataRoute.Manifest {
       },
     ],
     screenshots: SCREENSHOTS,
+    shortcuts: [
+      {
+        name: "Add expense",
+        short_name: "Expense",
+        description: "Record a new expense",
+        url: "/dashboard?quick=expense&source=shortcut",
+        icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
+      },
+      {
+        name: "Add income",
+        short_name: "Income",
+        description: "Record a new income",
+        url: "/dashboard?quick=income&source=shortcut",
+        icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
+      },
+    ],
+    // Siri / OS-level automation entry point: a URL scheme the Shortcuts app
+    // can open to pre-fill a transaction (e.g. "Hey Siri, add expense 500
+    // bKash"). The dashboard reads `?quick=` and opens the quick-entry sheet.
+    protocol_handlers: [
+      { protocol: "web+tracktaka", url: "/dashboard?%s" },
+    ],
   }
 }
