@@ -146,9 +146,10 @@ export async function installWithFeedback(): Promise<InstallOutcome> {
     return outcome
   }
 
-  // No native prompt: fall back to the guide dialog (manual instructions,
-  // including browsers that don't support installation at all).
-  const { showInstallGuide } = await import("./pwa-install-dialog")
-  await showInstallGuide()
+  // No native prompt captured: nothing to trigger programmatically. Surface a
+  // hint instead of recursing into showInstallGuide (which falls back here).
+  toast.error("Couldn't start the install", {
+    description: "Try again, or use your browser's install option.",
+  })
   return "unavailable"
 }
