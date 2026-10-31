@@ -3,8 +3,9 @@ import { BRAND_AMBER, BRAND_BLUE } from "@/lib/brand"
 /**
  * The brand mark ("Daily Track"): a 3x3 field of entries with a bold route
  * stepping up through them and an amber marker on today, on the brand blue
- * tile. Identical to src/app/icon.svg, the generated PWA icons (public/icons)
- * and the lockups in public/brand. Colours are the brand's own, not theme
+ * tile. The brand source is public/brand/mark.svg; src/app/icon.svg, the
+ * generated PWA icons (public/icons) and the lockups in public/brand are all
+ * derived from it by `npm run sync-brand`. Colours are the brand's own, not theme
  * tokens, so it reads the same on every surface; size it with className.
  */
 export function BrandMark({
