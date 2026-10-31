@@ -6,17 +6,16 @@ import type { TransactionDoc } from "@/lib/db"
 import {
   accountBalances,
   categoryTotals,
-  dailyExpenseSeries,
+  dailyExpenseRange,
   dayKey,
   getCategory,
   monthKey,
   monthLabelShort,
   periodTotals,
 } from "@/lib/domain"
-import { useAccounts, useSelectedMonth, useTransactions } from "@/hooks"
+import { useAccounts, useDateRange, useTransactions } from "@/hooks"
 
-import { usePeriod } from "./use-period"
-import { pctChange, resolvePeriod } from "./utils"
+import { customPeriod, pctChange } from "./utils"
 
 function totalsFor(txs: TransactionDoc[]) {
   const { income, expense, transferVolume, net } = periodTotals(txs)
@@ -29,32 +28,21 @@ export function useAnalytics() {
   const accountQuery = useAccounts()
   const transactions = txQuery.data
   const accounts = accountQuery.data
-  const range = usePeriod((s) => s.range)
-  const { month: endMonth } = useSelectedMonth()
+  const dr = useDateRange()
   const [now] = useState(() => new Date())
 
   return useMemo(() => {
-    const earliest = transactions.reduce<string | null>((min, t) => {
-      const mk = monthKey(t.date)
-      return min === null || mk < min ? mk : min
-    }, null)
-    const period = resolvePeriod(range, endMonth, earliest, now)
-
-    const inMonths = (months: string[]) => {
-      const set = new Set(months)
-      return transactions.filter((t) => set.has(monthKey(t.date)))
-    }
-    const txs = inMonths(period.months)
-    const prevTxs = period.prevMonths ? inMonths(period.prevMonths) : null
+    const period = customPeriod(dr)
+    const txs = transactions.filter((t) => dr.inRange(t.date))
+    const prevTxs = transactions.filter((t) => dr.prev.inRange(t.date))
     const totals = totalsFor(txs)
     const prevTotals = prevTxs ? totalsFor(prevTxs) : null
 
-    const single = period.months.length === 1
-    const dailySeries = single
-      ? dailyExpenseSeries(transactions, period.months[0])
-      : []
+    // Up to ~2 months reads better day by day, longer spans month by month
+    const single = period.days <= 62
+    const dailySeries = single ? dailyExpenseRange(txs, dr.from, dr.to) : []
     const monthlySeries = period.months.map((m) => {
-      const t = totalsFor(transactions.filter((x) => monthKey(x.date) === m))
+      const t = totalsFor(txs.filter((x) => monthKey(x.date) === m))
       return { label: monthLabelShort(m), income: t.income, expense: t.expense }
     })
 
@@ -138,8 +126,7 @@ export function useAnalytics() {
     accounts,
     txQuery.isLoading,
     accountQuery.isLoading,
-    range,
-    endMonth,
+    dr,
     now,
   ])
 }

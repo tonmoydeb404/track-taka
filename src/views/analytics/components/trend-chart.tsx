@@ -26,12 +26,10 @@ export function TrendChart({
   single,
   daily,
   monthly,
-  monthShort,
 }: {
   single: boolean
-  daily: { day: number; expense: number }[]
+  daily: { label: string; expense: number }[]
   monthly: { label: string; income: number; expense: number }[]
-  monthShort: string
 }) {
   if (single) {
     return (
@@ -49,8 +47,7 @@ export function TrendChart({
             strokeDasharray="3 3"
           />
           <XAxis
-            dataKey="day"
-            tickFormatter={(d: number) => `${monthShort} ${d}`}
+            dataKey="label"
             tick={tick}
             tickLine={false}
             axisLine={false}
@@ -62,9 +59,7 @@ export function TrendChart({
             content={
               <ChartTooltipContent
                 hideIndicator
-                labelFormatter={(_, p) =>
-                  p?.[0] ? `${monthShort} ${p[0].payload.day}` : ""
-                }
+                labelFormatter={(_, p) => (p?.[0] ? p[0].payload.label : "")}
                 formatter={(v) => (
                   <span className="tnum font-medium">
                     {formatMoney(Number(v))}

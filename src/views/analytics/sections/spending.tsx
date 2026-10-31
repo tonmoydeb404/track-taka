@@ -38,9 +38,6 @@ export function SpendingTab() {
         ]
       : head
 
-  // One month goes to that month's transactions; longer periods to all time
-  const monthParam = a.single ? period.months[0] : "all"
-
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
       <section
@@ -78,7 +75,7 @@ export function SpendingTab() {
             return (
               <li key={r.categoryId}>
                 <Link
-                  href={`/dashboard/transactions?category=${r.categoryId}&month=${monthParam}&type=expense`}
+                  href={`/dashboard/transactions?category=${r.categoryId}&type=expense`}
                   className="block touch-manipulation px-5 py-4 transition-colors select-none hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring active:bg-muted"
                 >
                   <div className="flex items-center gap-3">

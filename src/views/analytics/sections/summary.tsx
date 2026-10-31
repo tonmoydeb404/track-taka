@@ -4,7 +4,7 @@ import Link from "next/link"
 import { CalendarDays, ChevronRight, PiggyBank } from "lucide-react"
 
 import { CategoryIcon } from "@/components/common/category-icon"
-import { formatMoney, monthLabelShort } from "@/lib/domain"
+import { formatMoney } from "@/lib/domain"
 import { cn } from "@/lib/utils"
 
 import { AnalyticsLoading, NoActivity } from "../components/analytics-empty"
@@ -22,7 +22,6 @@ export function SummaryTab() {
   const top = a.categoryRows[0]
   const savingsRate =
     totals.income > 0 ? Math.round((totals.net / totals.income) * 100) : null
-  const monthShort = monthLabelShort(period.months[0]).split(" ")[0]
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -52,7 +51,6 @@ export function SummaryTab() {
               single={a.single}
               daily={a.dailySeries}
               monthly={a.monthlySeries}
-              monthShort={monthShort}
             />
           ) : (
             <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">

@@ -11,16 +11,10 @@ import {
   useAccountBalances,
   useAccounts,
   useBudgetProgress,
-  useSelectedMonth,
+  useDateRange,
   useTransactions,
 } from "@/hooks"
-import {
-  addMonths,
-  categoryTotals,
-  dailyExpenseSeries,
-  monthKey,
-  periodTotals,
-} from "@/lib/domain"
+import { categoryTotals, dailyExpenseRange, periodTotals } from "@/lib/domain"
 import { ROUTES } from "@/lib/routes"
 
 import { BalanceHero } from "./components/balance-hero"
@@ -30,7 +24,7 @@ import { MonthSummary } from "./components/month-summary"
 import { QuickActions } from "./components/quick-actions"
 import { RecentActivity } from "./components/recent-activity"
 import { SpendingTrend } from "./components/spending-trend"
-import { greetingFor, shortMonth } from "./utils"
+import { greetingFor } from "./utils"
 
 /**
  * Dashboard home. Phone: one column ordered by how often each part is used.
@@ -40,32 +34,33 @@ export function OverviewPage() {
   const accountsQuery = useAccounts()
   const { balances, total: balance } = useAccountBalances()
   const txQuery = useTransactions("all")
-  const { month } = useSelectedMonth()
+  const range = useDateRange()
+  const { month } = range
   const { statuses } = useBudgetProgress(month)
   const [now] = useState(() => new Date())
 
   const accounts = accountsQuery.data
   const transactions = txQuery.data
-  const prevMonth = useMemo(() => addMonths(month, -1), [month])
 
   // Derived, never stored
   const monthTxs = useMemo(
-    () => transactions.filter((t) => monthKey(t.date) === month),
-    [transactions, month]
+    () => transactions.filter((t) => range.inRange(t.date)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [transactions, range.from, range.to]
   )
   const totals = useMemo(() => periodTotals(monthTxs), [monthTxs])
   const prevTotals = useMemo(
-    () =>
-      periodTotals(transactions.filter((t) => monthKey(t.date) === prevMonth)),
-    [transactions, prevMonth]
+    () => periodTotals(transactions.filter((t) => range.prev.inRange(t.date))),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [transactions, range.prev.from, range.prev.to]
   )
   const budgetLimit = useMemo(
     () => statuses.reduce((s, b) => s + b.budget.limit, 0),
     [statuses]
   )
   const series = useMemo(
-    () => dailyExpenseSeries(monthTxs, month),
-    [monthTxs, month]
+    () => dailyExpenseRange(monthTxs, range.from, range.to),
+    [monthTxs, range.from, range.to]
   )
   const topCategories = useMemo(
     () => categoryTotals(monthTxs, "expense").slice(0, 5),
@@ -111,7 +106,7 @@ export function OverviewPage() {
 
           <MonthSummary
             className="ov-month"
-            prevLabel={shortMonth(prevMonth)}
+            prevLabel={range.prev.label}
             income={totals.income}
             expense={totals.expense}
             prevIncome={prevTotals.income}
@@ -129,11 +124,15 @@ export function OverviewPage() {
 
           <CategoryBreakdown
             className="ov-cats"
-            month={month}
+            label={range.label}
             rows={topCategories}
           />
 
-          <SpendingTrend className="ov-trend" month={month} series={series} />
+          <SpendingTrend
+            className="ov-trend"
+            label={range.label}
+            series={series}
+          />
         </div>
       )}
     </div>
