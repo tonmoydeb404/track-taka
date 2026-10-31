@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
 
+import { DateRangeButton } from "@/components/layout/date-range-button"
+
 interface PageHeaderProps {
   title: string
   subtitle?: string
@@ -22,9 +24,10 @@ export function PageHeader({ title, subtitle, actions }: PageHeaderProps) {
           <p className="mt-1.5 text-sm text-muted-foreground">{subtitle}</p>
         ) : null}
       </div>
-      {actions ? (
-        <div className="flex shrink-0 items-center gap-2">{actions}</div>
-      ) : null}
+      <div className="flex shrink-0 items-center gap-2">
+        {actions}
+        <DateRangeButton />
+      </div>
     </header>
   )
 }
