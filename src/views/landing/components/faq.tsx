@@ -14,6 +14,10 @@ export function Faq() {
           <h2 id="faq-heading" className="heading-4 text-balance sm:heading-3">
             Questions people ask first.
           </h2>
+          <p className="mt-4 max-w-[480px] body-2 text-muted-foreground">
+            Here are some of the most common questions people have when getting
+            started.
+          </p>
         </Reveal>
         <Reveal delay={0.08} className="lg:col-span-7 lg:col-start-6">
           <div className="divide-y rounded-2xl border bg-card px-6 text-card-foreground">

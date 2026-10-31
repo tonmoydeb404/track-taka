@@ -49,7 +49,7 @@ export function LandingNav() {
             aria-current="page"
             className="mr-auto flex items-center gap-2 rounded-full pr-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
-            <BrandMark className="size-8 shrink-0" label="" />
+            <BrandMark className="size-8 shrink-0 rounded-sm" label="" />
             <span className="title-3">Track Taka</span>
           </Link>
 
