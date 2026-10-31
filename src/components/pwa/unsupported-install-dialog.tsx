@@ -48,9 +48,10 @@ export function UnsupportedInstallDialog() {
               Install from your browser menu
             </ResponsiveDialogTitle>
             <ResponsiveDialogDescription className="text-sm text-muted-foreground">
-              This browser doesn&apos;t support one-tap install. You can still
-              add Track Taka from your browser&apos;s menu — look for
-              &ldquo;Install app&rdquo; or &ldquo;Add to Home screen&rdquo;.
+              Your browser doesn&apos;t support one-tap install, but you can
+              still add Track Taka to your device. Open your browser&apos;s menu
+              and tap &ldquo;Install app&rdquo; or &ldquo;Add to Home
+              screen&rdquo; to get started.
             </ResponsiveDialogDescription>
           </div>
         </ResponsiveDialogHeader>
