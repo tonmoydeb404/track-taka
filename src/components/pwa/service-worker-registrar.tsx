@@ -9,6 +9,8 @@ const UPDATE_TOAST_ID = "sw-update"
  * Registers public/sw.js and keeps the app current. Renders nothing.
  *
  * - Never registered in development (it would cache dev/HMR responses).
+ * - Asks the worker to refresh the offline precache when the running build
+ *   is newer than the cached one (the worker no-ops when they match).
  * - A waiting service worker (a new deploy) raises one toast; the update is
  *   applied only when the person taps Reload, so a background deploy can
  *   never mix versions in an open session.
@@ -35,6 +37,18 @@ export function ServiceWorkerRegistrar() {
         scope: "/",
         updateViaCache: "none",
       })
+
+      // Ask the worker to refresh the offline precache when this load runs
+      // a newer build than the one it cached (a deploy landed). The worker
+      // compares build IDs and no-ops when they match, so this costs one
+      // tiny JSON revalidation per page load. The first install precaches
+      // everything already, and only a controller from a previous session
+      // can predate the running build.
+      if (navigator.onLine) {
+        navigator.serviceWorker.controller?.postMessage({
+          type: "REFRESH_PRECACHE",
+        })
+      }
 
       const announce = (worker: ServiceWorker | null) => {
         if (!worker || !navigator.serviceWorker.controller) return
