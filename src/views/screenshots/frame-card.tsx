@@ -1,6 +1,6 @@
 "use client"
 
-import { CircleNotch, DownloadSimple } from "@phosphor-icons/react"
+import { CircleNotchIcon, DownloadSimpleIcon } from "@phosphor-icons/react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
@@ -92,9 +92,12 @@ export function FrameCard({
           )}
         >
           {busy ? (
-            <CircleNotch className="size-4 animate-spin" aria-hidden="true" />
+            <CircleNotchIcon
+              className="size-4 animate-spin"
+              aria-hidden="true"
+            />
           ) : (
-            <DownloadSimple className="size-4" aria-hidden="true" />
+            <DownloadSimpleIcon className="size-4" aria-hidden="true" />
           )}
           {busy ? "Rendering" : "Download PNG"}
         </button>
