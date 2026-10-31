@@ -86,7 +86,7 @@ export function MobileBottomNav() {
       <nav
         aria-label="Mobile navigation"
         className={cn(
-          "pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/80 backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 lg:hidden",
+          "pb-bottomnav-safe fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/80 backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 lg:hidden",
           keyboardOpen && "translate-y-full"
         )}
       >

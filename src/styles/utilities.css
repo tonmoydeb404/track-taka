@@ -1,0 +1,160 @@
+/* App helper classes and layout primitives. shadcn-only styles stay in
+ * globals.css; everything here is specific to this app's views. */
+
+/* Slim scrollbars for panels and long lists */
+.scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.8 0.015 243) transparent;
+}
+.scrollbar-slim::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: oklch(0.84 0.015 243);
+  border-radius: 9999px;
+}
+.dark .scrollbar-slim {
+  scrollbar-color: oklch(0.4 0.02 250) transparent;
+}
+.dark .scrollbar-slim::-webkit-scrollbar-thumb {
+  background: oklch(0.38 0.02 250);
+}
+
+/* iOS safe-area helpers */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+/* Bottom tab bar: iOS home-indicator inset, or a minimum gap where the inset is 0 (Android) */
+.pb-bottomnav-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+}
+
+/* Tabular numbers for financial figures */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Page gutters + bottom clearance for the fixed mobile nav */
+.app-gutter {
+  padding-inline: 1.25rem;
+}
+@media (min-width: 40rem) {
+  .app-gutter {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 64rem) {
+  .app-gutter {
+    padding-inline: 2rem;
+  }
+}
+
+/* Vertical rhythm between a page's top-level blocks */
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+@media (min-width: 40rem) {
+  .page-stack {
+    gap: 1.75rem;
+  }
+}
+
+/* Hide scrollbars on swipeable rows (chips, tabs) */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Overview layout: stacked on phones, a named-area grid from lg. */
+@media (min-width: 64rem) {
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.5rem;
+    grid-template-areas:
+      "hero hero hero month month"
+      "actions actions actions month month"
+      "trend trend trend recent recent"
+      "cats cats cats budgets budgets";
+  }
+  .ov-hero {
+    grid-area: hero;
+  }
+  .ov-actions {
+    grid-area: actions;
+  }
+  .ov-month {
+    grid-area: month;
+  }
+  .ov-trend {
+    grid-area: trend;
+  }
+  .ov-recent {
+    grid-area: recent;
+  }
+  .ov-cats {
+    grid-area: cats;
+  }
+  .ov-budgets {
+    grid-area: budgets;
+  }
+}
+
+/* The hero heading is the one place a gradient is used, and only on text. */
+.hero-heading {
+  background-image: linear-gradient(to right, #000000, #666666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .hero-heading {
+  background-image: linear-gradient(to right, #ffffff, #9b9b9b);
+}
+
+/* Screenshot frames: pin the light theme regardless of the page theme. */
+.force-light {
+  color-scheme: light;
+  --radius: 0.625rem;
+  --primary: oklch(0.5 0.134 242.749);
+  --primary-foreground: oklch(0.985 0.005 243);
+  --background: oklch(0.975 0.006 243);
+  --foreground: oklch(0.2 0.025 250);
+  --card: oklch(0.995 0.002 243);
+  --card-foreground: oklch(0.2 0.025 250);
+  --popover: oklch(0.995 0.002 243);
+  --popover-foreground: oklch(0.2 0.025 250);
+  --secondary: oklch(0.945 0.012 243);
+  --secondary-foreground: oklch(0.28 0.03 250);
+  --muted: oklch(0.955 0.01 243);
+  --muted-foreground: oklch(0.5 0.03 250);
+  --accent: oklch(0.93 0.032 243);
+  --accent-foreground: oklch(0.38 0.11 243);
+  --border: oklch(0.91 0.014 243);
+  --input: oklch(0.88 0.016 243);
+  --ring: oklch(0.62 0.12 243);
+  --income: oklch(0.52 0.125 160);
+  --expense: oklch(0.57 0.18 25);
+  --destructive: oklch(0.55 0.21 27);
+  --warning: oklch(0.55 0.13 62);
+  --chart-1: oklch(0.5 0.134 242.749);
+  --chart-2: oklch(0.74 0.14 72);
+  --chart-3: oklch(0.6 0.13 160);
+  --chart-4: oklch(0.62 0.18 12);
+  --chart-5: oklch(0.58 0.14 295);
+  --sidebar: oklch(0.29 0.07 243);
+  --sidebar-foreground: oklch(0.96 0.01 243);
+  --sidebar-primary: oklch(0.97 0.012 243);
+  --sidebar-primary-foreground: oklch(0.29 0.07 243);
+  --sidebar-accent: oklch(1 0 0 / 13%);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.82 0.1 243);
+}

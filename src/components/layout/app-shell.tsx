@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <div className="flex min-h-dvh flex-col lg:pl-sidebar">
           <MobileStatusBanner />
-          <main className="app-gutter flex-1 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(var(--spacing-bottomnav)+env(safe-area-inset-bottom)+1.5rem)] lg:pt-8 lg:pb-8">
+          <main className="app-gutter flex-1 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(var(--spacing-bottomnav)+max(env(safe-area-inset-bottom),0.75rem)+1.5rem)] lg:pt-8 lg:pb-8">
             <div className="mx-auto w-full max-w-content">
               {mounted ? (
                 <PageTransition>{children}</PageTransition>

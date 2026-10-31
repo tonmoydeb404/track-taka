@@ -28,7 +28,7 @@ import { greetingFor } from "./utils"
 
 /**
  * Dashboard home. Phone: one column ordered by how often each part is used.
- * lg+: a named-area grid (see .overview-grid in globals.css).
+ * lg+: a named-area grid (see .overview-grid in src/styles/utilities.css).
  */
 export function OverviewPage() {
   const accountsQuery = useAccounts()
