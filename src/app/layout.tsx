@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Noto_Sans_Bengali } from "next/font/google"
 
+import { ThemeProvider } from "@/components/layout/theme-provider"
 import { BRAND_BLUE } from "@/lib/brand"
 import { Toaster } from "@/components/ui/sonner"
 // Mounted in the root layout so the module loads on every route: it must be
@@ -60,10 +61,12 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${bengali.variable} bg-background font-sans text-foreground antialiased`}
       >
-        {children}
-        <Toaster position="top-center" />
-        <PwaInstallDialog />
-        <ServiceWorkerRegistrar />
+        <ThemeProvider>
+          {children}
+          <Toaster position="top-center" />
+          <PwaInstallDialog />
+          <ServiceWorkerRegistrar />
+        </ThemeProvider>
       </body>
     </html>
   )
