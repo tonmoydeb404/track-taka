@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -10,7 +10,10 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync-brand": "node scripts/sync-brand.mjs",
+    "sync-brand:check": "node scripts/sync-brand.mjs --check",
+    "release:tag": "node ./scripts/release-tag-sync.mjs"
   },
   "dependencies": {
     "@khmyznikov/pwa-install": "^0.7.0",

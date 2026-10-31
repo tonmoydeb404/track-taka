@@ -13,6 +13,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: "3.2.0",
+    date: "2026-10-31",
+    title: "Branding and release tooling",
+    highlights: [
+      "Single source of truth for app name, version and copy via brand.json.",
+      "sync-brand propagates brand values to package.json and generated files.",
+      "release:tag bumps version, syncs, commits, tags and pushes.",
+    ],
+  },
+  {
     version: "3.1.0",
     date: "2026-10-31",
     title: "Works with no connection, fully",
