@@ -69,7 +69,8 @@ src/
 
 The approved UI prototype lives in `design/` (archived alongside this app). The
 theme — warm off-white surfaces, teal primary, `text-income` / `text-expense`
-semantics, tabular figures — is defined in `src/app/globals.css`.
+semantics, tabular figures — is defined in `src/styles/` (see `globals.css`
+and `tokens.css`).
 
 ### Legacy
 

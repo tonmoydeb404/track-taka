@@ -1,0 +1,34 @@
+/* App-specific base styles: document behaviour, touch, and motion.
+ * shadcn's base layer (border/outline/bg resets) lives in globals.css. */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: light;
+    text-size-adjust: 100%;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    /* Installed PWA: no rubber-band flash or pull-to-refresh on the shell */
+    overscroll-behavior-y: none;
+  }
+  /* 16px minimum on touch devices stops iOS zooming into focused fields */
+  @media (pointer: coarse) {
+    input,
+    select,
+    textarea {
+      font-size: max(1rem, 16px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

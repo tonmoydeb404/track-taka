@@ -14,7 +14,7 @@ import {
   UnsupportedInstallDialog,
 } from "@/components/pwa"
 import "@/components/pwa/use-install-prompt"
-import "./globals.css"
+import "@/styles/globals.css"
 
 const manrope = Manrope({
   variable: "--font-manrope",
