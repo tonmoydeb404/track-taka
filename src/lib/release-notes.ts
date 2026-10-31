@@ -13,6 +13,17 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: "3.3.1",
+    date: "2026-10-31",
+    title: "Modals in the URL, offline from first launch",
+    highlights: [
+      "Every dialog and sheet now lives in the URL, so the back button closes it instead of leaving the app, and any screen can be bookmarked or shared.",
+      "Installing the app now saves its pages up front, so the app works offline on first launch, and cached pages refresh on their own when a new version ships.",
+      "The bottom tab bar keeps a clear gap above the Android system navigation bar.",
+      "Refreshed brand marks with smaller app icons, updated screenshots, and a ledger-style closing section with a short FAQ intro on the landing page.",
+    ],
+  },
+  {
     version: "3.3.0",
     date: "2026-10-31",
     title: "An install path for every browser",
