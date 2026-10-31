@@ -1,16 +1,11 @@
 import type { Metadata } from "next"
 
-import { Suspense } from "react"
-
 import { TransactionsPage } from "@/views/transactions"
 
 export const metadata: Metadata = { title: "Transactions" }
 
+// No Suspense needed: `useSearchQueries` (hooks) reads params without
+// triggering the prerender-time bailout that raw `useSearchParams` would.
 export default function Page() {
-  // useSearchParams needs a Suspense boundary when the page is prerendered
-  return (
-    <Suspense>
-      <TransactionsPage />
-    </Suspense>
-  )
+  return <TransactionsPage />
 }

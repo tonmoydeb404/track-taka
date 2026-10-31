@@ -31,6 +31,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
   useAccounts,
   useIsMobile,
+  useQuickEntryParams,
   useTransaction,
   useTransactionActions,
 } from "@/hooks"
@@ -44,7 +45,6 @@ import {
   parseMoneyInput,
   sanitizeMoneyExpression,
 } from "@/lib/domain"
-import { useUIStore } from "@/lib/ui-store"
 import { cn } from "@/lib/utils"
 
 // ---------------------------------------------------------------------------
@@ -124,20 +124,20 @@ function initialFormState(
 // ---------------------------------------------------------------------------
 
 /**
- * The core add/edit transaction sheet. Opens from the UI store, so it can be
- * rendered once at the app root — it is fully closed (renders nothing) by default.
- * The form itself remounts on every open session (see `quickEntrySession`),
- * which resets its state without effects.
+ * The core add/edit transaction sheet. The open state lives in the URL
+ * (`?add=<type>` / `?edit=<txId>`), so it can be rendered once at the app
+ * root, the back button closes it, and any entry can be deep-linked. The form
+ * itself remounts on every open session (see `session`), which resets its
+ * state without effects.
  */
 export function QuickEntrySheet() {
-  const open = useUIStore((s) => s.quickEntryOpen)
-  const quickEntryType = useUIStore((s) => s.quickEntryType)
-  const editingTxId = useUIStore((s) => s.editingTxId)
-  const quickEntrySession = useUIStore((s) => s.quickEntrySession)
-  const closeQuickEntry = useUIStore((s) => s.closeQuickEntry)
+  const entry = useQuickEntryParams()
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={(o) => !o && closeQuickEntry()}>
+    <ResponsiveDialog
+      open={entry.isOpen}
+      onOpenChange={(o) => !o && entry.close()}
+    >
       <ResponsiveDialogContent
         className="flex flex-col"
         drawerClassName="h-[92dvh] data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:rounded-t-2xl"
@@ -145,7 +145,7 @@ export function QuickEntrySheet() {
       >
         <ResponsiveDialogHeader className="gap-1 pb-3 text-left">
           <ResponsiveDialogTitle>
-            {editingTxId ? "Edit transaction" : "Quick entry"}
+            {entry.editingTxId ? "Edit transaction" : "Quick entry"}
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription className="text-xs">
             Saved on this device instantly
@@ -153,9 +153,9 @@ export function QuickEntrySheet() {
         </ResponsiveDialogHeader>
 
         <QuickEntryForm
-          key={quickEntrySession}
-          editingTxId={editingTxId}
-          initialType={quickEntryType}
+          key={entry.session}
+          editingTxId={entry.editingTxId}
+          initialType={entry.type}
         />
       </ResponsiveDialogContent>
     </ResponsiveDialog>
@@ -169,7 +169,7 @@ interface QuickEntryFormProps {
 
 /** Waits for accounts (and the transaction when editing) before the form. */
 function QuickEntryForm({ editingTxId, initialType }: QuickEntryFormProps) {
-  const closeQuickEntry = useUIStore((s) => s.closeQuickEntry)
+  const entry = useQuickEntryParams()
   const accountsQuery = useAccounts()
   const { transaction, isLoading: txLoading } = useTransaction(editingTxId)
 
@@ -199,7 +199,7 @@ function QuickEntryForm({ editingTxId, initialType }: QuickEntryFormProps) {
         <p className="text-sm text-muted-foreground">
           Create an account first, then you can record transactions.
         </p>
-        <Button asChild onClick={closeQuickEntry}>
+        <Button asChild onClick={entry.close}>
           <Link href="/dashboard/accounts">Create an account</Link>
         </Button>
       </ResponsiveDialogBody>
@@ -226,7 +226,7 @@ function QuickEntryFields({
   initialType,
   accounts,
 }: QuickEntryFieldsProps) {
-  const closeQuickEntry = useUIStore((s) => s.closeQuickEntry)
+  const entry = useQuickEntryParams()
   const { create, update, remove } = useTransactionActions()
   const isMobile = useIsMobile()
   const editing = Boolean(editingTx)
@@ -329,7 +329,7 @@ function QuickEntryFields({
       if (editingTx) {
         const before = editingTx
         await update(editingTx.id, draft)
-        closeQuickEntry()
+        entry.close()
         toast("Transaction updated", {
           action: {
             label: "Undo",
@@ -357,7 +357,7 @@ function QuickEntryFields({
       }
 
       const tx = await create(draft)
-      closeQuickEntry()
+      entry.close()
       toast(savedToastLabel(type, amountValue, description.trim()), {
         action: {
           label: "Undo",

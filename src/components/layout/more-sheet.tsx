@@ -14,29 +14,27 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from "@/components/ui/responsive-dialog"
+import { useModalParam } from "@/hooks"
 import { isRouteActive, ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
-interface MoreSheetProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
-
 /** Bottom sheet listing secondary destinations on mobile. */
-export function MoreSheet({ open, onOpenChange }: MoreSheetProps) {
+export function MoreSheet() {
   const pathname = usePathname()
   const { installed } = useInstallPrompt()
+  // Open while `?more=1` is in the URL, so back closes it
+  const more = useModalParam("more")
 
   function handleInstall() {
     // The dialog draws over everything; close the sheet first.
-    onOpenChange(false)
+    more.close()
     void showInstallGuide()
   }
 
   return (
     <ResponsiveDialog
-      open={open}
-      onOpenChange={onOpenChange}
+      open={more.isOpen}
+      onOpenChange={(open) => !open && more.close()}
       sheetSide="bottom"
     >
       <ResponsiveDialogContent
@@ -51,6 +49,8 @@ export function MoreSheet({ open, onOpenChange }: MoreSheetProps) {
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody className="pb-safe">
+          {/* Plain Links: the destination has no ?more param, so the sheet
+              closes itself as the navigation lands. */}
           <nav aria-label="Secondary navigation" className="grid gap-1 pb-3">
             {MORE_ITEMS.map(({ view: v, label, icon: Icon }) => {
               const active = isRouteActive(pathname, v)
@@ -58,7 +58,6 @@ export function MoreSheet({ open, onOpenChange }: MoreSheetProps) {
                 <Link
                   key={v}
                   href={ROUTES[v]}
-                  onClick={() => onOpenChange(false)}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "flex h-14 w-full items-center gap-3 rounded-xl px-2 text-base transition-colors",

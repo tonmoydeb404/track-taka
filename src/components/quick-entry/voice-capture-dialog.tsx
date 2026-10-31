@@ -19,9 +19,8 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from "@/components/ui/responsive-dialog"
-import { useAccounts, useTransactionActions } from "@/hooks"
+import { useAccounts, useModalParam, useTransactionActions } from "@/hooks"
 import { EXPENSE_CATEGORIES, formatMoney, parseMoneyInput } from "@/lib/domain"
-import { useUIStore } from "@/lib/ui-store"
 
 type VoiceState = "ready" | "listening" | "processing" | "review" | "done"
 
@@ -42,8 +41,7 @@ const WAVE_BARS = [
  * saving. Captions are deliberately honest about this.
  */
 export function VoiceCaptureDialog() {
-  const voiceOpen = useUIStore((s) => s.voiceOpen)
-  const closeVoice = useUIStore((s) => s.closeVoice)
+  const voice = useModalParam("voice")
 
   const { data: accounts } = useAccounts()
   const { create, remove } = useTransactionActions()
@@ -64,10 +62,10 @@ export function VoiceCaptureDialog() {
 
   // Reset the flow whenever the dialog transitions open → closed, using the
   // render-phase state-adjustment pattern (no effect needed).
-  const [prevOpen, setPrevOpen] = React.useState(voiceOpen)
-  if (prevOpen !== voiceOpen) {
-    setPrevOpen(voiceOpen)
-    if (!voiceOpen) {
+  const [prevOpen, setPrevOpen] = React.useState(voice.isOpen)
+  if (prevOpen !== voice.isOpen) {
+    setPrevOpen(voice.isOpen)
+    if (!voice.isOpen) {
       setState("ready")
       setAmount("")
       setCategoryId(null)
@@ -142,7 +140,7 @@ export function VoiceCaptureDialog() {
         }
       )
       doneTimer.current = setTimeout(() => {
-        closeVoice()
+        voice.close()
       }, 800)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save")
@@ -157,12 +155,16 @@ export function VoiceCaptureDialog() {
   const handleClose = (o: boolean) => {
     if (!o) {
       stopTimers()
-      closeVoice()
+      voice.close()
     }
   }
 
   return (
-    <ResponsiveDialog open={voiceOpen} onOpenChange={handleClose} mode="dialog">
+    <ResponsiveDialog
+      open={voice.isOpen}
+      onOpenChange={handleClose}
+      mode="dialog"
+    >
       <ResponsiveDialogContent
         dialogClassName="sm:max-w-sm gap-0"
         className="flex flex-col"
@@ -183,7 +185,7 @@ export function VoiceCaptureDialog() {
               <p className="text-sm text-muted-foreground">
                 Create an account first, then you can record transactions.
               </p>
-              <Button asChild onClick={closeVoice}>
+              <Button asChild onClick={() => voice.close()}>
                 <Link href="/dashboard/accounts">Create an account</Link>
               </Button>
             </div>

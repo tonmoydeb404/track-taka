@@ -52,7 +52,6 @@ interface AccountDialogProps {
   open: boolean
   editing: AccountDoc | null
   onOpenChange: (open: boolean) => void
-  onClose: () => void
 }
 
 /** Add/edit account dialog. The parent remounts it per open (via key), so the
@@ -61,7 +60,6 @@ export function AccountDialog({
   open,
   editing,
   onOpenChange,
-  onClose,
 }: AccountDialogProps) {
   const { create, update } = useAccountActions()
   const [saving, setSaving] = useState(false)
@@ -107,7 +105,7 @@ export function AccountDialog({
         await create(values)
         toast.success(`“${name}” added`)
       }
-      onClose()
+      onOpenChange(false)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save the account")
     } finally {
@@ -241,7 +239,7 @@ export function AccountDialog({
           <Button
             variant="outline"
             className="flex-1 sm:flex-none"
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>

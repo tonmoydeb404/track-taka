@@ -15,6 +15,7 @@ import {
   useBudgetProgress,
   useBudgets,
   useDateRange,
+  useModalParam,
   useSelectedMonth,
   useTransactions,
 } from "@/hooks"
@@ -55,22 +56,27 @@ export function BudgetsPage() {
   const prevTx = useTransactions(prevMonth)
   const prevBudgets = prevBudgetsQuery.data
 
-  // One sheet for create and edit; `session` remounts it so the form starts fresh
-  const [sheet, setSheet] = useState<{
-    editing: BudgetDoc | null
-    preset: string | null
-    session: number
-    open: boolean
-  } | null>(null)
-  const openSheet = (editing: BudgetDoc | null, preset: string | null = null) =>
-    setSheet((s) => ({
-      editing,
-      preset,
-      session: (s?.session ?? 0) + 1,
-      open: true,
-    }))
+  // The budget sheet is part of the URL: `?budget=new` creates (with an
+  // optional `?category=<id>` preset) and `?budget=<budgetId>` edits. The
+  // back button closes it and each state can be linked directly.
+  const budget = useModalParam("budget")
+  const category = useModalParam("category")
+  const openSheet = (
+    editingBudget: BudgetDoc | null,
+    preset: string | null = null
+  ) => {
+    if (editingBudget) budget.open(editingBudget.id)
+    else budget.open("new", preset ? { set: { category: preset } } : undefined)
+  }
   // Stay mounted while closing so the exit animation can play
-  const closeSheet = () => setSheet((s) => (s ? { ...s, open: false } : s))
+  const closeSheet = () => budget.close({ clear: ["category"] })
+  // Resolved from the URL: the budget being edited (the value lingers through
+  // the close navigation so the exit animation keeps its data) and the
+  // category preset for a fresh one. The preset uses the live value so a
+  // leftover link can't preselect a category.
+  const editing =
+    statuses.find((s) => s.budget.id === budget.value)?.budget ?? null
+  const presetCategoryId = budget.value === "new" ? category.raw : null
 
   const taken = useMemo(
     () => new Set(statuses.map((s) => s.budget.categoryId)),
@@ -102,11 +108,11 @@ export function BudgetsPage() {
   async function save(input: { categoryId: string; limit: number }) {
     try {
       await budgetActions.set(
-        sheet?.editing?.categoryId ?? input.categoryId,
+        editing?.categoryId ?? input.categoryId,
         month,
         input.limit
       )
-      toast.success(sheet?.editing ? "Budget updated" : "Budget created")
+      toast.success(editing ? "Budget updated" : "Budget created")
       closeSheet()
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save the budget")
@@ -295,23 +301,21 @@ export function BudgetsPage() {
         </div>
       )}
 
-      {sheet ? (
-        <BudgetSheet
-          key={sheet.session}
-          open={sheet.open}
-          onOpenChange={(o) => !o && closeSheet()}
-          month={month}
-          editing={sheet.editing}
-          presetCategoryId={sheet.preset}
-          categories={[...EXPENSE_CATEGORIES]}
-          takenCategoryIds={taken}
-          lastMonthSpent={lastMonthSpent}
-          onSave={save}
-          onRemove={async () => {
-            if (sheet.editing && (await remove(sheet.editing))) closeSheet()
-          }}
-        />
-      ) : null}
+      <BudgetSheet
+        key={budget.session}
+        open={budget.isOpen}
+        onOpenChange={(o) => !o && closeSheet()}
+        month={month}
+        editing={editing}
+        presetCategoryId={presetCategoryId}
+        categories={[...EXPENSE_CATEGORIES]}
+        takenCategoryIds={taken}
+        lastMonthSpent={lastMonthSpent}
+        onSave={save}
+        onRemove={async () => {
+          if (editing && (await remove(editing))) closeSheet()
+        }}
+      />
     </div>
   )
 }

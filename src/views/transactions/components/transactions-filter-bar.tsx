@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import {
   CalendarRange,
   RotateCcw,
@@ -29,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { useModalParam } from "@/hooks"
 import type { AccountDoc } from "@/lib/db"
 import { monthKey, type Category } from "@/lib/domain"
 import { cn } from "@/lib/utils"
@@ -76,7 +76,9 @@ export function TransactionsFilterBar(props: TransactionsFilterBarProps) {
     categories,
     accounts,
   } = props
-  const [sheetOpen, setSheetOpen] = useState(false)
+  // The filters sheet is part of the URL (`?filters=1`), so the back button
+  // closes it and a filtered view can be shared as a link.
+  const filtersSheet = useModalParam("filters")
   const detailCount = activeDetailFilters(filters)
   const d = defaultFilters()
 
@@ -131,7 +133,7 @@ export function TransactionsFilterBar(props: TransactionsFilterBarProps) {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setSheetOpen(true)}
+            onClick={() => filtersSheet.open()}
             aria-label={
               detailCount > 0 ? `Filters, ${detailCount} applied` : "Filters"
             }
@@ -177,7 +179,10 @@ export function TransactionsFilterBar(props: TransactionsFilterBarProps) {
           </ul>
         ) : null}
 
-        <ResponsiveDialog open={sheetOpen} onOpenChange={setSheetOpen}>
+        <ResponsiveDialog
+          open={filtersSheet.isOpen}
+          onOpenChange={(open) => !open && filtersSheet.close()}
+        >
           <ResponsiveDialogContent
             dialogClassName="sm:max-w-md"
             sheetClassName="sm:max-w-md"
@@ -225,7 +230,7 @@ export function TransactionsFilterBar(props: TransactionsFilterBarProps) {
               </Button>
               <Button
                 className="flex-1 sm:flex-none"
-                onClick={() => setSheetOpen(false)}
+                onClick={() => filtersSheet.close()}
               >
                 Show {resultCount} {resultCount === 1 ? "result" : "results"}
               </Button>

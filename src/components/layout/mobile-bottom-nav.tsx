@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { Ellipsis, Plus } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Ellipsis, Plus } from "lucide-react"
 
 import { MoreSheet } from "@/components/layout/more-sheet"
 import {
@@ -11,8 +10,7 @@ import {
   MORE_ITEMS,
   type NavItem,
 } from "@/components/layout/nav-config"
-import { useKeyboardOpen } from "@/hooks"
-import { useUIStore } from "@/lib/ui-store"
+import { useKeyboardOpen, useModalParam, useQuickEntryParams } from "@/hooks"
 import { haptic } from "@/lib/haptics"
 import { isRouteActive, ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
@@ -29,8 +27,9 @@ const focusRing =
  */
 export function MobileBottomNav() {
   const pathname = usePathname()
-  const openQuickEntry = useUIStore((s) => s.openQuickEntry)
-  const [moreOpen, setMoreOpen] = useState(false)
+  const quickEntry = useQuickEntryParams()
+  // `?more=1` in the URL keeps the sheet open, so the back button closes it
+  const more = useModalParam("more")
   const keyboardOpen = useKeyboardOpen()
 
   const moreActive = MORE_ITEMS.some((item) =>
@@ -98,7 +97,7 @@ export function MobileBottomNav() {
               type="button"
               onClick={() => {
                 haptic(12)
-                openQuickEntry("expense")
+                quickEntry.openAdd("expense")
               }}
               aria-label="Add transaction"
               className={cn(
@@ -117,9 +116,9 @@ export function MobileBottomNav() {
             type="button"
             onClick={() => {
               haptic()
-              setMoreOpen(true)
+              more.open()
             }}
-            aria-expanded={moreOpen}
+            aria-expanded={more.isOpen}
             aria-haspopup="dialog"
             aria-current={moreActive ? "page" : undefined}
             className={tabClass(moreActive)}
@@ -129,7 +128,7 @@ export function MobileBottomNav() {
         </div>
       </nav>
 
-      <MoreSheet open={moreOpen} onOpenChange={setMoreOpen} />
+      <MoreSheet />
     </>
   )
 }

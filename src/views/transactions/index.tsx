@@ -1,6 +1,5 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { SortingState } from "@tanstack/react-table"
 import { CalendarRange, Inbox, Plus, RotateCcw, SearchX, X } from "lucide-react"
@@ -12,12 +11,14 @@ import {
   useAccountLookup,
   useAccounts,
   useDateRange,
+  useModalParam,
+  useQuickEntryParams,
+  useSearchQueries,
   useSelectedMonth,
   useTransactions,
 } from "@/hooks"
 import { Button } from "@/components/ui/button"
 import { CATEGORIES, formatMoney, monthKey } from "@/lib/domain"
-import { useUIStore } from "@/lib/ui-store"
 import { cn } from "@/lib/utils"
 
 import { TransactionsFilterBar } from "./components/transactions-filter-bar"
@@ -49,13 +50,12 @@ const CATEGORY_BY_ID = new Map(CATEGORIES.map((c) => [c.id, c]))
  * sortable table on desktop.
  */
 export function TransactionsPage() {
-  const openDetail = useUIStore((s) => s.openDetail)
-  const openQuickEntry = useUIStore((s) => s.openQuickEntry)
-  const openQuickEntryForEdit = useUIStore((s) => s.openQuickEntryForEdit)
+  const quickEntry = useQuickEntryParams()
+  const detail = useModalParam("tx")
   const requestDelete = useDeleteTransaction()
 
   // Links from Analytics arrive as ?category=…&month=2026-10&type=expense
-  const params = useSearchParams()
+  const params = useSearchQueries()
   const [filters, setFilters] = useState<TransactionFilters>(() => {
     const f = defaultFilters()
     const month = params.get("month")
@@ -187,7 +187,7 @@ export function TransactionsPage() {
           ) : null}
           <Button
             className="max-md:hidden"
-            onClick={() => openQuickEntry("expense")}
+            onClick={() => quickEntry.openAdd("expense")}
           >
             <Plus aria-hidden="true" />
             Add
@@ -228,7 +228,7 @@ export function TransactionsPage() {
           title="No transactions yet"
           description="Track your first expense or income to start building your history."
           action={
-            <Button onClick={() => openQuickEntry("expense")}>
+            <Button onClick={() => quickEntry.openAdd("expense")}>
               <Plus aria-hidden="true" />
               Add transaction
             </Button>
@@ -262,7 +262,7 @@ export function TransactionsPage() {
             description="No transactions were recorded in this period."
             action={
               <div className="flex flex-wrap justify-center gap-2">
-                <Button onClick={() => openQuickEntry("expense")}>
+                <Button onClick={() => quickEntry.openAdd("expense")}>
                   <Plus aria-hidden="true" />
                   Add transaction
                 </Button>
@@ -322,8 +322,8 @@ export function TransactionsPage() {
         onSortingChange={handleSortingChange}
         categoryById={categoryById}
         accountById={accountById}
-        onOpenDetail={openDetail}
-        onEdit={openQuickEntryForEdit}
+        onOpenDetail={detail.open}
+        onEdit={quickEntry.openEdit}
         onDelete={handleDeleteById}
       />
       <TransactionsMobileList groups={mobileGroups} />
