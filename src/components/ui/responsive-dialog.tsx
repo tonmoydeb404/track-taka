@@ -137,6 +137,15 @@ function ResponsiveDialog({
         <Drawer
           direction={drawerDirection}
           dismissible={dismissible}
+          // Vaul's keyboard repositioning subtracts the keyboard height from
+          // the drawer's *current* height on every visualViewport resize and
+          // restores it via a fragile 60px-delta heuristic. On iOS, a
+          // keyboard open → dismiss → re-open cycle skips the restore and
+          // compounds the shrink until the drawer collapses to a sliver
+          // (affects every drawer form). With this off, the drawer keeps its
+          // height and iOS natively scrolls the drawer body (the designated
+          // overflow-y-auto container) to reveal the focused input.
+          repositionInputs={false}
           {...props}
         >
           {children}
