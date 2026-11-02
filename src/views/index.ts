@@ -1,5 +1,6 @@
 export { AccountsPage } from "./accounts"
 export { BudgetsPage } from "./budgets"
+export { KhataPage } from "./notes"
 export { OverviewPage } from "./overview"
 export { TransactionsPage } from "./transactions"
 export { LandingPage } from "./landing"

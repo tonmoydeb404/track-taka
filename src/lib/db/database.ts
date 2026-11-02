@@ -10,6 +10,7 @@ import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv"
 import {
   accountSchema,
   budgetSchema,
+  noteSchema,
   settingsSchema,
   transactionSchema,
 } from "./schemas"
@@ -18,6 +19,7 @@ import {
   SETTINGS_ID,
   type AccountDoc,
   type BudgetDoc,
+  type NoteDoc,
   type SettingsDoc,
   type TransactionDoc,
 } from "./types"
@@ -26,6 +28,7 @@ export type AppCollections = {
   accounts: RxCollection<AccountDoc>
   transactions: RxCollection<TransactionDoc>
   budgets: RxCollection<BudgetDoc>
+  notes: RxCollection<NoteDoc>
   settings: RxCollection<SettingsDoc>
 }
 
@@ -62,6 +65,7 @@ async function create(): Promise<AppDatabase> {
     accounts: { schema: accountSchema },
     transactions: { schema: transactionSchema },
     budgets: { schema: budgetSchema },
+    notes: { schema: noteSchema },
     settings: { schema: settingsSchema },
   })
 

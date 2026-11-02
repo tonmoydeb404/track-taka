@@ -46,6 +46,16 @@ export type BudgetDoc = {
   updatedAt: string
 }
 
+export type NoteDoc = {
+  id: string
+  /** Free text — the item, or anything worth writing down. */
+  note: string
+  /** The amount exactly as typed ("120+80*2"); "" means not priced yet. */
+  amount: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type DateFormat = "dd MMM yyyy" | "dd/MM/yyyy" | "MMM dd, yyyy"
 export type WeekStart = "saturday" | "sunday" | "monday"
 export type ThemeMode = "light" | "dark" | "system"

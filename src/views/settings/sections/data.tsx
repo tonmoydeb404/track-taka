@@ -59,7 +59,9 @@ export function DataSection() {
     await run(async () => {
       const r = await importBackup(file)
       toast.success(
-        `Imported ${r.transactions} transactions, ${r.accounts} accounts and ${r.budgets} budgets`
+        r.notes > 0
+          ? `Imported ${r.transactions} transactions, ${r.accounts} accounts, ${r.budgets} budgets and ${r.notes} khata rows`
+          : `Imported ${r.transactions} transactions, ${r.accounts} accounts and ${r.budgets} budgets`
       )
     }, "Couldn't import the backup")
   }

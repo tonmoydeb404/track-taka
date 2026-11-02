@@ -4,6 +4,7 @@ export type View =
   | "budgets"
   | "analytics"
   | "accounts"
+  | "notes"
   | "settings"
 
 /** Every screen lives under /dashboard. */
@@ -13,6 +14,7 @@ export const ROUTES: Record<View, string> = {
   budgets: "/dashboard/budgets",
   analytics: "/dashboard/analytics",
   accounts: "/dashboard/accounts",
+  notes: "/dashboard/notes",
   settings: "/dashboard/settings",
 }
 

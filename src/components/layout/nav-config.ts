@@ -2,6 +2,7 @@ import {
   ArrowLeftRight,
   ChartColumn,
   House,
+  NotebookPen,
   PiggyBank,
   Settings2,
   Wallet,
@@ -21,6 +22,7 @@ const TRANSACTIONS: NavItem = {
   label: "Transactions",
   icon: ArrowLeftRight,
 }
+const NOTE: NavItem = { view: "notes", label: "Khata", icon: NotebookPen }
 const BUDGETS: NavItem = { view: "budgets", label: "Budgets", icon: PiggyBank }
 const ANALYTICS: NavItem = {
   view: "analytics",
@@ -36,7 +38,7 @@ export const SETTINGS: NavItem = {
 
 /** Desktop rail: daily use first, then upkeep. Settings is pinned separately. */
 export const NAV_GROUPS: NavItem[][] = [
-  [OVERVIEW, TRANSACTIONS, BUDGETS, ANALYTICS],
+  [OVERVIEW, TRANSACTIONS, NOTE, BUDGETS, ANALYTICS],
   [ACCOUNTS],
 ]
 
@@ -48,4 +50,4 @@ export const MOBILE_TABS: NavItem[] = [
 ]
 
 /** Everything else lives behind "More" on mobile. */
-export const MORE_ITEMS: NavItem[] = [ANALYTICS, ACCOUNTS, SETTINGS]
+export const MORE_ITEMS: NavItem[] = [NOTE, ANALYTICS, ACCOUNTS, SETTINGS]

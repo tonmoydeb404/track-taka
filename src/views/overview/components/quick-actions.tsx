@@ -5,12 +5,14 @@ import {
   ArrowDownLeft,
   ArrowLeftRight,
   Mic,
+  NotebookPen,
   Plus,
   type LucideIcon,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { useModalParam, useQuickEntryParams } from "@/hooks"
+import { ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
 interface Action {
@@ -61,11 +63,18 @@ export function QuickActions({ className }: { className?: string }) {
       tone: "bg-accent text-accent-foreground",
       onClick: () => voice.open(),
     },
+    {
+      label: "Khata note",
+      shortLabel: "Khata",
+      icon: NotebookPen,
+      tone: "bg-primary/10 text-primary",
+      href: ROUTES.notes,
+    },
   ]
 
   return (
     <nav aria-label="Quick actions" className={className}>
-      <ul className="grid grid-cols-4 sm:hidden">
+      <ul className="grid grid-cols-5 sm:hidden">
         {actions.map(
           ({ shortLabel, label, icon: Icon, tone, onClick, href }) => {
             const body = (

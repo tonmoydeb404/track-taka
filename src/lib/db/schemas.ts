@@ -3,6 +3,7 @@ import type { RxJsonSchema } from "rxdb/plugins/core"
 import type {
   AccountDoc,
   BudgetDoc,
+  NoteDoc,
   SettingsDoc,
   TransactionDoc,
 } from "./types"
@@ -100,6 +101,23 @@ export const budgetSchema: RxJsonSchema<BudgetDoc> = {
   },
   required: ["id", "categoryId", "month", "limit", "updatedAt"],
   indexes: ["month"],
+}
+
+export const noteSchema: RxJsonSchema<NoteDoc> = {
+  title: "note",
+  version: 0,
+  primaryKey: "id",
+  type: "object",
+  properties: {
+    id: ID,
+    note: { type: "string", maxLength: 120 },
+    // Kept as typed so a half-written expression survives a reload.
+    amount: { type: "string", maxLength: 24 },
+    createdAt: ISO,
+    updatedAt: ISO,
+  },
+  required: ["id", "note", "amount", "createdAt", "updatedAt"],
+  indexes: ["createdAt"],
 }
 
 export const settingsSchema: RxJsonSchema<SettingsDoc> = {

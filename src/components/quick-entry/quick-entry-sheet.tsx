@@ -1,10 +1,11 @@
 "use client"
 
-import Link from "next/link"
 import * as React from "react"
+import { useCallback } from "react"
 import { CalendarIcon, ClockIcon } from "lucide-react"
 import { toast } from "sonner"
 
+import { AccountDialog } from "@/components/accounts"
 import { AccountPicker } from "@/components/quick-entry/account-picker"
 import { OperatorKeys } from "@/components/common/operator-keys"
 import { AmountInput } from "@/components/quick-entry/amount-input"
@@ -31,11 +32,12 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
   useAccounts,
   useIsMobile,
+  useNoteActions,
   useQuickEntryParams,
   useTransaction,
   useTransactionActions,
 } from "@/hooks"
-import type { AccountDoc, TransactionDoc, TransactionType } from "@/lib/db"
+import { useRxQuery, type AccountDoc, type NoteDoc, type TransactionDoc, type TransactionType } from "@/lib/db"
 import {
   categoriesFor,
   formatDate,
@@ -91,7 +93,9 @@ function savedToastLabel(
 function initialFormState(
   type: TransactionType,
   tx: TransactionDoc | null,
-  accounts: AccountDoc[]
+  accounts: AccountDoc[],
+  /** A khata row the new transaction starts from. */
+  prefill: NoteDoc | null
 ) {
   if (tx) {
     return {
@@ -108,7 +112,7 @@ function initialFormState(
   const catKind = type === "income" ? "income" : "expense"
   const first = accounts[0]
   const second = accounts.find((a) => a.id !== first?.id)
-  return {
+  const base = {
     type,
     amount: "",
     categoryId: categoriesFor(catKind)[0]?.id ?? null,
@@ -116,6 +120,15 @@ function initialFormState(
     toAccountId: second?.id ?? first?.id ?? null,
     description: "",
     date: new Date(),
+  }
+  if (!prefill) return base
+  // Hand-over from a khata row: its text and amount become the draft.
+  return {
+    ...base,
+    type: "expense" as TransactionType,
+    amount: prefill.amount,
+    description: prefill.note,
+    categoryId: categoriesFor("expense")[0]?.id ?? null,
   }
 }
 
@@ -132,48 +145,79 @@ function initialFormState(
  */
 export function QuickEntrySheet() {
   const entry = useQuickEntryParams()
+  const [addingAccount, setAddingAccount] = React.useState(false)
 
   return (
-    <ResponsiveDialog
-      open={entry.isOpen}
-      onOpenChange={(o) => !o && entry.close()}
-    >
-      <ResponsiveDialogContent
-        className="flex flex-col"
-        drawerClassName="h-[92dvh] data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:rounded-t-2xl"
-        sheetClassName="sm:max-w-md sm:rounded-l-2xl"
+    <>
+      <ResponsiveDialog
+        open={entry.isOpen}
+        onOpenChange={(o) => !o && entry.close()}
       >
-        <ResponsiveDialogHeader className="gap-1 pb-3 text-left">
-          <ResponsiveDialogTitle>
-            {entry.editingTxId ? "Edit transaction" : "Quick entry"}
-          </ResponsiveDialogTitle>
-          <ResponsiveDialogDescription className="text-xs">
-            Saved on this device instantly
-          </ResponsiveDialogDescription>
-        </ResponsiveDialogHeader>
+        <ResponsiveDialogContent
+          className="flex flex-col"
+          drawerClassName="h-[92dvh] data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:rounded-t-2xl"
+          sheetClassName="sm:max-w-md sm:rounded-l-2xl"
+        >
+          <ResponsiveDialogHeader className="gap-1 pb-3 text-left">
+            <ResponsiveDialogTitle>
+              {entry.editingTxId ? "Edit transaction" : "Quick entry"}
+            </ResponsiveDialogTitle>
+            <ResponsiveDialogDescription className="text-xs">
+              Saved on this device instantly
+            </ResponsiveDialogDescription>
+          </ResponsiveDialogHeader>
 
-        <QuickEntryForm
-          key={entry.session}
-          editingTxId={entry.editingTxId}
-          initialType={entry.type}
-        />
-      </ResponsiveDialogContent>
-    </ResponsiveDialog>
+          <QuickEntryForm
+            key={entry.session}
+            editingTxId={entry.editingTxId}
+            initialType={entry.type}
+            fromNoteId={entry.fromNoteId}
+            onCreateAccount={() => setAddingAccount(true)}
+          />
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
+
+      {/* Sibling of the quick-entry sheet, not inside it: the transaction
+          form opens this when the device has no account to record on. */}
+      <AccountDialog
+        open={addingAccount}
+        editing={null}
+        onOpenChange={setAddingAccount}
+      />
+    </>
   )
 }
 
 interface QuickEntryFormProps {
   editingTxId: string | null
   initialType: TransactionType
+  /** Khata row to start from, when recording from the sheet. */
+  fromNoteId: string | null
+  /** Opens the sibling account dialog when the device has no account. */
+  onCreateAccount: () => void
 }
 
-/** Waits for accounts (and the transaction when editing) before the form. */
-function QuickEntryForm({ editingTxId, initialType }: QuickEntryFormProps) {
-  const entry = useQuickEntryParams()
+/** Waits for accounts (and the transaction, and the khata row) first. */
+function QuickEntryForm({
+  editingTxId,
+  initialType,
+  fromNoteId,
+  onCreateAccount,
+}: QuickEntryFormProps) {
   const accountsQuery = useAccounts()
   const { transaction, isLoading: txLoading } = useTransaction(editingTxId)
+  const prefillQuery = useRxQuery<NoteDoc>(
+    useCallback(
+      (db) => (fromNoteId ? db.notes.findOne(fromNoteId) : null),
+      [fromNoteId]
+    )
+  )
 
-  if (accountsQuery.isLoading || txLoading) {
+  if (
+    accountsQuery.isLoading ||
+    txLoading ||
+    (fromNoteId !== null && prefillQuery.isLoading)
+  ) {
     return (
       <ResponsiveDialogBody>
         <p className="text-sm text-muted-foreground" role="status">
@@ -194,14 +238,15 @@ function QuickEntryForm({ editingTxId, initialType }: QuickEntryFormProps) {
   }
 
   if (accountsQuery.data.length === 0) {
+    // The sibling account dialog opens on top; once an account exists the
+    // live query flips and the transaction form takes over, khata pre-fill
+    // intact.
     return (
       <ResponsiveDialogBody className="flex flex-col items-start gap-3">
         <p className="text-sm text-muted-foreground">
           Create an account first, then you can record transactions.
         </p>
-        <Button asChild onClick={entry.close}>
-          <Link href="/dashboard/accounts">Create an account</Link>
-        </Button>
+        <Button onClick={onCreateAccount}>Create an account</Button>
       </ResponsiveDialogBody>
     )
   }
@@ -211,6 +256,8 @@ function QuickEntryForm({ editingTxId, initialType }: QuickEntryFormProps) {
       editingTx={transaction}
       initialType={initialType}
       accounts={accountsQuery.data}
+      prefill={prefillQuery.data[0] ?? null}
+      fromNoteId={fromNoteId}
     />
   )
 }
@@ -219,20 +266,25 @@ interface QuickEntryFieldsProps {
   editingTx: TransactionDoc | null
   initialType: TransactionType
   accounts: AccountDoc[]
+  prefill: NoteDoc | null
+  fromNoteId: string | null
 }
 
 function QuickEntryFields({
   editingTx,
   initialType,
   accounts,
+  prefill,
+  fromNoteId,
 }: QuickEntryFieldsProps) {
   const entry = useQuickEntryParams()
   const { create, update, remove } = useTransactionActions()
+  const { remove: removeNote } = useNoteActions()
   const isMobile = useIsMobile()
   const editing = Boolean(editingTx)
 
   const initial = React.useState(() =>
-    initialFormState(initialType, editingTx, accounts)
+    initialFormState(initialType, editingTx, accounts, prefill)
   )[0]
 
   const [type, setType] = React.useState<TransactionType>(initial.type)
@@ -357,6 +409,11 @@ function QuickEntryFields({
       }
 
       const tx = await create(draft)
+      // The khata row was handed over — clear it off the sheet. If this
+      // fails, the row simply stays and can be recorded again.
+      if (fromNoteId) {
+        void removeNote(fromNoteId).catch(() => {})
+      }
       entry.close()
       toast(savedToastLabel(type, amountValue, description.trim()), {
         action: {
