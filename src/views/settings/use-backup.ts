@@ -16,6 +16,7 @@ export type ImportResult = {
   accounts: number
   transactions: number
   budgets: number
+  notes: number
 }
 
 /** Backup, restore and wipe for the local database, plus storage info. */
@@ -26,12 +27,14 @@ export function useBackup() {
   /** Downloads every document as JSON and records the backup time. */
   const exportBackup = useCallback(async (): Promise<void> => {
     const db = await getDatabase()
-    const [accounts, transactions, budgets, settings] = await Promise.all([
-      db.accounts.find().exec(),
-      db.transactions.find().exec(),
-      db.budgets.find().exec(),
-      db.settings.find().exec(),
-    ])
+    const [accounts, transactions, budgets, notes, settings] =
+      await Promise.all([
+        db.accounts.find().exec(),
+        db.transactions.find().exec(),
+        db.budgets.find().exec(),
+        db.notes.find().exec(),
+        db.settings.find().exec(),
+      ])
     const now = new Date().toISOString()
     const payload: BackupFile = {
       app: BACKUP_APP,
@@ -42,6 +45,9 @@ export function useBackup() {
         (d) => d.toJSON() as BackupFile["transactions"][0]
       ),
       budgets: budgets.map((d) => d.toJSON() as BackupFile["budgets"][0]),
+      notes: notes.map(
+        (d) => d.toJSON() as NonNullable<BackupFile["notes"]>[number]
+      ),
       settings: settings.map((d) => d.toJSON() as BackupFile["settings"][0]),
     }
     const url = URL.createObjectURL(
@@ -77,7 +83,11 @@ export function useBackup() {
         await db.transactions.bulkUpsert(data.transactions),
         await db.budgets.bulkUpsert(data.budgets),
       ]
-      const failed = results.reduce((n, r) => n + r.error.length, 0)
+      const notesResult =
+        data.notes.length > 0 ? await db.notes.bulkUpsert(data.notes) : null
+      const failed =
+        results.reduce((n, r) => n + r.error.length, 0) +
+        (notesResult?.error.length ?? 0)
       if (failed > 0) {
         throw new Error(
           `${failed} record${failed === 1 ? "" : "s"} couldn't be imported. The file may be damaged.`
@@ -87,16 +97,18 @@ export function useBackup() {
         accounts: results[0].success.length,
         transactions: results[1].success.length,
         budgets: results[2].success.length,
+        notes: notesResult?.success.length ?? 0,
       }
     },
     []
   )
 
-  /** Removes every account, transaction and budget. Settings are kept. */
+  /** Removes every account, transaction, budget and khata row. Settings are kept. */
   const deleteAllData = useCallback(async (): Promise<void> => {
     const db = await getDatabase()
     await db.transactions.find().remove()
     await db.budgets.find().remove()
+    await db.notes.find().remove()
     await db.accounts.find().remove()
   }, [])
 

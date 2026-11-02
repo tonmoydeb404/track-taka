@@ -6,10 +6,12 @@ import {
 } from "rxdb/plugins/core"
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie"
 import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv"
+import { RxDBMigrationSchemaPlugin } from "rxdb/plugins/migration-schema"
 
 import {
   accountSchema,
   budgetSchema,
+  noteSchema,
   settingsSchema,
   transactionSchema,
 } from "./schemas"
@@ -18,6 +20,7 @@ import {
   SETTINGS_ID,
   type AccountDoc,
   type BudgetDoc,
+  type NoteDoc,
   type SettingsDoc,
   type TransactionDoc,
 } from "./types"
@@ -26,6 +29,7 @@ export type AppCollections = {
   accounts: RxCollection<AccountDoc>
   transactions: RxCollection<TransactionDoc>
   budgets: RxCollection<BudgetDoc>
+  notes: RxCollection<NoteDoc>
   settings: RxCollection<SettingsDoc>
 }
 
@@ -48,6 +52,10 @@ async function create(): Promise<AppDatabase> {
     addRxPlugin(RxDBDevModePlugin)
   }
 
+  // Runs the migration strategies of collections whose schema version was
+  // bumped; blocks their writes until `startMigration()` has finished.
+  addRxPlugin(RxDBMigrationSchemaPlugin)
+
   const storage = wrappedValidateAjvStorage({ storage: getRxStorageDexie() })
 
   const db = await createRxDatabase<AppCollections>({
@@ -62,8 +70,22 @@ async function create(): Promise<AppDatabase> {
     accounts: { schema: accountSchema },
     transactions: { schema: transactionSchema },
     budgets: { schema: budgetSchema },
-    settings: { schema: settingsSchema },
+    notes: { schema: noteSchema },
+    settings: {
+      schema: settingsSchema,
+      migrationStrategies: {
+        // v0 → v1: stamp `onboardedAt` onto the existing settings doc.
+        1: (doc: Omit<SettingsDoc, "onboardedAt">): SettingsDoc => ({
+          ...doc,
+          onboardedAt: null,
+        }),
+      },
+    },
   })
+
+  // Migrate stored data from earlier schema versions (a no-op on fresh
+  // installs) before anything reads or writes the collections.
+  await db.settings.getMigrationState().startMigration()
 
   // Ask the browser not to evict our data under storage pressure.
   void navigator.storage?.persist?.()

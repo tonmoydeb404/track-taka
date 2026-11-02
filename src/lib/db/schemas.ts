@@ -3,6 +3,7 @@ import type { RxJsonSchema } from "rxdb/plugins/core"
 import type {
   AccountDoc,
   BudgetDoc,
+  NoteDoc,
   SettingsDoc,
   TransactionDoc,
 } from "./types"
@@ -102,9 +103,29 @@ export const budgetSchema: RxJsonSchema<BudgetDoc> = {
   indexes: ["month"],
 }
 
+export const noteSchema: RxJsonSchema<NoteDoc> = {
+  title: "note",
+  version: 0,
+  primaryKey: "id",
+  type: "object",
+  properties: {
+    id: ID,
+    note: { type: "string", maxLength: 120 },
+    // Kept as typed so a half-written expression survives a reload.
+    amount: { type: "string", maxLength: 24 },
+    createdAt: ISO,
+    updatedAt: ISO,
+  },
+  required: ["id", "note", "amount", "createdAt", "updatedAt"],
+  indexes: ["createdAt"],
+}
+
 export const settingsSchema: RxJsonSchema<SettingsDoc> = {
   title: "settings",
-  version: 0,
+  // v1: added `onboardedAt`. Any schema change needs a version bump (RxDB
+  // stores a hash per collection and refuses to open a changed schema of the
+  // same version) — database.ts carries the 0 → 1 migration strategy.
+  version: 1,
   primaryKey: "id",
   type: "object",
   properties: {
@@ -116,6 +137,7 @@ export const settingsSchema: RxJsonSchema<SettingsDoc> = {
     weekStart: { type: "string", enum: ["saturday", "sunday", "monday"] },
     theme: { type: "string", enum: ["light", "dark", "system"] },
     lastBackupAt: { type: ["string", "null"], maxLength: 32 },
+    onboardedAt: { type: ["string", "null"], maxLength: 32 },
     schemaVersion: { type: "integer", minimum: 1, maximum: 1000 },
     updatedAt: ISO,
   },
@@ -125,6 +147,7 @@ export const settingsSchema: RxJsonSchema<SettingsDoc> = {
     "weekStart",
     "theme",
     "lastBackupAt",
+    "onboardedAt",
     "schemaVersion",
     "updatedAt",
   ],

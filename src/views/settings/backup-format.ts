@@ -1,6 +1,7 @@
 import type {
   AccountDoc,
   BudgetDoc,
+  NoteDoc,
   SettingsDoc,
   TransactionDoc,
 } from "@/lib/db"
@@ -15,13 +16,15 @@ export type BackupFile = {
   accounts: AccountDoc[]
   transactions: TransactionDoc[]
   budgets: BudgetDoc[]
+  /** Khata paper rows. Optional: backups made before the khata lack them. */
+  notes?: NoteDoc[]
   settings: SettingsDoc[]
 }
 
 export type ParsedBackup = Pick<
   BackupFile,
   "accounts" | "transactions" | "budgets"
->
+> & { notes: NoteDoc[] }
 
 type Row = Record<string, unknown>
 
@@ -105,6 +108,19 @@ export function parseBackup(raw: unknown): ParsedBackup {
     )
   )
 
+  const notes = raw.notes === undefined ? [] : list(raw, "notes")
+  notes.forEach((n, i) =>
+    check(
+      isStr(n.id) &&
+        typeof n.note === "string" &&
+        typeof n.amount === "string" &&
+        isStr(n.createdAt) &&
+        isStr(n.updatedAt),
+      "notes",
+      i
+    )
+  )
+
   return {
     accounts: accounts as unknown as AccountDoc[],
     transactions: transactions as unknown as TransactionDoc[],
@@ -112,5 +128,6 @@ export function parseBackup(raw: unknown): ParsedBackup {
       ...b,
       id: `${b.categoryId}|${b.month}`,
     })) as unknown as BudgetDoc[],
+    notes: notes as unknown as NoteDoc[],
   }
 }

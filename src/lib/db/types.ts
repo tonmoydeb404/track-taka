@@ -46,6 +46,16 @@ export type BudgetDoc = {
   updatedAt: string
 }
 
+export type NoteDoc = {
+  id: string
+  /** Free text — the item, or anything worth writing down. */
+  note: string
+  /** The amount exactly as typed ("120+80*2"); "" means not priced yet. */
+  amount: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type DateFormat = "dd MMM yyyy" | "dd/MM/yyyy" | "MMM dd, yyyy"
 export type WeekStart = "saturday" | "sunday" | "monday"
 export type ThemeMode = "light" | "dark" | "system"
@@ -57,6 +67,8 @@ export type SettingsDoc = {
   weekStart: WeekStart
   theme: ThemeMode
   lastBackupAt: string | null
+  /** ISO timestamp of when the first-run onboarding dialog was completed. */
+  onboardedAt: string | null
   schemaVersion: number
   updatedAt: string
 }
@@ -69,6 +81,7 @@ export const DEFAULT_SETTINGS: SettingsDoc = {
   weekStart: "saturday",
   theme: "system",
   lastBackupAt: null,
+  onboardedAt: null,
   schemaVersion: 1,
   updatedAt: new Date(0).toISOString(),
 }

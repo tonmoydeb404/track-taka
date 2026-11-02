@@ -37,7 +37,7 @@ import {
 import type { AccountDoc } from "@/lib/db"
 import { formatBalance } from "@/lib/domain"
 
-import { AccountDialog } from "./components/account-dialog"
+import { AccountDialog } from "@/components/accounts"
 import { AccountSheet } from "./components/account-sheet"
 import { TransferDialog } from "./components/transfer-dialog"
 import { ACCOUNT_TYPE_LABELS } from "./utils"

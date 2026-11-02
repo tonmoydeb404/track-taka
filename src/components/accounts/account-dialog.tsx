@@ -32,7 +32,7 @@ import {
 import { useAccountActions } from "@/hooks"
 import { cn } from "@/lib/utils"
 
-import { ACCOUNT_TYPES, ACCOUNT_TYPE_LABELS, PRESET_COLORS } from "../utils"
+import { ACCOUNT_TYPES, ACCOUNT_TYPE_LABELS, PRESET_COLORS } from "@/lib/domain"
 
 interface AccountFormState {
   name: string

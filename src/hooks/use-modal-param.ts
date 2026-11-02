@@ -97,11 +97,14 @@ export function useModalParam(key: string): ModalParam {
 /**
  * The global add/edit transaction sheet, as two params: `?add=<type>` for a
  * new transaction and `?edit=<txId>` to change an existing one. Both work on
- * every page because the sheet itself is mounted by the app shell.
+ * every page because the sheet itself is mounted by the app shell. A khata
+ * row can be handed over with `?from=<noteId>`: the form then starts
+ * pre-filled from that row, and the row is cleared once it is saved.
  */
 export function useQuickEntryParams() {
   const add = useModalParam("add")
   const edit = useModalParam("edit")
+  const searchQueries = useSearchQueries()
 
   return {
     isOpen: add.isOpen || edit.isOpen,
@@ -109,13 +112,19 @@ export function useQuickEntryParams() {
     type: (add.value as TransactionType | null) ?? "expense",
     /** Transaction to load when editing; null means "create". */
     editingTxId: edit.isOpen ? edit.value : null,
+    /** Khata row the new transaction starts from; null means "blank". */
+    fromNoteId: add.isOpen ? (searchQueries.get("from") ?? null) : null,
     /** Changes on every open; use as a React key to reset the form. */
     session: `${add.session}:${edit.session}`,
-    openAdd: (type: TransactionType = "expense") =>
-      add.open(type, { clear: ["edit"] }),
+    openAdd: (type: TransactionType = "expense", changes?: ModalParamChanges) =>
+      add.open(type, { clear: ["edit", "from"], ...changes }),
     // Also drops `?tx` so editing from the detail sheet replaces it in one
     // navigation — back then returns to the detail sheet.
-    openEdit: (txId: string) => edit.open(txId, { clear: ["add", "tx"] }),
-    close: () => (add.isOpen ? add.close() : edit.close()),
+    openEdit: (txId: string) =>
+      edit.open(txId, { clear: ["add", "tx", "from"] }),
+    close: () =>
+      add.isOpen
+        ? add.close({ clear: ["from"] })
+        : edit.close({ clear: ["from"] }),
   }
 }

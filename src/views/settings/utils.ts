@@ -1,4 +1,4 @@
-import type { DateFormat, ThemeMode, WeekStart } from "@/lib/db"
+import type { DateFormat, WeekStart } from "@/lib/db"
 
 export const DATE_FORMATS: DateFormat[] = [
   "dd MMM yyyy",
@@ -11,12 +11,6 @@ export const WEEK_STARTS: { value: WeekStart; label: string }[] = [
   { value: "sunday", label: "Sunday" },
   { value: "monday", label: "Monday" },
 ]
-
-export const THEME_LABELS: Record<ThemeMode, string> = {
-  light: "Light",
-  dark: "Dark",
-  system: "System",
-}
 
 /** Renders a date in the given pattern so format options preview themselves. */
 export function formatDatePattern(d: Date, pattern: DateFormat): string {

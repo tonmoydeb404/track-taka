@@ -15,6 +15,7 @@ import { useDatabaseState } from "@/lib/db"
 import { Button } from "@/components/ui/button"
 import { TransactionDetailSheet } from "@/components/transactions"
 import { VoiceCaptureDialog } from "@/components/quick-entry"
+import { OnboardingDialog } from "@/components/onboarding"
 
 /** Application chrome: sidebar, mobile bars and the global overlays. */
 export function AppShell({ children }: { children: ReactNode }) {
@@ -49,6 +50,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <QuickEntrySheet />
         <VoiceCaptureDialog />
         <TransactionDetailSheet />
+        <OnboardingDialog />
       </div>
     </ConfirmProvider>
   )
