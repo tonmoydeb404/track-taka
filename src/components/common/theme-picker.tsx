@@ -5,9 +5,11 @@ import { Check } from "lucide-react"
 import type { ThemeMode } from "@/lib/db"
 import { cn } from "@/lib/utils"
 
-import { THEME_LABELS } from "../utils"
-
-type Theme = ThemeMode
+export const THEME_LABELS: Record<ThemeMode, string> = {
+  light: "Light",
+  dark: "Dark",
+  system: "System",
+}
 
 const TONES = {
   light: { bg: "#f3f7fb", card: "#ffffff", line: "#d3deea", accent: "#0069a8" },
@@ -42,7 +44,7 @@ function Mini({ tone }: { tone: keyof typeof TONES }) {
   )
 }
 
-function Preview({ theme }: { theme: Theme }) {
+function Preview({ theme }: { theme: ThemeMode }) {
   return (
     <span className="relative block h-20 overflow-hidden rounded-lg border">
       {theme === "system" ? (
@@ -67,8 +69,8 @@ export function ThemePicker({
   value,
   onChange,
 }: {
-  value: Theme
-  onChange: (theme: Theme) => void
+  value: ThemeMode
+  onChange: (theme: ThemeMode) => void
 }) {
   return (
     <div

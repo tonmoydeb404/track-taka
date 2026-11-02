@@ -13,6 +13,7 @@ import { toast } from "sonner"
 
 import { useSettings, useSettingsActions } from "@/hooks"
 import type { DateFormat, WeekStart } from "@/lib/db"
+import { ThemePicker } from "@/components/common/theme-picker"
 
 import { InstallAppGroup } from "../components/install-app"
 import {
@@ -20,7 +21,6 @@ import {
   SettingsGroup,
   SettingsRow,
 } from "../components/settings-ui"
-import { ThemePicker } from "../components/theme-picker"
 import { DATE_FORMATS, formatDatePattern, WEEK_STARTS } from "../utils"
 
 // A select that reads as a value in a row, not a boxed field

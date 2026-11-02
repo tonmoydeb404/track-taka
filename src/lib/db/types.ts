@@ -67,6 +67,8 @@ export type SettingsDoc = {
   weekStart: WeekStart
   theme: ThemeMode
   lastBackupAt: string | null
+  /** ISO timestamp of when the first-run onboarding dialog was completed. */
+  onboardedAt: string | null
   schemaVersion: number
   updatedAt: string
 }
@@ -79,6 +81,7 @@ export const DEFAULT_SETTINGS: SettingsDoc = {
   weekStart: "saturday",
   theme: "system",
   lastBackupAt: null,
+  onboardedAt: null,
   schemaVersion: 1,
   updatedAt: new Date(0).toISOString(),
 }

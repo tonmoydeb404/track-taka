@@ -16,7 +16,7 @@ import { useSettings } from "@/hooks"
 import { ROUTES, SETTINGS_ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
-import { THEME_LABELS } from "../utils"
+import { THEME_LABELS } from "@/components/common/theme-picker"
 
 interface Item {
   href: string

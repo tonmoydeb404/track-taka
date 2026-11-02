@@ -122,7 +122,10 @@ export const noteSchema: RxJsonSchema<NoteDoc> = {
 
 export const settingsSchema: RxJsonSchema<SettingsDoc> = {
   title: "settings",
-  version: 0,
+  // v1: added `onboardedAt`. Any schema change needs a version bump (RxDB
+  // stores a hash per collection and refuses to open a changed schema of the
+  // same version) — database.ts carries the 0 → 1 migration strategy.
+  version: 1,
   primaryKey: "id",
   type: "object",
   properties: {
@@ -134,6 +137,7 @@ export const settingsSchema: RxJsonSchema<SettingsDoc> = {
     weekStart: { type: "string", enum: ["saturday", "sunday", "monday"] },
     theme: { type: "string", enum: ["light", "dark", "system"] },
     lastBackupAt: { type: ["string", "null"], maxLength: 32 },
+    onboardedAt: { type: ["string", "null"], maxLength: 32 },
     schemaVersion: { type: "integer", minimum: 1, maximum: 1000 },
     updatedAt: ISO,
   },
@@ -143,6 +147,7 @@ export const settingsSchema: RxJsonSchema<SettingsDoc> = {
     "weekStart",
     "theme",
     "lastBackupAt",
+    "onboardedAt",
     "schemaVersion",
     "updatedAt",
   ],
