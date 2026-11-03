@@ -30,10 +30,25 @@ export function KhataPage() {
   const errorMessage = (err: unknown, fallback: string) =>
     err instanceof Error ? err.message : fallback
 
-  /** Hands one row to the quick-entry dialog, pre-filled from the row. */
-  const handleRecord = (rowId: string) => {
+  /**
+   * Hands one row to the quick-entry dialog, pre-filled from the row. The
+   * draft row is written to the database first (it has no id yet), and any
+   * debounced edits are flushed so the dialog reads the latest values.
+   */
+  const handleRecord = async (rowId: string) => {
     haptic()
-    quickEntry.openAdd("expense", { set: { from: rowId } })
+    try {
+      let id = rowId
+      if (rowId === DRAFT_ID) {
+        const doc = await khata.flushDraft()
+        if (doc) id = doc.id
+      } else {
+        await khata.flushRow(rowId)
+      }
+      quickEntry.openAdd("expense", { set: { from: id } })
+    } catch (err) {
+      toast.error(errorMessage(err, "Could not open the transaction form"))
+    }
   }
 
   const handleDelete = async (id: string) => {
@@ -118,7 +133,7 @@ export function KhataPage() {
               hasAnyContent={hasAnyContent}
               onChangeRow={khata.changeRow}
               onDeleteRow={(id) => void handleDelete(id)}
-              onRecordRow={handleRecord}
+              onRecordRow={(id) => void handleRecord(id)}
               onClear={() => void handleClear()}
               onCommitDraft={handleCommitDraft}
             />

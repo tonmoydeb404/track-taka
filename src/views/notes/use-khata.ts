@@ -186,6 +186,24 @@ export function useKhata() {
     [remove, setRow]
   )
 
+  /**
+   * Writes pending edits for a row straight away. Called before a row is
+   * handed to the quick-entry dialog, so the pre-fill reads the latest
+   * values instead of whatever the debounce hadn't written yet.
+   */
+  const flushRow = useCallback(
+    async (id: string): Promise<void> => {
+      const pending = patchTimers.current.get(id)
+      if (!pending) return
+      clearTimeout(pending)
+      patchTimers.current.delete(id)
+      dirtyRows.current.delete(id)
+      const row = overlayRef.current[id]
+      if (row) await patch(id, { note: row.note, amount: row.amount })
+    },
+    [patch]
+  )
+
   /** Wipes the whole paper; returns snapshots for Undo. */
   const clearPaper = useCallback(async (): Promise<NoteDoc[]> => {
     // A half-written line is content too — save it so Undo brings it back.
@@ -211,6 +229,7 @@ export function useKhata() {
     rows,
     changeRow,
     flushDraft,
+    flushRow,
     deleteRow,
     clearPaper,
     restore,
