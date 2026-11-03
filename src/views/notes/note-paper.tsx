@@ -3,9 +3,7 @@
 import { Check, Eraser, Trash2 } from "lucide-react"
 import * as React from "react"
 
-import { SwipeActions } from "@/components/common/swipe-actions"
 import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/hooks"
 import {
   formatMoney,
   hasOperator,
@@ -49,7 +47,6 @@ export function NotePaper({
   onClear,
   onCommitDraft,
 }: NotePaperProps) {
-  const isMobile = useIsMobile()
   const noteRefs = React.useRef(new Map<string, HTMLInputElement | null>())
 
   const focusNote = (id: string) => noteRefs.current.get(id)?.focus()
@@ -91,7 +88,7 @@ export function NotePaper({
         )}
       >
         <span className="pl-3 sm:pl-4">Item</span>
-        <span className="border-l border-border/70 py-2 pr-3 pl-2 text-right sm:pr-4">
+        <span className="border-l border-border/70 py-2 pr-3 pl-2 text-left sm:pr-4">
           Price · ৳
         </span>
       </div>
@@ -107,7 +104,7 @@ export function NotePaper({
           const rowBody = (
             <div
               data-line={row.id}
-              className="grid h-11 grid-cols-[minmax(0,1fr)_6.5rem] sm:grid-cols-[minmax(0,1fr)_9rem_5rem]"
+              className="grid h-12 grid-cols-[minmax(0,1fr)_6.5rem] sm:h-11 sm:grid-cols-[minmax(0,1fr)_9rem_5rem]"
             >
               <input
                 ref={(el) => {
@@ -156,10 +153,32 @@ export function NotePaper({
                   spellCheck={false}
                   maxLength={24}
                   className={cn(
-                    "tnum h-full min-w-0 flex-1 bg-transparent text-right body-1 outline-none placeholder:font-normal placeholder:text-muted-foreground/40 focus:bg-muted/40",
+                    "tnum h-full min-w-0 flex-1 bg-transparent text-left body-1 outline-none placeholder:font-normal placeholder:text-muted-foreground/40 focus:bg-muted/40",
                     invalid ? "text-expense" : "text-foreground"
                   )}
                 />
+                {/* Mobile: always-visible actions (no swipe, no drag-focus).
+                    Record only exists for priced rows. */}
+                <div className="flex items-center gap-0.5 sm:hidden">
+                  {eligible ? (
+                    <button
+                      type="button"
+                      onClick={() => onRecordRow(row.id)}
+                      aria-label={`Record ${row.note.trim() || `row ${index + 1}`}`}
+                      className="flex size-8 items-center justify-center rounded-lg text-income transition-colors hover:bg-accent"
+                    >
+                      <Check className="size-4" aria-hidden="true" />
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => onDeleteRow(row.id)}
+                    aria-label={`Delete ${row.note.trim() || `row ${index + 1}`}`}
+                    className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-expense"
+                  >
+                    <Trash2 className="size-4" aria-hidden="true" />
+                  </button>
+                </div>
               </div>
 
               {/* Per-row actions in their own column, so the price field is
@@ -187,32 +206,9 @@ export function NotePaper({
             </div>
           )
 
-          const swipeActions = [
-            ...(eligible
-              ? [
-                  {
-                    label: "Record",
-                    icon: Check,
-                    onSelect: () => onRecordRow(row.id),
-                    className: "bg-income text-white",
-                  },
-                ]
-              : []),
-            {
-              label: "Delete",
-              icon: Trash2,
-              onSelect: () => onDeleteRow(row.id),
-              className: "bg-destructive text-white",
-            },
-          ]
-
           return (
             <li key={row.id} className="group relative">
-              {isMobile ? (
-                <SwipeActions actions={swipeActions}>{rowBody}</SwipeActions>
-              ) : (
-                rowBody
-              )}
+              {rowBody}
             </li>
           )
         })}
