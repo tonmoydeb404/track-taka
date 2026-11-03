@@ -125,12 +125,6 @@ export function NotePaper({
                 className="h-full min-w-0 bg-transparent pl-3 body-2 text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground/50 focus:bg-muted/40 sm:pl-4"
               />
               <div
-                onClick={(e) => {
-                  // Clicks on the cell padding still reach the price field.
-                  if ((e.target as HTMLElement).tagName !== "INPUT") {
-                    e.currentTarget.querySelector("input")?.focus()
-                  }
-                }}
                 className={cn(
                   "flex h-full min-w-0 items-center gap-1.5 border-l border-border/60 pr-3 pl-2 sm:pr-4",
                   invalid && "bg-expense/5"
