@@ -114,7 +114,10 @@ export function AccountDialog({
   }
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+    // Always a centred Radix dialog — never the vaul drawer. This dialog is
+    // opened on top of other drawers (quick entry), and stacked vaul drawers
+    // break pointer handling on iOS.
+    <ResponsiveDialog mode="dialog" open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent
         dialogClassName="sm:max-w-md"
         sheetClassName="sm:max-w-md"
