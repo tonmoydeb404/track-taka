@@ -12,9 +12,10 @@ import { RecordPanel } from "./record-panel"
 import { DRAFT_ID, useKhata } from "./use-khata"
 
 /**
- * The khata sheet: jot now, price later. Recording is per row — ✓ hands a
- * priced row to the quick-entry dialog pre-filled (note → description,
- * price → amount); the row leaves the sheet once that transaction saves.
+ * The khata sheet: jot now, price later. Recording is per row — the row
+ * menu hands a priced row to the quick-entry dialog pre-filled (note →
+ * description, price → amount); the row leaves the sheet once that
+ * transaction saves.
  * Unpriced notes stay. There is no batch recording and no account gate on
  * the sheet itself; the dialog handles account and category.
  */
@@ -108,10 +109,11 @@ export function KhataPage() {
     <div className="page-stack">
       <header>
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Khata
+          Khata notes
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Jot now, add prices later — ✓ a priced row to record it.
+          Write down what you buy or spend. Add the price now or later, then
+          record it from the row menu.
         </p>
       </header>
 

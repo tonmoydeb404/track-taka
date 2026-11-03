@@ -8,6 +8,7 @@ import { PageTransition } from "@/components/layout/page-transition"
 import { PageSkeleton } from "@/components/layout/page-skeleton"
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav"
 import { MobileStatusBanner } from "@/components/layout/mobile-status-banner"
+import { PullToRefresh } from "@/components/layout/pull-to-refresh"
 import { ThemeSync } from "@/components/layout/theme-sync"
 import { QuickEntrySheet } from "@/components/quick-entry"
 import { useMounted } from "@/hooks"
@@ -45,6 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <MobileBottomNav />
+        <PullToRefresh />
 
         {/* Global overlays — mounted once, self-closed via ui-store state */}
         <QuickEntrySheet />

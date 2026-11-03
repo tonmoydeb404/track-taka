@@ -13,6 +13,18 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: "3.4.0",
+    date: "2026-11-03",
+    title: "Khata notes, and a friendlier first run",
+    highlights: [
+      "New Khata notes page: jot what you need to buy or what you just paid for, add the price now or later, then record any row as a transaction from its menu. Prices accept sums like 120+80*2.",
+      "Built for thumbs: tall rows, a roomy price column, a blank sheet to start writing in, and one tap menu per row for Record and Delete.",
+      "Pull down from the top of any page in the installed app to refresh it.",
+      "A short first-run setup picks your theme, week start and first account.",
+      "Dialogs for new accounts open centered, and bottom sheets no longer collapse after the keyboard opens and closes.",
+    ],
+  },
+  {
     version: "3.3.1",
     date: "2026-10-31",
     title: "Modals in the URL, offline from first launch",
